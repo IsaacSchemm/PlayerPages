@@ -1,0 +1,224 @@
+﻿html.debug {
+    body {
+        text-align: center;
+    }
+
+    .image-parent {
+        display: inline-block;
+    }
+
+    details {
+        summary {
+            margin: 1em;
+        }
+
+        a {
+            display: block;
+            margin: 1em;
+        }
+    }
+
+    img {
+        width: 640px;
+        max-width: calc(100vw - 40px);
+        height: 240px;
+        object-fit: contain;
+    }
+
+    video, iframe {
+        width: 640px;
+        max-width: calc(100vw - 40px);
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .line-separator {
+            width: 100%;
+        }
+
+        button {
+            flex: 0 0 auto;
+        }
+    }
+}
+
+html:not(.debug) {
+    width: 100%;
+    height: 100%;
+
+    .sr-only {
+        position: fixed;
+        top: -1000px;
+        left: -1000px;
+        width: 1px;
+        height: 1px;
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+
+        details {
+            flex: 0 0 auto;
+
+            a {
+                display: block;
+            }
+
+            summary,
+            a {
+                padding: 8px;
+                cursor: pointer;
+            }
+
+            summary:focus,
+            summary:hover,
+            a:focus,
+            a:hover {
+                background-color: Highlight;
+                color: HighlightText;
+            }
+        }
+
+        .image-parent {
+            flex: 0 0 50px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        #center-row {
+            flex: 1 0 100px !important;
+            display: flex;
+            flex-direction: column;
+
+            @media (min-width: 720px) {
+                flex-direction: row;
+            }
+
+            .embed-column {
+                flex: 0 0 auto;
+                display: flex;
+                flex-direction: column;
+
+                @media (min-width: 720px) {
+                    flex: 0 0 20vw;
+                }
+
+                & > * {
+                    flex: 1 1 25vh;
+                }
+            }
+
+            main {
+                flex: 1 0 100px;
+                display: flex;
+                flex-direction: column;
+
+                #video-parent {
+                    flex: 1 0 100px;
+                    position: relative;
+
+                    & > video {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    & > iframe {
+                        border: 0;
+                        width: 100%;
+                        height: 100%;
+                        height: calc(100% - 4px);
+                    }
+                }
+
+                .controls {
+                    background-color: Window;
+                    color: WindowText;
+                    flex: 0 0 40px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+
+                    label {
+                        flex: 0 0 auto;
+                        display: flex;
+                        flex-direction: column;
+                        text-align: center;
+                        padding: 0 8px;
+                        justify-content: center;
+                    }
+
+                    button {
+                        appearance: none;
+                        background-color: transparent;
+                        border: 0;
+                        color: inherit;
+                        cursor: pointer;
+                        flex: 0 0 36px;
+
+                        &:focus, &:hover {
+                            background-color: Highlight;
+                            color: HighlightText;
+                            outline: 0;
+                        }
+
+                        .material-icons {
+                            font-size: 24px;
+                            vertical-align: bottom;
+                        }
+                    }
+
+                    input[type=range] {
+                        width: 40px;
+                        height: 40px;
+                        flex: 1 1 auto;
+                    }
+
+                    input[type=range]#volume {
+                        max-width: 240px;
+                    }
+
+                    .status {
+                        line-height: 44px;
+                        padding: 0 8px;
+                        vertical-align: middle;
+
+                        &.wide {
+                            flex: 1 1 0px;
+                        }
+
+                        &.timestamp {
+                            @media (max-width: 480px) {
+                                display: none;
+                            }
+                        }
+                    }
+
+                    .adv:not(:focus) {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 0;
+                        height: 0;
+                        overflow: hidden;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+﻿@using Microsoft.FSharp.Core
+@model PlayerPages.Models.Image
+@if (OptionModule.ToObj(Model.href) is string href)
+{
+    <a class="image-parent"
+       href="@href"
+       target="_blank"
+       style="background-color: @Model.bgcolor">
+        <img src="@Model.src" alt="@Model.alt" />
+    </a>
+}
+else
+{
+    <span class="image-parent"
+          style="background-color: @Model.bgcolor">
+        <img src="@Model.src" alt="@Model.alt" />
+    </span>
+}

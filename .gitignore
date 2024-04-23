@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+PlayerPages/wwwroot/*.png
+PlayerPages/wwwroot/*.mp3
+PlayerPages/wwwroot/*.mp4
+
 # User-specific files
 *.rsuser
 *.suo
