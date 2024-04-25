@@ -14,8 +14,6 @@ class PPSPlayer {
 
     readonly nativeControls = ko.observable(false);
 
-    readonly showVolumeControls = ko.observable(false);
-
     readonly currentTimeStr = ko.pureComputed(() => {
         const milliseconds = this.currentTimeMs();
 
@@ -170,10 +168,6 @@ class PPSPlayer {
         this.currentSubtitleTrack(index === -1
             ? null
             : this.subtitleTracks()[index]);
-    }
-
-    toggleVolumeControls() {
-        this.showVolumeControls(!this.showVolumeControls());
     }
 
     toggleMute() {

@@ -75,19 +75,8 @@
                     <span class="material-icons" aria-hidden="true">forward_30</span>
                     <span class="sr-only">Forward 30 seconds</span>
                 </button>
-                <div class="status timestamp line-separator">
-                    <span class="sr-only">Timestamp:</span>
-                    <span data-bind="text: currentTimeStr">0:00</span>
-                </div>
-                <input type="range"
-                       aria-label="Time"
-                       id="seek"
-                       data-bind="value: currentTimeMs, attr: { min: 0, max: durationMs }" />
-                <div class="status timestamp line-separator">
-                    <span class="sr-only">Duration:</span>
-                    <span data-bind="text: durationStr">0:00</span>
-                </div>
                 <!-- /ko -->
+                <div style="flex: 1 1 auto" role="none"></div>
                 <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
                     <!-- ko ifnot: currentSubtitleTrack() -->
                     <span class="material-icons" aria-hidden="true">subtitles_off</span>
@@ -96,6 +85,35 @@
                     <span class="material-icons" aria-hidden="true">subtitles</span>
                     <!-- /ko -->
                     <span class="sr-only">Toggle subtitles</span>
+                </button>
+                <button data-bind="click: toggleMute">
+                    <!-- ko if: muted -->
+                    <span class="material-icons" aria-hidden="true">volume_off</span>
+                    <span class="sr-only">Unmute</span>
+                    <!-- /ko -->
+                    <!-- ko ifnot: muted -->
+                    <span class="material-icons" aria-hidden="true">volume_up</span>
+                    <span class="sr-only">Mute</span>
+                    <!-- /ko -->
+                </button>
+                <div class="status line-separator sr-only">
+                    Volume
+                </div>
+                <input type="range"
+                       id="volume"
+                       data-bind="value: vol"
+                       min="0"
+                       max="1"
+                       aria-label="Volume"
+                       step="0.1" />
+                <div class="line-separator"></div>
+                <button class="adv">
+                    <span class="material-icons" aria-hidden="true">add</span>
+                    <span class="sr-only">Volume up</span>
+                </button>
+                <button class="adv">
+                    <span class="material-icons" aria-hidden="true">remove</span>
+                    <span class="sr-only">Volume down</span>
                 </button>
                 <button>
                     @* This button should request to start Google Cast, which should then trigger the player to switch modes *@
@@ -109,10 +127,6 @@
                     <span class="material-icons" aria-hidden="true">airplay</span>
                     <span class="sr-only">AirPlay</span>
                 </button>
-                <button data-bind="click: toggleVolumeControls">
-                    <span class="material-icons" aria-hidden="true">volume_up</span>
-                    <span class="sr-only">Toggle volume controls</span>
-                </button>
                 <button data-bind="click: toggleFullscreen">
                     <!-- ko if: fullscreen -->
                     <span class="material-icons" aria-hidden="true">fullscreen_exit</span>
@@ -124,36 +138,19 @@
                     <!-- /ko -->
                 </button>
             </div>
-            <div class="controls" data-bind="visible: showVolumeControls">
-                <button data-bind="click: toggleMute">
-                    <!-- ko if: muted -->
-                    <span class="material-icons" aria-hidden="true">volume_off</span>
-                    <span class="sr-only">Unmute</span>
-                    <!-- /ko -->
-                    <!-- ko ifnot: muted -->
-                    <span class="material-icons" aria-hidden="true">volume_up</span>
-                    <span class="sr-only">Mute</span>
-                    <!-- /ko -->
-                </button>
-                <div class="status line-separator">
-                    Volume
+            <div class="controls">
+                <div class="status timestamp line-separator">
+                    <span class="sr-only">Timestamp:</span>
+                    <span data-bind="text: currentTimeStr">0:00</span>
                 </div>
                 <input type="range"
-                       id="volume"
-                       data-bind="value: vol"
-                       min="0"
-                       max="1"
-                       aria-label="Volume"
-                       step="0.1" />
-                <div class="line-separator"></div>
-                <button>
-                    <span class="material-icons" aria-hidden="true">add</span>
-                    <span class="sr-only">Volume up</span>
-                </button>
-                <button>
-                    <span class="material-icons" aria-hidden="true">remove</span>
-                    <span class="sr-only">Volume down</span>
-                </button>
+                       aria-label="Time"
+                       id="seek"
+                       data-bind="value: currentTimeMs, attr: { min: 0, max: durationMs }" />
+                <div class="status timestamp line-separator">
+                    <span class="sr-only">Duration:</span>
+                    <span data-bind="text: durationStr">0:00</span>
+                </div>
             </div>
             <!-- /ko -->
         </main>

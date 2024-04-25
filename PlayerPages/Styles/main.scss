@@ -149,7 +149,7 @@ html:not(.debug) {
                 .controls {
                     background-color: Window;
                     color: WindowText;
-                    flex: 0 0 40px;
+                    flex: 0 0 32px;
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
@@ -185,7 +185,7 @@ html:not(.debug) {
 
                     input[type=range] {
                         width: 40px;
-                        height: 40px;
+                        height: 32px;
                         flex: 1 1 auto;
                     }
 
@@ -194,7 +194,7 @@ html:not(.debug) {
                     }
 
                     .status {
-                        line-height: 44px;
+                        line-height: 36px;
                         padding: 0 8px;
                         vertical-align: middle;
 

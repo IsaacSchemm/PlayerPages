@@ -14,7 +14,6 @@ var PPSPlayer = /** @class */ (function () {
         this.hasSubtitles = ko.pureComputed(function () { return _this.subtitleTracks().length > 0; });
         this.currentSubtitleTrack = ko.observable(null);
         this.nativeControls = ko.observable(false);
-        this.showVolumeControls = ko.observable(false);
         this.currentTimeStr = ko.pureComputed(function () {
             var milliseconds = _this.currentTimeMs();
             var h = Math.floor(milliseconds / 3600000);
@@ -133,9 +132,6 @@ var PPSPlayer = /** @class */ (function () {
         this.currentSubtitleTrack(index === -1
             ? null
             : this.subtitleTracks()[index]);
-    };
-    PPSPlayer.prototype.toggleVolumeControls = function () {
-        this.showVolumeControls(!this.showVolumeControls());
     };
     PPSPlayer.prototype.toggleMute = function () {
         this.mediaElement.muted = !this.mediaElement.muted;
