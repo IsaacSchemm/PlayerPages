@@ -59,23 +59,19 @@
                 </div>
                 <!-- /ko -->
                 <!-- ko ifnot: live -->
-                <button class="adv">
-                    @* Implement this *@
+                <button class="adv" data-bind="click: back10">
                     <span class="material-icons" aria-hidden="true">replay_10</span>
                     <span class="sr-only">Back 10 seconds</span>
                 </button>
-                <button class="adv">
-                    @* Implement this *@
+                <button class="adv" data-bind="click: forward10">
                     <span class="material-icons" aria-hidden="true">forward_10</span>
                     <span class="sr-only">Forward 10 seconds</span>
                 </button>
-                <button class="adv">
-                    @* Implement this *@
+                <button class="adv" data-bind="click: back30">
                     <span class="material-icons" aria-hidden="true">replay_30</span>
                     <span class="sr-only">Back 30 seconds</span>
                 </button>
-                <button class="adv">
-                    @* Implement this *@
+                <button class="adv" data-bind="click: forward30">
                     <span class="material-icons" aria-hidden="true">forward_30</span>
                     <span class="sr-only">Forward 30 seconds</span>
                 </button>
@@ -92,10 +88,13 @@
                     <span data-bind="text: durationStr">0:00</span>
                 </div>
                 <!-- /ko -->
-                <button>
-                    @* This button should toggle through subtitles (off, first, second, etc) *@
-                    @* It should be hidden if no subtitle tracks were found *@
+                <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
+                    <!-- ko ifnot: currentSubtitleTrack() -->
+                    <span class="material-icons" aria-hidden="true">subtitles_off</span>
+                    <!-- /ko -->
+                    <!-- ko if: currentSubtitleTrack() -->
                     <span class="material-icons" aria-hidden="true">subtitles</span>
+                    <!-- /ko -->
                     <span class="sr-only">Toggle subtitles</span>
                 </button>
                 <button>
@@ -111,12 +110,7 @@
                     <span class="sr-only">AirPlay</span>
                 </button>
                 <button data-bind="click: toggleVolumeControls">
-                    <!-- ko if: muted -->
-                    <span class="material-icons" aria-hidden="true">volume_off</span>
-                    <!-- /ko -->
-                    <!-- ko ifnot: muted -->
                     <span class="material-icons" aria-hidden="true">volume_up</span>
-                    <!-- /ko -->
                     <span class="sr-only">Toggle volume controls</span>
                 </button>
                 <button data-bind="click: toggleFullscreen">

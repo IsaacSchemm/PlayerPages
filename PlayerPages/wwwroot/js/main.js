@@ -118,19 +118,15 @@ var _loop_1 = function (i) {
             return;
         e.preventDefault();
         loadMediaAsync(mediaLink.href);
-        var elem = mediaLink.parentElement;
-        while (true) {
-            if (!elem)
-                break;
-            if (elem instanceof HTMLDetailsElement) {
-                elem.open = false;
-                break;
-            }
-            elem = elem.parentElement;
-        }
     });
 };
 for (var i = 0; i < mediaLinks.length; i++) {
     _loop_1(i);
+}
+if (mediaLinks.length > 0) {
+    var firstLink = mediaLinks[0];
+    if (firstLink instanceof HTMLAnchorElement) {
+        loadMediaAsync(firstLink.href);
+    }
 }
 //# sourceMappingURL=main.js.map

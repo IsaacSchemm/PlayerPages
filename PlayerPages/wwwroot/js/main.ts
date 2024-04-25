@@ -77,17 +77,11 @@ for (let i = 0; i < mediaLinks.length; i++) {
 
         e.preventDefault();
         loadMediaAsync(mediaLink.href);
-
-        let elem = mediaLink.parentElement;
-        while (true) {
-            if (!elem) break;
-
-            if (elem instanceof HTMLDetailsElement) {
-                elem.open = false;
-                break;
-            }
-
-            elem = elem.parentElement;
-        }
     });
+}
+if (mediaLinks.length > 0) {
+    const firstLink = mediaLinks[0];
+    if (firstLink instanceof HTMLAnchorElement) {
+        loadMediaAsync(firstLink.href);
+    }
 }

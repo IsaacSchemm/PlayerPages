@@ -1,3 +1,4 @@
+
 class PPSPlayer {
     readonly playing = ko.observable(false);
     readonly live = ko.observable(false);
@@ -6,6 +7,10 @@ class PPSPlayer {
     readonly vol = ko.observable(0);
     readonly muted = ko.observable(false);
     readonly fullscreen = ko.observable(false);
+
+    readonly subtitleTracks = ko.observableArray<TextTrack>();
+    readonly hasSubtitles = ko.pureComputed(() => this.subtitleTracks().length > 0);
+    readonly currentSubtitleTrack = ko.observable<TextTrack>(null);
 
     readonly nativeControls = ko.observable(false);
 
@@ -106,6 +111,18 @@ class PPSPlayer {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
             mediaElement.removeEventListener("mousemove", onmousemove);
         };
+
+        this.mediaElement.textTracks.addEventListener("addtrack", e => {
+            this.subtitleTracks.push(e.track);
+        });
+
+        this.currentSubtitleTrack.subscribe(newValue => {
+            for (const track of this.subtitleTracks())
+                track.mode = "hidden";
+
+            if (newValue)
+                newValue.mode = "showing";
+        });
     }
 
     togglePlay() {
@@ -114,6 +131,45 @@ class PPSPlayer {
         } else {
             this.mediaElement.pause();
         }
+    }
+
+    back10() {
+        this.mediaElement.currentTime = Math.max(
+            0,
+            this.mediaElement.currentTime - 10);
+    }
+
+    forward10() {
+        this.mediaElement.currentTime = Math.min(
+            this.mediaElement.duration,
+            this.mediaElement.currentTime + 10);
+    }
+
+    back30() {
+        this.mediaElement.currentTime = Math.max(
+            0,
+            this.mediaElement.currentTime - 30);
+    }
+
+    forward30() {
+        this.mediaElement.currentTime = Math.min(
+            this.mediaElement.duration,
+            this.mediaElement.currentTime + 30);
+    }
+
+    toggleSubtitles() {
+        const currentTrack = this.currentSubtitleTrack();
+
+        let index = currentTrack
+            ? this.subtitleTracks().indexOf(currentTrack)
+            : -1;
+        index++;
+        if (index == this.subtitleTracks().length)
+            index = -1;
+
+        this.currentSubtitleTrack(index === -1
+            ? null
+            : this.subtitleTracks()[index]);
     }
 
     toggleVolumeControls() {

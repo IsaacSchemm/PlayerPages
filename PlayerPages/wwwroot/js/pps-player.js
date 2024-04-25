@@ -10,6 +10,9 @@ var PPSPlayer = /** @class */ (function () {
         this.vol = ko.observable(0);
         this.muted = ko.observable(false);
         this.fullscreen = ko.observable(false);
+        this.subtitleTracks = ko.observableArray();
+        this.hasSubtitles = ko.pureComputed(function () { return _this.subtitleTracks().length > 0; });
+        this.currentSubtitleTrack = ko.observable(null);
         this.nativeControls = ko.observable(false);
         this.showVolumeControls = ko.observable(false);
         this.currentTimeStr = ko.pureComputed(function () {
@@ -87,6 +90,17 @@ var PPSPlayer = /** @class */ (function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
             mediaElement.removeEventListener("mousemove", onmousemove);
         };
+        this.mediaElement.textTracks.addEventListener("addtrack", function (e) {
+            _this.subtitleTracks.push(e.track);
+        });
+        this.currentSubtitleTrack.subscribe(function (newValue) {
+            for (var _i = 0, _a = _this.subtitleTracks(); _i < _a.length; _i++) {
+                var track = _a[_i];
+                track.mode = "hidden";
+            }
+            if (newValue)
+                newValue.mode = "showing";
+        });
     }
     PPSPlayer.prototype.togglePlay = function () {
         if (this.mediaElement.paused) {
@@ -95,6 +109,30 @@ var PPSPlayer = /** @class */ (function () {
         else {
             this.mediaElement.pause();
         }
+    };
+    PPSPlayer.prototype.back10 = function () {
+        this.mediaElement.currentTime = Math.max(0, this.mediaElement.currentTime - 10);
+    };
+    PPSPlayer.prototype.forward10 = function () {
+        this.mediaElement.currentTime = Math.min(this.mediaElement.duration, this.mediaElement.currentTime + 10);
+    };
+    PPSPlayer.prototype.back30 = function () {
+        this.mediaElement.currentTime = Math.max(0, this.mediaElement.currentTime - 30);
+    };
+    PPSPlayer.prototype.forward30 = function () {
+        this.mediaElement.currentTime = Math.min(this.mediaElement.duration, this.mediaElement.currentTime + 30);
+    };
+    PPSPlayer.prototype.toggleSubtitles = function () {
+        var currentTrack = this.currentSubtitleTrack();
+        var index = currentTrack
+            ? this.subtitleTracks().indexOf(currentTrack)
+            : -1;
+        index++;
+        if (index == this.subtitleTracks().length)
+            index = -1;
+        this.currentSubtitleTrack(index === -1
+            ? null
+            : this.subtitleTracks()[index]);
     };
     PPSPlayer.prototype.toggleVolumeControls = function () {
         this.showVolumeControls(!this.showVolumeControls());
