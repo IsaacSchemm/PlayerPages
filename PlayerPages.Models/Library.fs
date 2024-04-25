@@ -44,8 +44,8 @@ module PageProperties =
                 src = "https://5e73cf528f404.streamlock.net/TeleEstense/livestream/playlist.m3u8"
             }
             {
-                title = "a"
-                src = "https://dai2-playlistserver.aws.syncbak.com/cpl/13729473/dai2v5/1/7b2264657669636554797065223a382c22616b616d61694d7670644b6579223a6e756c6c7d/master.m3u8?access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIwMTYwNDAxIn0.eyJkZXZpY2VUeXBlIjo4LCJzaWQiOjMzMCwiY2lkIjoxMjEzMiwibWlkIjoxMzcyOTQ3MywibWsiOm51bGwsIm9vbSI6dHJ1ZSwiaXAiOiIxMzUuMTM0LjIyNS44MiIsInVpcCI6IjEzNS4xMzQuMjI1LjgyIiwiZG1hIjo3MDIsInNzaWQiOiJlMWEyNzdmMDBkOWI0NjI0YjFkMTgyYjRkMWY5ZGVhOSIsInNuIjoiV2ViIDc3NDIyZjQwYjAgKCBudWxsICkiLCJ1aWQiOm51bGwsImFwc3QiOm51bGwsInNiZXAiOmZhbHNlLCJjc2IiOmZhbHNlLCJtZDUiOiIzNGQzZWVmODcyZTY0ZmE1MTU2ZGI3NTI2ZDQxMmMyNyIsImlhdCI6MTcxNDAxMTEzMywiZXhwIjoxNzE0MDExNDMzLCJhdWQiOiJodHRwczovL3BsYXlsaXN0c2VydmVyLmF3cy5zeW5jYmFrLmNvbSIsImlzcyI6IlN5bmNiYWsgR3JhcGhRTCBBUEkiLCJzdWIiOiJCeTRmS1FyTFRlSFl4T2FnOFMzV0VINmEzbEZoS3pOTGE4c0ZWczF2MXEzVEVDQ2hnWSJ9.bY3It9hP4vj694iJ15iRv7f_JTOtmTu4dNsfv2hwQ5Y"
+                title = "duckcam"
+                src = "https://58e7f1650ff36.streamlock.net/duckcam/smil:duckcam.smil/playlist.m3u8"
             }
         ]
         top = [

@@ -6,25 +6,12 @@
       "provider": "unpkg",
       "library": "knockout@3.5.1",
       "destination": "wwwroot/lib/knockout/",
-      "files": [ "build/types/knockout.d.ts", "build/output/knockout-latest.js" ]
+      "files": [ "build/types/knockout.d.ts" ]
     },
     {
       "library": "hls.js@1.5.8",
       "destination": "wwwroot/lib/hls.js/",
-      "files": [ "hls.js.d.ts", "hls.min.js" ]
-    },
-    {
-      "provider": "unpkg",
-      "library": "native-promise-only@0.8.1",
-      "destination": "wwwroot/lib/",
-      "files": [
-        "npo.js"
-      ]
-    },
-    {
-      "provider": "unpkg",
-      "library": "material-icons@1.13.12",
-      "destination": "wwwroot/material-icons/"
+      "files": [ "hls.js.d.ts" ]
     }
   ]
 }
