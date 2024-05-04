@@ -37,6 +37,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 var player = ko.observable();
+var menu = document.getElementById("menu");
+if (wiiu) {
+    var stop_1 = document.createElement("button");
+    stop_1.innerText = "Close media player";
+    stop_1.style.padding = "1em";
+    stop_1.addEventListener("click", function (e) {
+        e.preventDefault();
+        wiiu.videoplayer.end();
+    });
+    var videoParent = document.getElementById("video-parent");
+    videoParent.innerHTML = "";
+    videoParent.appendChild(stop_1);
+}
 document.getElementById("debugLink").addEventListener("click", function (e) {
     e.preventDefault();
     if (document.body.parentElement.classList.contains("debug")) {
@@ -71,62 +84,89 @@ var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 
                 e_1 = _a.sent();
                 console.warn(e_1);
                 return [3 /*break*/, 3];
-            case 3: return [2 /*return*/, "application/octet-stream"];
+            case 3: return [2 /*return*/, null];
         }
     });
 }); };
-var loadMediaAsync = function (src) { return __awaiter(_this, void 0, void 0, function () {
-    var oldPlayer, video, videoParent, contentType, isHLS, pl, e_2;
+var loadMedia = function (src, contentType) {
+    console.log(src, contentType);
+    try {
+        var oldPlayer = player();
+        if (oldPlayer) {
+            player(null);
+            oldPlayer.destroy();
+        }
+        var video = document.createElement("video");
+        video.src = src;
+        var videoParent = document.getElementById("video-parent");
+        videoParent.innerHTML = "";
+        videoParent.appendChild(video);
+        var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
+            || contentType.toLowerCase() == "application/x-mpegurl";
+        var pl = isHLS
+            ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
+            : new PPSPlayer(document.getElementsByTagName("main")[0], video);
+        player(pl);
+    }
+    catch (e) {
+        console.error(e);
+    }
+};
+(function () { return __awaiter(_this, void 0, void 0, function () {
+    var mediaLinks, first, _loop_1, i, e_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                oldPlayer = player();
-                if (oldPlayer) {
-                    player(null);
-                    oldPlayer.destroy();
-                }
-                video = document.createElement("video");
-                video.src = src;
-                videoParent = document.getElementById("video-parent");
-                videoParent.innerHTML = "";
-                videoParent.appendChild(video);
-                return [4 /*yield*/, getContentTypeAsync(src)];
+                _a.trys.push([0, 5, , 6]);
+                mediaLinks = document.querySelectorAll("a[target=mediaframe]");
+                first = true;
+                _loop_1 = function (i) {
+                    var mediaLink, contentType;
+                    return __generator(this, function (_b) {
+                        switch (_b.label) {
+                            case 0:
+                                mediaLink = mediaLinks[i];
+                                if (!(mediaLink instanceof HTMLAnchorElement))
+                                    return [2 /*return*/, "continue"];
+                                console.log(mediaLink.href);
+                                return [4 /*yield*/, getContentTypeAsync(mediaLink.href)];
+                            case 1:
+                                contentType = _b.sent();
+                                if (contentType) {
+                                    mediaLink.addEventListener("click", function (e) {
+                                        if (!mediaLink.href)
+                                            return;
+                                        e.preventDefault();
+                                        loadMedia(mediaLink.href, contentType);
+                                    });
+                                    if (first) {
+                                        console.log("Automatically loading: ".concat(mediaLink.href));
+                                        loadMedia(mediaLink.href, contentType);
+                                        first = false;
+                                    }
+                                }
+                                return [2 /*return*/];
+                        }
+                    });
+                };
+                i = 0;
+                _a.label = 1;
             case 1:
-                contentType = _a.sent();
-                isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl";
-                pl = isHLS
-                    ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
-                    : new PPSPlayer(document.getElementsByTagName("main")[0], video);
-                player(pl);
-                return [3 /*break*/, 3];
+                if (!(i < mediaLinks.length)) return [3 /*break*/, 4];
+                return [5 /*yield**/, _loop_1(i)];
             case 2:
+                _a.sent();
+                _a.label = 3;
+            case 3:
+                i++;
+                return [3 /*break*/, 1];
+            case 4: return [3 /*break*/, 6];
+            case 5:
                 e_2 = _a.sent();
-                console.error(e_2);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                console.warn(e_2);
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
-}); };
-var mediaLinks = document.querySelectorAll("a[target=mediaframe]");
-var _loop_1 = function (i) {
-    var mediaLink = mediaLinks[i];
-    if (!(mediaLink instanceof HTMLAnchorElement))
-        return "continue";
-    mediaLink.addEventListener("click", function (e) {
-        if (!mediaLink.href)
-            return;
-        e.preventDefault();
-        loadMediaAsync(mediaLink.href);
-    });
-};
-for (var i = 0; i < mediaLinks.length; i++) {
-    _loop_1(i);
-}
-if (mediaLinks.length > 0) {
-    var firstLink = mediaLinks[0];
-    if (firstLink instanceof HTMLAnchorElement) {
-        loadMediaAsync(firstLink.href);
-    }
-}
+}); })();
 //# sourceMappingURL=main.js.map

@@ -14,11 +14,16 @@
     {
         @await Html.PartialAsync("Embed", embed)
     }
-    <details>
+    <details id="menu">
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
-            <a href="@media.src" target="mediaframe">@media.title</a>
+            string src = media.src;
+            if (Uri.TryCreate(src, UriKind.Absolute, out Uri? uri) && uri.Scheme == "https")
+            {
+                src = "//" + src.Substring(8);
+            }
+            <a href="@src" target="mediaframe">@media.title</a>
         }
         @foreach (var link in Model.PageProperties.links)
         {
@@ -31,19 +36,21 @@
         </a>
     </details>
     <div id="center-row">
-        <div class="embed-column">
-            @foreach (var embed in Model.PageProperties.left)
-            {
-                @await Html.PartialAsync("Embed", embed)
-            }
-        </div>
+        @if (!Model.PageProperties.left.IsEmpty) {
+            <div class="embed-column">
+                @foreach (var embed in Model.PageProperties.left)
+                {
+                    @await Html.PartialAsync("Embed", embed)
+                }
+            </div>
+        }
         <main>
             <div id="video-parent">
                 <!-- JavaScript disabled -->
-                <iframe name="mediaframe" src="about:blank"></iframe>
+                <iframe name="mediaframe" src="no-media.html"></iframe>
             </div>
             <!-- ko with: controllablePlayer -->
-            <div class="controls">
+            <div class="controls" style="display: none" data-bind="visible: true">
                 <button data-bind="click: togglePlay">
                     <!-- ko if: playing -->
                     <span class="material-icons" aria-hidden="true">pause</span>
@@ -155,12 +162,14 @@
             </div>
             <!-- /ko -->
         </main>
-        <div class="embed-column">
-            @foreach (var embed in Model.PageProperties.right)
-            {
-                @await Html.PartialAsync("Embed", embed)
-            }
-        </div>
+        @if (!Model.PageProperties.right.IsEmpty) {
+            <div class="embed-column">
+                @foreach (var embed in Model.PageProperties.right)
+                {
+                    @await Html.PartialAsync("Embed", embed)
+                }
+            </div>
+        }
     </div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/native-promise-only/0.8.1/npo.js"
             integrity="sha512-3jgJm59psJUhwwOYcv45UOT7MJ41Ol/Z/tzlQLK5BPrVz5mAbPrqZQyASfYgfGuaYRIZDX1EJxbJE5+V2+AG7w=="

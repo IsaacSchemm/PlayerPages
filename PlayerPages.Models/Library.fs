@@ -41,16 +41,28 @@ module PageProperties =
         title = "My Page"
         media = [
             {
-                title = "duckcam"
+                title = "Intentional 404"
+                src = "https://www.example.com/2b61eb50-b8a1-4160-b2ef-8e07d29d52f0.mp4"
+            }
+            {
+                title = "MSL HLS test stream"
+                src = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
+            }
+            {
+                title = "Duck Cam (HTTP only)"
+                src = "http://58e7f1650ff36.streamlock.net:1935/duckcam/smil:duckcam.smil/playlist.m3u8"
+            }
+            {
+                title = "Duck Cam (HTTPS only)"
                 src = "https://58e7f1650ff36.streamlock.net/duckcam/smil:duckcam.smil/playlist.m3u8"
             }
             {
-                title = "Audio"
-                src = "02 Green Greens [星のカービィ].mp3"
+                title = "Big_Buck_Bunny_360_10s_1MB.mp4"
+                src = "Big_Buck_Bunny_360_10s_1MB.mp4"
             }
             {
-                title = "Live"
-                src = "https://5e73cf528f404.streamlock.net/TeleEstense/livestream/playlist.m3u8"
+                title = "Green Greens"
+                src = "02 Green Greens [星のカービィ].mp3"
             }
         ]
         top = [
@@ -71,15 +83,14 @@ module PageProperties =
                 href = "https://www.wxow.com"
             }
         ]
-        left = [
+        left = []
+        right = [
             {
                 src = "415b.png"
                 alt = "tyler sitting on a pole"
                 bgcolor = "cyan"
                 href = Some "https://www.weau.com"
             }
-        ]
-        right = [
             {
                 src = "415.png"
                 alt = "tyler standing 1"

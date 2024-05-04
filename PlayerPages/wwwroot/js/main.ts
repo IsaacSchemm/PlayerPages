@@ -1,6 +1,23 @@
 ﻿/// <reference path="hls-player.ts" />
 
+declare var wiiu: any;
+
 const player = ko.observable<PPSPlayer>();
+
+const menu = document.getElementById("menu");
+if (wiiu) {
+    const stop = document.createElement("button");
+    stop.innerText = "Close media player";
+    stop.style.padding = "1em";
+    stop.addEventListener("click", e => {
+        e.preventDefault();
+        wiiu.videoplayer.end();
+    });
+
+    const videoParent = document.getElementById("video-parent");
+    videoParent.innerHTML = "";
+    videoParent.appendChild(stop);
+}
 
 document.getElementById("debugLink").addEventListener("click", e => {
     e.preventDefault();
@@ -31,10 +48,11 @@ const getContentTypeAsync = async (src: string) => {
         console.warn(e);
     }
 
-    return "application/octet-stream";
+    return null;
 }
 
-const loadMediaAsync = async (src: string) => {
+const loadMedia = (src: string, contentType: string) => {
+    console.log(src, contentType);
     try {
         const oldPlayer = player();
         if (oldPlayer) {
@@ -49,8 +67,8 @@ const loadMediaAsync = async (src: string) => {
         videoParent.innerHTML = "";
         videoParent.appendChild(video);
 
-        const contentType =await getContentTypeAsync(src);
-        const isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl";
+        const isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
+            || contentType.toLowerCase() == "application/x-mpegurl";
 
         const pl = isHLS
             ? new HLSPlayer(
@@ -67,21 +85,37 @@ const loadMediaAsync = async (src: string) => {
     }
 }
 
-const mediaLinks = document.querySelectorAll("a[target=mediaframe]");
-for (let i = 0; i < mediaLinks.length; i++) {
-    const mediaLink = mediaLinks[i];
-    if (!(mediaLink instanceof HTMLAnchorElement)) continue;
+(async () => {
+    try {
+        const mediaLinks = document.querySelectorAll("a[target=mediaframe]");
+        let first = true;
 
-    mediaLink.addEventListener("click", e => {
-        if (!mediaLink.href) return;
+        for (let i = 0; i < mediaLinks.length; i++) {
+            const mediaLink = mediaLinks[i];
+            if (!(mediaLink instanceof HTMLAnchorElement))
+                continue;
 
-        e.preventDefault();
-        loadMediaAsync(mediaLink.href);
-    });
-}
-if (mediaLinks.length > 0) {
-    const firstLink = mediaLinks[0];
-    if (firstLink instanceof HTMLAnchorElement) {
-        loadMediaAsync(firstLink.href);
+            console.log(mediaLink.href);
+
+            const contentType = await getContentTypeAsync(mediaLink.href);
+
+            if (contentType) {
+                mediaLink.addEventListener("click", e => {
+                    if (!mediaLink.href)
+                        return;
+
+                    e.preventDefault();
+                    loadMedia(mediaLink.href, contentType);
+                });
+
+                if (first) {
+                    console.log(`Automatically loading: ${mediaLink.href}`);
+                    loadMedia(mediaLink.href, contentType);
+                    first = false;
+                }
+            }
+        }
+    } catch (e) {
+        console.warn(e);
     }
-}
+})();
