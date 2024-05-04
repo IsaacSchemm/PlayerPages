@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/main.css" />
     <link href="//fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet" />
     <base href="@(Request.Scheme)://@(Request.Host)/" />
+    <meta http-equiv="X-UA-Compatible" content="IE=5" />
 </head>
 <body>
     @foreach (var embed in Model.PageProperties.top)
@@ -23,17 +24,12 @@
             {
                 src = "//" + src.Substring(8);
             }
-            <a href="@src" target="mediaframe">@media.title</a>
+            <a class="media" href="@src">@media.title</a>
         }
         @foreach (var link in Model.PageProperties.links)
         {
             <a href="@link.href" target="_blank">@link.title</a>
         }
-        <a href="#" id="debugLink">
-            Toggle debug mode
-            <br />
-            <small>View the page as a document instead of as an application</small>
-        </a>
     </details>
     <div id="center-row">
         @if (!Model.PageProperties.left.IsEmpty) {
@@ -46,8 +42,23 @@
         }
         <main>
             <div id="video-parent">
-                <!-- JavaScript disabled -->
-                <iframe name="mediaframe" src="no-media.html"></iframe>
+                <!-- ko if: false -->
+                @foreach (var media in Model.PageProperties.media)
+                {
+                    string src = media.src;
+                    if (Uri.TryCreate(src, UriKind.Absolute, out Uri? uri) && uri.Scheme == "https")
+                    {
+                        src = "http://" + src.Substring(8);
+                    }
+                    <h1>@media.title</h1>
+                    <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
+                        <param name="src" value="@src" />
+                        <param name="autoplay" value="false" />
+
+                        <video controls src="@media.src"></video>
+                    </object>
+                }
+                <!-- /ko -->
             </div>
             <!-- ko with: controllablePlayer -->
             <div class="controls" style="display: none" data-bind="visible: true">

@@ -35,100 +35,100 @@ html .controls button {
 }
 
 @supports (display: flex) and (object-fit: contain) {
-  html:not(.debug) {
+  html {
     width: 100%;
     height: 100%;
   }
-  html:not(.debug) .sr-only {
+  html .sr-only {
     position: fixed;
     top: -1000px;
     left: -1000px;
     width: 1px;
     height: 1px;
   }
-  html:not(.debug) body {
+  html body {
     width: 100%;
     height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column;
   }
-  html:not(.debug) body details {
+  html body details {
     flex: 0 0 auto;
   }
-  html:not(.debug) body details a {
+  html body details a {
     display: block;
   }
-  html:not(.debug) body details summary,
-  html:not(.debug) body details a {
+  html body details summary,
+  html body details a {
     padding: 8px;
     cursor: pointer;
     margin: 0;
   }
-  html:not(.debug) body details summary:focus,
-  html:not(.debug) body details summary:hover,
-  html:not(.debug) body details a:focus,
-  html:not(.debug) body details a:hover {
+  html body details summary:focus,
+  html body details summary:hover,
+  html body details a:focus,
+  html body details a:hover {
     background-color: Highlight;
     color: HighlightText;
   }
-  html:not(.debug) body .image-parent {
+  html body .image-parent {
     flex: 0 0 50px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
-  html:not(.debug) body .image-parent img {
+  html body .image-parent img {
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
-  html:not(.debug) body #center-row {
+  html body #center-row {
     flex: 1 0 100px !important;
     display: flex;
     flex-direction: column;
   }
   @media (min-width: 720px) {
-    html:not(.debug) body #center-row {
+    html body #center-row {
       flex-direction: row;
     }
   }
-  html:not(.debug) body #center-row .embed-column {
+  html body #center-row .embed-column {
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
   }
   @media (min-width: 720px) {
-    html:not(.debug) body #center-row .embed-column {
+    html body #center-row .embed-column {
       flex: 0 0 20vw;
     }
   }
-  html:not(.debug) body #center-row .embed-column > * {
+  html body #center-row .embed-column > * {
     flex: 1 1 25vh;
   }
-  html:not(.debug) body #center-row main {
+  html body #center-row main {
     flex: 1 0 100px;
     display: flex;
     flex-direction: column;
   }
-  html:not(.debug) body #center-row main #video-parent {
+  html body #center-row main #video-parent {
     flex: 1 0 100px;
     position: relative;
   }
-  html:not(.debug) body #center-row main #video-parent > video {
+  html body #center-row main #video-parent > video {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
   }
-  html:not(.debug) body #center-row main #video-parent > iframe {
+  html body #center-row main #video-parent > iframe {
     border: 0;
     width: 100%;
     height: 100%;
     height: calc(100% - 4px);
   }
-  html:not(.debug) body #center-row main .controls {
+  html body #center-row main .controls {
     background-color: Window;
     color: WindowText;
     flex: 0 0 32px;
@@ -136,10 +136,10 @@ html .controls button {
     flex-direction: row;
     justify-content: center;
   }
-  html:not(.debug) body #center-row main .controls .spacer {
+  html body #center-row main .controls .spacer {
     flex: 1 1 auto;
   }
-  html:not(.debug) body #center-row main .controls label {
+  html body #center-row main .controls label {
     flex: 0 0 auto;
     display: flex;
     flex-direction: column;
@@ -147,10 +147,10 @@ html .controls button {
     padding: 0 8px;
     justify-content: center;
   }
-  html:not(.debug) body #center-row main .controls .line-separator {
+  html body #center-row main .controls .line-separator {
     width: auto;
   }
-  html:not(.debug) body #center-row main .controls button {
+  html body #center-row main .controls button {
     appearance: none;
     background-color: transparent;
     border: 0;
@@ -158,38 +158,38 @@ html .controls button {
     cursor: pointer;
     flex: 0 0 36px;
   }
-  html:not(.debug) body #center-row main .controls button:focus, html:not(.debug) body #center-row main .controls button:hover {
+  html body #center-row main .controls button:focus, html body #center-row main .controls button:hover {
     background-color: Highlight;
     color: HighlightText;
     outline: 0;
   }
-  html:not(.debug) body #center-row main .controls button .material-icons {
+  html body #center-row main .controls button .material-icons {
     font-size: 24px;
     vertical-align: bottom;
   }
-  html:not(.debug) body #center-row main .controls input[type=range] {
+  html body #center-row main .controls input[type=range] {
     width: 40px;
     height: 32px;
     flex: 1 1 auto;
     padding: 0;
   }
-  html:not(.debug) body #center-row main .controls input[type=range]#volume {
+  html body #center-row main .controls input[type=range]#volume {
     max-width: 240px;
   }
-  html:not(.debug) body #center-row main .controls .status {
+  html body #center-row main .controls .status {
     line-height: 36px;
     padding: 0 8px;
     vertical-align: middle;
   }
-  html:not(.debug) body #center-row main .controls .status.wide {
+  html body #center-row main .controls .status.wide {
     flex: 1 1 0px;
   }
   @media (max-width: 480px) {
-    html:not(.debug) body #center-row main .controls .status.timestamp {
+    html body #center-row main .controls .status.timestamp {
       display: none;
     }
   }
-  html:not(.debug) body #center-row main .controls .adv:not(:focus) {
+  html body #center-row main .controls .adv:not(:focus) {
     position: absolute;
     top: 0;
     left: 0;

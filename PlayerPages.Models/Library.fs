@@ -1,6 +1,5 @@
 ﻿namespace PlayerPages.Models
 
-
 type Media = {
     title: string
     src: string
@@ -96,12 +95,6 @@ module PageProperties =
                 alt = "tyler standing 1"
                 bgcolor = "lightgray"
                 href = Some "https://www.xkcd.com"
-            }
-            {
-                src = "mynsxcf.png"
-                alt = "a cartoon snail"
-                bgcolor = "#ffffff"
-                href = None
             }
         ]
     }

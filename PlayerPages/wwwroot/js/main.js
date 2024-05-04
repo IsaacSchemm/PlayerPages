@@ -37,28 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 var player = ko.observable();
-var menu = document.getElementById("menu");
-if (wiiu) {
-    var stop_1 = document.createElement("button");
-    stop_1.innerText = "Close media player";
-    stop_1.style.padding = "1em";
-    stop_1.addEventListener("click", function (e) {
-        e.preventDefault();
-        wiiu.videoplayer.end();
-    });
-    var videoParent = document.getElementById("video-parent");
-    videoParent.innerHTML = "";
-    videoParent.appendChild(stop_1);
-}
-document.getElementById("debugLink").addEventListener("click", function (e) {
-    e.preventDefault();
-    if (document.body.parentElement.classList.contains("debug")) {
-        document.body.parentElement.classList.remove("debug");
-    }
-    else {
-        document.body.parentElement.classList.add("debug");
-    }
-});
 ko.applyBindings({
     controllablePlayer: ko.pureComputed(function () {
         var pl = player();
@@ -118,7 +96,7 @@ var loadMedia = function (src, contentType) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 5, , 6]);
-                mediaLinks = document.querySelectorAll("a[target=mediaframe]");
+                mediaLinks = document.querySelectorAll("a.media");
                 first = true;
                 _loop_1 = function (i) {
                     var mediaLink, contentType;
@@ -163,7 +141,7 @@ var loadMedia = function (src, contentType) {
             case 4: return [3 /*break*/, 6];
             case 5:
                 e_2 = _a.sent();
-                console.warn(e_2);
+                console.warn("Could not automatically load media", e_2);
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
         }

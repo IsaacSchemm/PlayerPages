@@ -4,31 +4,6 @@ declare var wiiu: any;
 
 const player = ko.observable<PPSPlayer>();
 
-const menu = document.getElementById("menu");
-if (wiiu) {
-    const stop = document.createElement("button");
-    stop.innerText = "Close media player";
-    stop.style.padding = "1em";
-    stop.addEventListener("click", e => {
-        e.preventDefault();
-        wiiu.videoplayer.end();
-    });
-
-    const videoParent = document.getElementById("video-parent");
-    videoParent.innerHTML = "";
-    videoParent.appendChild(stop);
-}
-
-document.getElementById("debugLink").addEventListener("click", e => {
-    e.preventDefault();
-
-    if (document.body.parentElement.classList.contains("debug")) {
-        document.body.parentElement.classList.remove("debug");
-    } else {
-        document.body.parentElement.classList.add("debug");
-    }
-});
-
 ko.applyBindings({
     controllablePlayer: ko.pureComputed(() => {
         const pl = player();
@@ -87,7 +62,7 @@ const loadMedia = (src: string, contentType: string) => {
 
 (async () => {
     try {
-        const mediaLinks = document.querySelectorAll("a[target=mediaframe]");
+        const mediaLinks = document.querySelectorAll("a.media");
         let first = true;
 
         for (let i = 0; i < mediaLinks.length; i++) {
@@ -116,6 +91,6 @@ const loadMedia = (src: string, contentType: string) => {
             }
         }
     } catch (e) {
-        console.warn(e);
+        console.warn("Could not automatically load media", e);
     }
 })();
