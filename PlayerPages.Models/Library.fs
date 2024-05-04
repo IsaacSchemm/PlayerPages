@@ -41,8 +41,8 @@ module PageProperties =
         title = "My Page"
         media = [
             {
-                title = "720p"
-                src = "https://ia800701.us.archive.org/26/items/SampleVideo1280x7205mb/SampleVideo_1280x720_5mb.mp4"
+                title = "duckcam"
+                src = "https://58e7f1650ff36.streamlock.net/duckcam/smil:duckcam.smil/playlist.m3u8"
             }
             {
                 title = "Audio"
@@ -51,10 +51,6 @@ module PageProperties =
             {
                 title = "Live"
                 src = "https://5e73cf528f404.streamlock.net/TeleEstense/livestream/playlist.m3u8"
-            }
-            {
-                title = "duckcam"
-                src = "https://58e7f1650ff36.streamlock.net/duckcam/smil:duckcam.smil/playlist.m3u8"
             }
         ]
         top = [
