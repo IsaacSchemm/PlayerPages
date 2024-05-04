@@ -1,9 +1,15 @@
 ﻿namespace PlayerPages.Models
 
+open System
+
 type Media = {
     title: string
     src: string
-}
+} with
+    member this.HttpSrc =
+        match Uri.TryCreate(this.src, UriKind.Absolute) with
+        | true, uri when uri.Scheme = "https" && uri.IsDefaultPort -> $"http:{this.src.Substring(6)}"
+        | _ -> this.src
 
 type Link = {
     title: string

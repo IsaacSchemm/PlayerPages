@@ -99,27 +99,27 @@ var loadMedia = function (src, contentType) {
                 mediaLinks = document.querySelectorAll("a.media");
                 first = true;
                 _loop_1 = function (i) {
-                    var mediaLink, contentType;
+                    var mediaLink, src, contentType;
                     return __generator(this, function (_b) {
                         switch (_b.label) {
                             case 0:
                                 mediaLink = mediaLinks[i];
                                 if (!(mediaLink instanceof HTMLAnchorElement))
                                     return [2 /*return*/, "continue"];
-                                console.log(mediaLink.href);
-                                return [4 /*yield*/, getContentTypeAsync(mediaLink.href)];
+                                src = mediaLink.getAttribute("data-src");
+                                if (!src)
+                                    return [2 /*return*/, "continue"];
+                                return [4 /*yield*/, getContentTypeAsync(src)];
                             case 1:
                                 contentType = _b.sent();
                                 if (contentType) {
                                     mediaLink.addEventListener("click", function (e) {
-                                        if (!mediaLink.href)
-                                            return;
                                         e.preventDefault();
-                                        loadMedia(mediaLink.href, contentType);
+                                        loadMedia(src, contentType);
                                     });
                                     if (first) {
                                         console.log("Automatically loading: ".concat(mediaLink.href));
-                                        loadMedia(mediaLink.href, contentType);
+                                        loadMedia(src, contentType);
                                         first = false;
                                     }
                                 }

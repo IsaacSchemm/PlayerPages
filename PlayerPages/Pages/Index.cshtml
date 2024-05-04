@@ -19,12 +19,7 @@
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
-            string src = media.src;
-            if (Uri.TryCreate(src, UriKind.Absolute, out Uri? uri) && uri.Scheme == "https")
-            {
-                src = "//" + src.Substring(8);
-            }
-            <a class="media" href="@src">@media.title</a>
+            <a class="media" href="@media.HttpSrc" data-src="@media.src">@media.title</a>
         }
         @foreach (var link in Model.PageProperties.links)
         {
@@ -45,14 +40,9 @@
                 <!-- ko if: false -->
                 @foreach (var media in Model.PageProperties.media)
                 {
-                    string src = media.src;
-                    if (Uri.TryCreate(src, UriKind.Absolute, out Uri? uri) && uri.Scheme == "https")
-                    {
-                        src = "http://" + src.Substring(8);
-                    }
                     <h1>@media.title</h1>
                     <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
-                        <param name="src" value="@src" />
+                        <param name="src" value="@media.HttpSrc" />
                         <param name="autoplay" value="false" />
 
                         <video controls src="@media.src"></video>

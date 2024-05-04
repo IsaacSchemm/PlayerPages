@@ -70,22 +70,21 @@ const loadMedia = (src: string, contentType: string) => {
             if (!(mediaLink instanceof HTMLAnchorElement))
                 continue;
 
-            console.log(mediaLink.href);
+            const src = mediaLink.getAttribute("data-src");
+            if (!src)
+                continue;
 
-            const contentType = await getContentTypeAsync(mediaLink.href);
+            const contentType = await getContentTypeAsync(src);
 
             if (contentType) {
                 mediaLink.addEventListener("click", e => {
-                    if (!mediaLink.href)
-                        return;
-
                     e.preventDefault();
-                    loadMedia(mediaLink.href, contentType);
+                    loadMedia(src, contentType);
                 });
 
                 if (first) {
                     console.log(`Automatically loading: ${mediaLink.href}`);
-                    loadMedia(mediaLink.href, contentType);
+                    loadMedia(src, contentType);
                     first = false;
                 }
             }
