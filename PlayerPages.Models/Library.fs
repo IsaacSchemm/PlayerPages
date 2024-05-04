@@ -28,6 +28,15 @@ type PageProperties = {
 }
 
 module PageProperties =
+    let Empty = {
+        title = "Empty Page"
+        top = []
+        media = []
+        links = []
+        left = []
+        right = []
+    }
+
     let Example1 = {
         title = "My Page"
         media = [

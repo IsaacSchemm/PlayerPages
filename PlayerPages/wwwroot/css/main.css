@@ -132,6 +132,9 @@ html:not(.debug) body #center-row main .controls {
   flex-direction: row;
   justify-content: center;
 }
+html:not(.debug) body #center-row main .controls .spacer {
+  flex: 1 1 auto;
+}
 html:not(.debug) body #center-row main .controls label {
   flex: 0 0 auto;
   display: flex;
@@ -161,6 +164,7 @@ html:not(.debug) body #center-row main .controls input[type=range] {
   width: 40px;
   height: 32px;
   flex: 1 1 auto;
+  padding: 0;
 }
 html:not(.debug) body #center-row main .controls input[type=range]#volume {
   max-width: 240px;

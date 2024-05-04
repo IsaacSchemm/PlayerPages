@@ -4,12 +4,13 @@ namespace PlayerPages.Pages
 {
     public class IndexModel : PageModel
     {
-        public Models.PageProperties PageProperties { get; set; } =
-            Models.PagePropertiesModule.Example1;
+        public Models.PageProperties PageProperties { get; set; }
+            = Models.PagePropertiesModule.Empty;
 
-        public void OnGet()
+        public void OnGet(string id)
         {
-            PageProperties = Models.PagePropertiesModule.Example1;
+            if (id == "example1")
+                PageProperties = Models.PagePropertiesModule.Example1;
         }
     }
 }

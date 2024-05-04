@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,16 +23,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.MapGet("/test2", () =>
+app.MapGet("/", () =>
 {
-    return 5;
-})
-.WithName("Test2")
-.WithOpenApi();
+    return Results.Redirect("/example1");
+});
 
-app.MapGet("/test", () => PlayerPages.Models.PagePropertiesModule.Example1);
-
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

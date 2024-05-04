@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id}"
 @using Microsoft.FSharp.Core
 @model PlayerPages.Pages.IndexModel
 <!DOCTYPE html>
@@ -77,7 +77,7 @@
                     <span class="sr-only">Forward 30 seconds</span>
                 </button>
                 <!-- /ko -->
-                <div style="flex: 1 1 auto" role="none"></div>
+                <div class="spacer" role="none"></div>
                 <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
                     <!-- ko ifnot: currentSubtitleTrack() -->
                     <span class="material-icons" aria-hidden="true">subtitles_off</span>
