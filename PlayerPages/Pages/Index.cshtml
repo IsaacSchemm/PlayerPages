@@ -6,7 +6,7 @@
 <head>
     <title>@Model.PageProperties.title</title>
     <link rel="stylesheet" href="css/main.css" />
-    <link href="//fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="material-icons/iconfont/material-icons.css" />
     <base href="@(Request.Scheme)://@(Request.Host)/" />
     <meta http-equiv="X-UA-Compatible" content="IE=5" />
 </head>
@@ -172,18 +172,10 @@
             </div>
         }
     </div>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/native-promise-only/0.8.1/npo.js"
-            integrity="sha512-3jgJm59psJUhwwOYcv45UOT7MJ41Ol/Z/tzlQLK5BPrVz5mAbPrqZQyASfYgfGuaYRIZDX1EJxbJE5+V2+AG7w=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js"
-            integrity="sha512-2AL/VEauKkZqQU9BHgnv48OhXcJPx9vdzxN1JrKDVc4FPU/MEE/BZ6d9l0mP7VmvLsjtYwqiYQpDskK9dG8KBA=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.8/hls.min.js"
-            integrity="sha512-ssuZ9opY3Aw25iwD+vAvLlR5KM5zS1e2J+dCkGnTKEi0a+AvTg3OveST0rfQUdEzmV5WJ8OSHgHvgUIpBiqVRQ=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"></script>
+    <script src="lib/knockout/build/output/knockout-latest.debug.js"></script>
+    <script src="lib/npo.js"></script>
+    <script src="lib/fetch/dist/fetch.umd.js"></script>
+    <script src="lib/hls.js/hls.min.js"></script>
     <script type="text/javascript" src="js/pps-player.js"></script>
     <script type="text/javascript" src="js/hls-player.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
