@@ -1,6 +1,6 @@
-type PPSLevel = { name: string, onSelect: () => void };
+type PPSLevel = { name: string, activate: () => void };
 
-class PPSPlayer {
+abstract class PPSPlayer {
     readonly playing = ko.observable(false);
     readonly live = ko.observable(false);
     readonly durationMs = ko.observable(0);
@@ -17,21 +17,6 @@ class PPSPlayer {
     readonly nativeControls = ko.observable(false);
 
     readonly levels = ko.observableArray<PPSLevel>();
-
-    readonly levelButtons = ko.pureComputed(() => {
-        const arr: any[] = [];
-        for (const level of this.levels()) {
-            arr.push({
-                activate: () => {
-                    level.onSelect();
-                    this.mediaElement.play();
-                    this.levelPickerActive(false);
-                },
-                name: level.name
-            });
-        }
-        return arr;
-    });
 
     readonly currentTimeStr = ko.pureComputed(() => {
         const milliseconds = this.currentTimeMs();
@@ -194,6 +179,10 @@ class PPSPlayer {
 
     showLevelPicker() {
         this.levelPickerActive(true);
+    }
+
+    hideLevelPicker() {
+        this.levelPickerActive(false);
     }
 
     toggleFullscreen() {

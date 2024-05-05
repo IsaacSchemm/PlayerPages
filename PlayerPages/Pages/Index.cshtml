@@ -71,9 +71,13 @@
                     <div class="status line-separator">
                         Quality:
                     </div>
-                    <!-- ko foreach: levelButtons -->
+                    <!-- ko foreach: levels -->
                     <button data-bind="click: activate, text: name" style="flex: 0 1 auto"></button>
                     <!-- /ko -->
+                    <button data-bind="click: hideLevelPicker">
+                        <span class="material-icons" aria-hidden="true">close</span>
+                        <span class="sr-only">Close</span>
+                    </button>
                 </div>
                 <div class="controlgroup" data-bind="ifnot: levelPickerActive">
                     <div class="controls">
@@ -176,7 +180,7 @@
                             <!-- /ko -->
                         </button>
                     </div>
-                    <div class="controls" style="display: none">
+                    <div class="controls">
                         <div class="status timestamp line-separator">
                             <span class="sr-only">Timestamp:</span>
                             <span data-bind="text: currentTimeStr">0:00</span>
@@ -209,6 +213,7 @@
     <script src="lib/fetch/dist/fetch.umd.js"></script>
     <script src="lib/hls.js/hls.min.js"></script>
     <script type="text/javascript" src="js/pps-player.js"></script>
+    <script type="text/javascript" src="js/html-player.js"></script>
     <script type="text/javascript" src="js/hls-player.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>

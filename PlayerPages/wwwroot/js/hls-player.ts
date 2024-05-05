@@ -13,7 +13,11 @@ class HLSPlayer extends PPSPlayer {
 
         this.levels([{
             name: `Automatic`,
-            onSelect: () => this.hls.selectedLevel = -1
+            activate: () => {
+                this.hls.selectedLevel = -1;
+                this.mediaElement.play();
+                this.hideLevelPicker();
+            }
         }]);
 
         this.levelPickerActive(true);
@@ -29,11 +33,16 @@ class HLSPlayer extends PPSPlayer {
                     const index = i;
                     this.levels.push({
                         name: `${Math.ceil(level.bitrate / 1024)} Kbps (${level.width}x${level.height})`,
-                        onSelect: () => this.hls.currentLevel = index
+                        activate: () => {
+                            this.hls.currentLevel = index;
+                            this.mediaElement.play();
+                            this.hideLevelPicker();
+                        }
                     });
                     i++;
                 }
             });
+
             this.hls.on(Hls.Events.LEVEL_UPDATED, (_, data) => {
                 if (data.details.live) {
                     this.live(true);

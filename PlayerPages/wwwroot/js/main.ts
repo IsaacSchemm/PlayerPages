@@ -1,8 +1,4 @@
-﻿/// <reference path="hls-player.ts" />
-
-declare var wiiu: any;
-
-const player = ko.observable<PPSPlayer>();
+﻿const player = ko.observable<PPSPlayer>();
 
 ko.applyBindings({ player }, document.getElementsByTagName("main")[0]);
 
@@ -22,7 +18,6 @@ const getContentTypeAsync = async (src: string) => {
 }
 
 const loadMedia = (src: string, contentType: string) => {
-    console.log(src, contentType);
     try {
         const oldPlayer = player();
         if (oldPlayer) {
@@ -31,7 +26,6 @@ const loadMedia = (src: string, contentType: string) => {
         }
 
         const video = document.createElement("video");
-        video.src = src;
 
         const videoParent = document.getElementById("video-parent");
         videoParent.innerHTML = "";
@@ -48,9 +42,10 @@ const loadMedia = (src: string, contentType: string) => {
                 document.getElementsByTagName("main")[0],
                 video,
                 src)
-            : new PPSPlayer(
+            : new HTMLPlayer(
                 document.getElementsByTagName("main")[0],
-                video);
+                video,
+                src);
 
         player(pl);
     } catch (e) {
@@ -77,6 +72,7 @@ const loadMedia = (src: string, contentType: string) => {
             if (contentType) {
                 mediaLink.addEventListener("click", e => {
                     e.preventDefault();
+                    document.getElementById("menu").removeAttribute("open");
                     loadMedia(src, contentType);
                 });
 

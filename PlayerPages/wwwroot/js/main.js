@@ -1,4 +1,3 @@
-/// <reference path="hls-player.ts" />
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -62,7 +61,6 @@ var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 
     });
 }); };
 var loadMedia = function (src, contentType) {
-    console.log(src, contentType);
     try {
         var oldPlayer = player();
         if (oldPlayer) {
@@ -70,7 +68,6 @@ var loadMedia = function (src, contentType) {
             oldPlayer.destroy();
         }
         var video = document.createElement("video");
-        video.src = src;
         var videoParent = document.getElementById("video-parent");
         videoParent.innerHTML = "";
         videoParent.appendChild(video);
@@ -80,7 +77,7 @@ var loadMedia = function (src, contentType) {
             isHLS = false;
         var pl = isHLS
             ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
-            : new PPSPlayer(document.getElementsByTagName("main")[0], video);
+            : new HTMLPlayer(document.getElementsByTagName("main")[0], video, src);
         player(pl);
     }
     catch (e) {
@@ -112,6 +109,7 @@ var loadMedia = function (src, contentType) {
                                 if (contentType) {
                                     mediaLink.addEventListener("click", function (e) {
                                         e.preventDefault();
+                                        document.getElementById("menu").removeAttribute("open");
                                         loadMedia(src, contentType);
                                     });
                                     if (first) {
@@ -144,4 +142,3 @@ var loadMedia = function (src, contentType) {
         }
     });
 }); })();
-//# sourceMappingURL=main.js.map

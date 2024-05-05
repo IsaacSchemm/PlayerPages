@@ -16,24 +16,6 @@ var PPSPlayer = /** @class */ (function () {
         this.levelPickerActive = ko.observable(false);
         this.nativeControls = ko.observable(false);
         this.levels = ko.observableArray();
-        this.levelButtons = ko.pureComputed(function () {
-            var arr = [];
-            var _loop_1 = function (level) {
-                arr.push({
-                    activate: function () {
-                        level.onSelect();
-                        _this.mediaElement.play();
-                        _this.levelPickerActive(false);
-                    },
-                    name: level.name
-                });
-            };
-            for (var _i = 0, _a = _this.levels(); _i < _a.length; _i++) {
-                var level = _a[_i];
-                _loop_1(level);
-            }
-            return arr;
-        });
         this.currentTimeStr = ko.pureComputed(function () {
             var milliseconds = _this.currentTimeMs();
             var h = Math.floor(milliseconds / 3600000);
@@ -158,6 +140,9 @@ var PPSPlayer = /** @class */ (function () {
     PPSPlayer.prototype.showLevelPicker = function () {
         this.levelPickerActive(true);
     };
+    PPSPlayer.prototype.hideLevelPicker = function () {
+        this.levelPickerActive(false);
+    };
     PPSPlayer.prototype.toggleFullscreen = function () {
         if (document.fullscreenElement === this.mainElement) {
             document.exitFullscreen();
@@ -171,4 +156,3 @@ var PPSPlayer = /** @class */ (function () {
     };
     return PPSPlayer;
 }());
-//# sourceMappingURL=pps-player.js.map

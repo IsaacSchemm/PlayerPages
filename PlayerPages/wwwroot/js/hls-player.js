@@ -22,7 +22,11 @@ var HLSPlayer = /** @class */ (function (_super) {
         _this.src = src;
         _this.levels([{
                 name: "Automatic",
-                onSelect: function () { return _this.hls.selectedLevel = -1; }
+                activate: function () {
+                    _this.hls.selectedLevel = -1;
+                    _this.mediaElement.play();
+                    _this.hideLevelPicker();
+                }
             }]);
         _this.levelPickerActive(true);
         _this.hls = new Hls();
@@ -35,7 +39,11 @@ var HLSPlayer = /** @class */ (function (_super) {
                     var index = i;
                     _this.levels.push({
                         name: "".concat(Math.ceil(level.bitrate / 1024), " Kbps (").concat(level.width, "x").concat(level.height, ")"),
-                        onSelect: function () { return _this.hls.currentLevel = index; }
+                        activate: function () {
+                            _this.hls.currentLevel = index;
+                            _this.mediaElement.play();
+                            _this.hideLevelPicker();
+                        }
                     });
                     i++;
                 };
@@ -65,4 +73,3 @@ var HLSPlayer = /** @class */ (function (_super) {
     };
     return HLSPlayer;
 }(PPSPlayer));
-//# sourceMappingURL=hls-player.js.map
