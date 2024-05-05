@@ -27,7 +27,8 @@
         }
     </details>
     <div id="center-row">
-        @if (!Model.PageProperties.left.IsEmpty) {
+        @if (!Model.PageProperties.left.IsEmpty)
+        {
             <div class="embed-column">
                 @foreach (var embed in Model.PageProperties.left)
                 {
@@ -65,135 +66,136 @@
                 </details>
             </div>
             <!-- ko with: player -->
-            <!-- ko if: showLevelPicker -->
-            <div class="controls" style="display: none" data-bind="visible: areControlsShown('levels')">
-                <div class="status line-separator">
-                    Quality:
+            <div class="controlgroup" style="display: none" data-bind="visible: true">
+                <div class="controls" data-bind="if: levelPickerActive">
+                    <div class="status line-separator">
+                        Quality:
+                    </div>
+                    <!-- ko foreach: levelButtons -->
+                    <button data-bind="click: activate, text: name" style="flex: 0 1 auto"></button>
+                    <!-- /ko -->
                 </div>
-                <!-- ko foreach: levelButtons -->
-                <button data-bind="click: activate, text: name" style="flex: 0 1 auto"></button>
-                <!-- /ko -->
+                <div class="controlgroup" data-bind="ifnot: levelPickerActive">
+                    <div class="controls">
+                        <button data-bind="click: togglePlay">
+                            <!-- ko if: playing -->
+                            <span class="material-icons" aria-hidden="true">pause</span>
+                            <span class="sr-only">Pause</span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: playing -->
+                            <span class="material-icons" aria-hidden="true">play_arrow</span>
+                            <span class="sr-only">Play</span>
+                            <!-- /ko -->
+                        </button>
+                        <!-- ko if: live -->
+                        <div class="status line-separator">
+                            Live
+                        </div>
+                        <!-- /ko -->
+                        <!-- ko ifnot: live -->
+                        <button class="adv" data-bind="click: back10">
+                            <span class="material-icons" aria-hidden="true">replay_10</span>
+                            <span class="sr-only">Back 10 seconds</span>
+                        </button>
+                        <button class="adv" data-bind="click: forward10">
+                            <span class="material-icons" aria-hidden="true">forward_10</span>
+                            <span class="sr-only">Forward 10 seconds</span>
+                        </button>
+                        <button class="adv" data-bind="click: back30">
+                            <span class="material-icons" aria-hidden="true">replay_30</span>
+                            <span class="sr-only">Back 30 seconds</span>
+                        </button>
+                        <button class="adv" data-bind="click: forward30">
+                            <span class="material-icons" aria-hidden="true">forward_30</span>
+                            <span class="sr-only">Forward 30 seconds</span>
+                        </button>
+                        <!-- /ko -->
+                        <div class="spacer" role="none"></div>
+                        <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
+                            <!-- ko ifnot: currentSubtitleTrack() -->
+                            <span class="material-icons" aria-hidden="true">subtitles_off</span>
+                            <!-- /ko -->
+                            <!-- ko if: currentSubtitleTrack() -->
+                            <span class="material-icons" aria-hidden="true">subtitles</span>
+                            <!-- /ko -->
+                            <span class="sr-only">Toggle subtitles</span>
+                        </button>
+                        <button data-bind="click: toggleMute">
+                            <!-- ko if: muted -->
+                            <span class="material-icons" aria-hidden="true">volume_off</span>
+                            <span class="sr-only">Unmute</span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: muted -->
+                            <span class="material-icons" aria-hidden="true">volume_up</span>
+                            <span class="sr-only">Mute</span>
+                            <!-- /ko -->
+                        </button>
+                        <div class="status line-separator sr-only">
+                            Volume
+                        </div>
+                        <input type="range"
+                               id="volume"
+                               data-bind="value: vol"
+                               min="0"
+                               max="1"
+                               aria-label="Volume"
+                               step="0.1" />
+                        <div class="line-separator"></div>
+                        <button class="adv">
+                            <span class="material-icons" aria-hidden="true">add</span>
+                            <span class="sr-only">Volume up</span>
+                        </button>
+                        <button class="adv">
+                            <span class="material-icons" aria-hidden="true">remove</span>
+                            <span class="sr-only">Volume down</span>
+                        </button>
+                        <button data-bind="visible: levels().length > 1, click: showLevelPicker">
+                            <span class="material-icons" aria-hidden="true">hd</span>
+                            <span class="sr-only">Select quality level</span>
+                        </button>
+                        <button>
+                            @* This button should request to start Google Cast, which should then trigger the player to switch modes *@
+                            @* Should be hidden if not supported in browser *@
+                            <span class="material-icons" aria-hidden="true">cast</span>
+                            <span class="sr-only">Cast</span>
+                        </button>
+                        <button>
+                            @* This button should show the Safari/iOS AirPlay dialog *@
+                            @* Should be hidden if not supported in browser *@
+                            <span class="material-icons" aria-hidden="true">airplay</span>
+                            <span class="sr-only">AirPlay</span>
+                        </button>
+                        <button data-bind="click: toggleFullscreen">
+                            <!-- ko if: fullscreen -->
+                            <span class="material-icons" aria-hidden="true">fullscreen_exit</span>
+                            <span class="sr-only">Exit full screen</span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: fullscreen -->
+                            <span class="material-icons" aria-hidden="true">fullscreen</span>
+                            <span class="sr-only">Full screen</span>
+                            <!-- /ko -->
+                        </button>
+                    </div>
+                    <div class="controls" style="display: none">
+                        <div class="status timestamp line-separator">
+                            <span class="sr-only">Timestamp:</span>
+                            <span data-bind="text: currentTimeStr">0:00</span>
+                        </div>
+                        <input type="range"
+                               aria-label="Time"
+                               id="seek"
+                               data-bind="value: currentTimeMs, attr: { min: 0, max: durationMs }" />
+                        <div class="status timestamp line-separator">
+                            <span class="sr-only">Duration:</span>
+                            <span data-bind="text: durationStr">0:00</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /ko -->
-            <!-- ko ifnot: showLevelPicker -->
-            <div class="controls" style="display: none" data-bind="visible: areControlsShown('playback')">
-                <button data-bind="click: togglePlay">
-                    <!-- ko if: playing -->
-                    <span class="material-icons" aria-hidden="true">pause</span>
-                    <span class="sr-only">Pause</span>
-                    <!-- /ko -->
-                    <!-- ko ifnot: playing -->
-                    <span class="material-icons" aria-hidden="true">play_arrow</span>
-                    <span class="sr-only">Play</span>
-                    <!-- /ko -->
-                </button>
-                <!-- ko if: live -->
-                <div class="status line-separator">
-                    Live
-                </div>
-                <!-- /ko -->
-                <!-- ko ifnot: live -->
-                <button class="adv" data-bind="click: back10">
-                    <span class="material-icons" aria-hidden="true">replay_10</span>
-                    <span class="sr-only">Back 10 seconds</span>
-                </button>
-                <button class="adv" data-bind="click: forward10">
-                    <span class="material-icons" aria-hidden="true">forward_10</span>
-                    <span class="sr-only">Forward 10 seconds</span>
-                </button>
-                <button class="adv" data-bind="click: back30">
-                    <span class="material-icons" aria-hidden="true">replay_30</span>
-                    <span class="sr-only">Back 30 seconds</span>
-                </button>
-                <button class="adv" data-bind="click: forward30">
-                    <span class="material-icons" aria-hidden="true">forward_30</span>
-                    <span class="sr-only">Forward 30 seconds</span>
-                </button>
-                <!-- /ko -->
-                <div class="spacer" role="none"></div>
-                <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
-                    <!-- ko ifnot: currentSubtitleTrack() -->
-                    <span class="material-icons" aria-hidden="true">subtitles_off</span>
-                    <!-- /ko -->
-                    <!-- ko if: currentSubtitleTrack() -->
-                    <span class="material-icons" aria-hidden="true">subtitles</span>
-                    <!-- /ko -->
-                    <span class="sr-only">Toggle subtitles</span>
-                </button>
-                <button data-bind="click: toggleMute">
-                    <!-- ko if: muted -->
-                    <span class="material-icons" aria-hidden="true">volume_off</span>
-                    <span class="sr-only">Unmute</span>
-                    <!-- /ko -->
-                    <!-- ko ifnot: muted -->
-                    <span class="material-icons" aria-hidden="true">volume_up</span>
-                    <span class="sr-only">Mute</span>
-                    <!-- /ko -->
-                </button>
-                <div class="status line-separator sr-only">
-                    Volume
-                </div>
-                <input type="range"
-                       id="volume"
-                       data-bind="value: vol"
-                       min="0"
-                       max="1"
-                       aria-label="Volume"
-                       step="0.1" />
-                <div class="line-separator"></div>
-                <button class="adv">
-                    <span class="material-icons" aria-hidden="true">add</span>
-                    <span class="sr-only">Volume up</span>
-                </button>
-                <button class="adv">
-                    <span class="material-icons" aria-hidden="true">remove</span>
-                    <span class="sr-only">Volume down</span>
-                </button>
-                <button data-bind="visible: levels">
-                    <span class="material-icons" aria-hidden="true">remove</span>
-                    <span class="sr-only">Volume down</span>
-                </button>
-                <button>
-                    @* This button should request to start Google Cast, which should then trigger the player to switch modes *@
-                    @* Should be hidden if not supported in browser *@
-                    <span class="material-icons" aria-hidden="true">cast</span>
-                    <span class="sr-only">Cast</span>
-                </button>
-                <button>
-                    @* This button should show the Safari/iOS AirPlay dialog *@
-                    @* Should be hidden if not supported in browser *@
-                    <span class="material-icons" aria-hidden="true">airplay</span>
-                    <span class="sr-only">AirPlay</span>
-                </button>
-                <button data-bind="click: toggleFullscreen">
-                    <!-- ko if: fullscreen -->
-                    <span class="material-icons" aria-hidden="true">fullscreen_exit</span>
-                    <span class="sr-only">Exit full screen</span>
-                    <!-- /ko -->
-                    <!-- ko ifnot: fullscreen -->
-                    <span class="material-icons" aria-hidden="true">fullscreen</span>
-                    <span class="sr-only">Full screen</span>
-                    <!-- /ko -->
-                </button>
-            </div>
-            <div class="controls" style="display: none" data-bind="visible: areControlsShown('seek')">
-                <div class="status timestamp line-separator">
-                    <span class="sr-only">Timestamp:</span>
-                    <span data-bind="text: currentTimeStr">0:00</span>
-                </div>
-                <input type="range"
-                       aria-label="Time"
-                       id="seek"
-                       data-bind="value: currentTimeMs, attr: { min: 0, max: durationMs }" />
-                <div class="status timestamp line-separator">
-                    <span class="sr-only">Duration:</span>
-                    <span data-bind="text: durationStr">0:00</span>
-                </div>
-            </div>
-            <!-- /ko -->
             <!-- /ko -->
         </main>
-        @if (!Model.PageProperties.right.IsEmpty) {
+        @if (!Model.PageProperties.right.IsEmpty)
+        {
             <div class="embed-column">
                 @foreach (var embed in Model.PageProperties.right)
                 {

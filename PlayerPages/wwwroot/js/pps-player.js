@@ -13,8 +13,27 @@ var PPSPlayer = /** @class */ (function () {
         this.subtitleTracks = ko.observableArray();
         this.hasSubtitles = ko.pureComputed(function () { return _this.subtitleTracks().length > 0; });
         this.currentSubtitleTrack = ko.observable(null);
+        this.levelPickerActive = ko.observable(false);
         this.nativeControls = ko.observable(false);
-        this.showLevelPicker = ko.observable(false);
+        this.levels = ko.observableArray();
+        this.levelButtons = ko.pureComputed(function () {
+            var arr = [];
+            var _loop_1 = function (level) {
+                arr.push({
+                    activate: function () {
+                        level.onSelect();
+                        _this.mediaElement.play();
+                        _this.levelPickerActive(false);
+                    },
+                    name: level.name
+                });
+            };
+            for (var _i = 0, _a = _this.levels(); _i < _a.length; _i++) {
+                var level = _a[_i];
+                _loop_1(level);
+            }
+            return arr;
+        });
         this.currentTimeStr = ko.pureComputed(function () {
             var milliseconds = _this.currentTimeMs();
             var h = Math.floor(milliseconds / 3600000);
@@ -101,13 +120,6 @@ var PPSPlayer = /** @class */ (function () {
                 newValue.mode = "showing";
         });
     }
-    PPSPlayer.prototype.areControlsShown = function (type) {
-        if (this.showLevelPicker())
-            return type == "levels";
-        if (this.nativeControls())
-            return false;
-        return type == "playback" || type == "seek";
-    };
     PPSPlayer.prototype.togglePlay = function () {
         if (this.mediaElement.paused) {
             this.mediaElement.play();
@@ -142,6 +154,9 @@ var PPSPlayer = /** @class */ (function () {
     };
     PPSPlayer.prototype.toggleMute = function () {
         this.mediaElement.muted = !this.mediaElement.muted;
+    };
+    PPSPlayer.prototype.showLevelPicker = function () {
+        this.levelPickerActive(true);
     };
     PPSPlayer.prototype.toggleFullscreen = function () {
         if (document.fullscreenElement === this.mainElement) {

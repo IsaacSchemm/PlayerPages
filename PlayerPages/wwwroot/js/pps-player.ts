@@ -1,4 +1,4 @@
-type PPSLevel = { bitrate: number, height: number, width: number };
+type PPSLevel = { name: string, onSelect: () => void };
 
 class PPSPlayer {
     readonly playing = ko.observable(false);
@@ -13,8 +13,25 @@ class PPSPlayer {
     readonly hasSubtitles = ko.pureComputed(() => this.subtitleTracks().length > 0);
     readonly currentSubtitleTrack = ko.observable<TextTrack>(null);
 
+    readonly levelPickerActive = ko.observable(false);
     readonly nativeControls = ko.observable(false);
-    readonly showLevelPicker = ko.observable(false);
+
+    readonly levels = ko.observableArray<PPSLevel>();
+
+    readonly levelButtons = ko.pureComputed(() => {
+        const arr: any[] = [];
+        for (const level of this.levels()) {
+            arr.push({
+                activate: () => {
+                    level.onSelect();
+                    this.mediaElement.play();
+                    this.levelPickerActive(false);
+                },
+                name: level.name
+            });
+        }
+        return arr;
+    });
 
     readonly currentTimeStr = ko.pureComputed(() => {
         const milliseconds = this.currentTimeMs();
@@ -124,16 +141,6 @@ class PPSPlayer {
         });
     }
 
-    areControlsShown(type: string) {
-        if (this.showLevelPicker())
-            return type == "levels";
-
-        if (this.nativeControls())
-            return false;
-
-        return type == "playback" || type == "seek";
-    }
-
     togglePlay() {
         if (this.mediaElement.paused) {
             this.mediaElement.play();
@@ -183,6 +190,10 @@ class PPSPlayer {
 
     toggleMute() {
         this.mediaElement.muted = !this.mediaElement.muted;
+    }
+
+    showLevelPicker() {
+        this.levelPickerActive(true);
     }
 
     toggleFullscreen() {

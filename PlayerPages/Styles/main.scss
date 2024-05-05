@@ -150,6 +150,12 @@
                         }
                     }
 
+                    .controlgroup {
+                        flex: 0 0 auto;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
                     .controls {
                         background-color: Window;
                         color: WindowText;

@@ -128,6 +128,11 @@ html .controls button {
     height: 100%;
     height: calc(100% - 4px);
   }
+  html body #center-row main .controlgroup {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
   html body #center-row main .controls {
     background-color: Window;
     color: WindowText;
