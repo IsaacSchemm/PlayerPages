@@ -39,9 +39,7 @@ var HLSPlayer = /** @class */ (function (_super) {
                 }
             });
             _this.playing.subscribe(function (newValue) {
-                console.log("v");
                 if (newValue === true) {
-                    console.log("N");
                     if (_this.mediaElement.currentTime < _this.hls.liveSyncPosition) {
                         _this.mediaElement.currentTime = _this.hls.liveSyncPosition;
                     }

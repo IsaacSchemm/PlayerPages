@@ -81,6 +81,8 @@ var loadMedia = function (src, contentType) {
         videoParent.appendChild(video);
         var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
             || contentType.toLowerCase() == "application/x-mpegurl";
+        if ("Hls" in window && !Hls.isSupported())
+            isHLS = false;
         var pl = isHLS
             ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
             : new PPSPlayer(document.getElementsByTagName("main")[0], video);

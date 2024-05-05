@@ -32,9 +32,7 @@ class HLSPlayer extends PPSPlayer {
             });
 
             this.playing.subscribe(newValue => {
-                console.log("v");
                 if (newValue === true) {
-                    console.log("N");
                     if (this.mediaElement.currentTime < this.hls.liveSyncPosition) {
                         this.mediaElement.currentTime = this.hls.liveSyncPosition;
                     }

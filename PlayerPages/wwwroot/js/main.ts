@@ -42,8 +42,11 @@ const loadMedia = (src: string, contentType: string) => {
         videoParent.innerHTML = "";
         videoParent.appendChild(video);
 
-        const isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
+        let isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
             || contentType.toLowerCase() == "application/x-mpegurl";
+
+        if ("Hls" in window && !Hls.isSupported())
+            isHLS = false;
 
         const pl = isHLS
             ? new HLSPlayer(
