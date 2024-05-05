@@ -6,6 +6,5 @@ class HTMLPlayer extends PPSPlayer {
     ) {
         super(mainElement, mediaElement);
         mediaElement.src = src;
-        this.mediaElement.play();
     }
 }

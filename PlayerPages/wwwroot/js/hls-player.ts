@@ -20,8 +20,6 @@ class HLSPlayer extends PPSPlayer {
             }
         }]);
 
-        this.levelPickerActive(true);
-
         this.hls = new Hls();
         this.hls.attachMedia(mediaElement);
         this.hls.on(Hls.Events.MEDIA_ATTACHED, () => {

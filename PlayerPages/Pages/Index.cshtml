@@ -75,8 +75,6 @@
             <!-- ko with: player -->
             @* The controls are hidden initially, and shown once Knockout has been loaded. *@
             <div class="controlgroup" style="display: none" data-bind="visible: true">
-                @* The HLS player activates this level picker when it loads, which hides the rest of the controls. *@
-                @* This is done to allow users of low-powered devices the opportunity to pick a lower-quality video stream. *@
                 <div class="controls" data-bind="if: levelPickerActive">
                     <div class="status line-separator">
                         Quality:
@@ -89,8 +87,8 @@
                         <span class="sr-only">Close</span>
                     </button>
                 </div>
-                <div class="controlgroup" data-bind="ifnot: levelPickerActive">
-                    @* These controls are hidden if the level picker is active (see above) or the user enables native HTML controls on the video element (Shift + right-click in Firefox). *@
+                <div class="controlgroup">
+                    @* These controls are hidden if the user enables native HTML controls on the video element (Shift + right-click in Firefox). *@
                     <div class="controls">
                         <button data-bind="click: togglePlay">
                             <!-- ko if: playing -->

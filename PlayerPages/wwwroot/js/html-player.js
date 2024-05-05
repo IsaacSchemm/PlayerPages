@@ -18,7 +18,6 @@ var HTMLPlayer = /** @class */ (function (_super) {
     function HTMLPlayer(mainElement, mediaElement, src) {
         var _this = _super.call(this, mainElement, mediaElement) || this;
         mediaElement.src = src;
-        _this.mediaElement.play();
         return _this;
     }
     return HTMLPlayer;

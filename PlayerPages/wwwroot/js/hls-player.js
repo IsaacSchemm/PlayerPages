@@ -28,7 +28,6 @@ var HLSPlayer = /** @class */ (function (_super) {
                     _this.hideLevelPicker();
                 }
             }]);
-        _this.levelPickerActive(true);
         _this.hls = new Hls();
         _this.hls.attachMedia(mediaElement);
         _this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
