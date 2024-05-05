@@ -96,7 +96,15 @@ var loadMedia = function (src, contentType) {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 5, , 6]);
+                if ("wiiu" in window) {
+                    // Do not use a JavaScript-based media player on the Wii U - it does
+                    // not offer any advantages to opening the media in the browser's own
+                    // player and may introduce bugs.
+                    return [2 /*return*/];
+                }
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 6, , 7]);
                 mediaLinks = document.querySelectorAll("a.media");
                 first = true;
                 _loop_1 = function (i) {
@@ -134,22 +142,22 @@ var loadMedia = function (src, contentType) {
                     });
                 };
                 i = 0;
-                _a.label = 1;
-            case 1:
-                if (!(i < mediaLinks.length)) return [3 /*break*/, 4];
-                return [5 /*yield**/, _loop_1(i)];
+                _a.label = 2;
             case 2:
-                _a.sent();
-                _a.label = 3;
+                if (!(i < mediaLinks.length)) return [3 /*break*/, 5];
+                return [5 /*yield**/, _loop_1(i)];
             case 3:
+                _a.sent();
+                _a.label = 4;
+            case 4:
                 i++;
-                return [3 /*break*/, 1];
-            case 4: return [3 /*break*/, 6];
-            case 5:
+                return [3 /*break*/, 2];
+            case 5: return [3 /*break*/, 7];
+            case 6:
                 e_2 = _a.sent();
                 console.warn("Could not configure media link handlers", e_2);
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); })();

@@ -62,6 +62,13 @@ const loadMedia = (src: string, contentType: string) => {
 }
 
 (async () => {
+    if ("wiiu" in window) {
+        // Do not use a JavaScript-based media player on the Wii U - it does
+        // not offer any advantages to opening the media in the browser's own
+        // player and may introduce bugs.
+        return;
+    }
+
     try {
         // These media links were placed on the page, and currently are just
         // normal links to the media URLs.

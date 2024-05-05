@@ -15,10 +15,13 @@
     {
         @await Html.PartialAsync("Embed", embed)
     }
+    <!--[if !IE]><!-->
     <details id="menu">
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
+            @* Link to a non-HTTPS version of the media, for support on devices like the Wii U with outdated certificates *@
+            @* The JavaScript player will load the original media URL from media.src *@
             <a class="media" target="_blank" href="@media.HttpSrc" data-src="@media.src">@media.title</a>
         }
         @foreach (var link in Model.PageProperties.links)
@@ -26,6 +29,20 @@
             <a href="@link.href" target="_blank">@link.title</a>
         }
     </details>
+    <!--<![endif]-->
+    <!--[if IE]>
+    @* Include an ActiveX control (for Internet Explorer) *@
+    @* The header on this page sets all Internet Explorer versions to emulate Internet Explorer 5, for consistency *@
+    @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
+    @foreach (var media in Model.PageProperties.media)
+    {
+        <h2>@media.title</h2>
+        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
+            <param name="src" value="@media.src" />
+            <param name="autoplay" value="false" />
+        </object>
+    }
+    <![endif]-->
     <div id="center-row">
         @if (!Model.PageProperties.left.IsEmpty)
         {
@@ -38,39 +55,14 @@
         }
         <main>
             <div id="video-parent">
-                @* This section will appear if JavaScript is disabled or did not load properly *@
                 <p>
                     JavaScript is disabled on this web browser or did not
                     load properly.
                 </p>
                 <p>
-                    The media player below will use your device's native
-                    codec and media format support to attempt to play the
-                    media.
+                    Use the menu above to select media to play; your browser
+                    will attempt to open the media in a new window or tab.
                 </p>
-                @foreach (var media in Model.PageProperties.media)
-                {
-                    <div>
-                        <h2>@media.title</h2>
-
-                        @* Include an HTML video element (for mobile devices) *@
-                        <video controls width="640" height="320" src="@media.src"></video>
-
-                        @* Include an ActiveX control (for Internet Explorer) *@
-                        @* The header on this page sets all Internet Explorer versions to emulate Internet Explorer 5, for consistency *@
-                        <div>
-                            <!--[if IE]>
-                            <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
-                                <param name="src" value="@media.src" />
-                                <param name="autoplay" value="false" />
-                            </object>
-                            <![endif]-->
-                        </div>
-
-                        @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
-                        @* In any case, TenFourFox works fine with the standard PPSPlayer *@
-                    </div>
-                }
             </div>
             <!-- ko with: player -->
             @* The controls are hidden initially, and shown once Knockout has been loaded. *@
