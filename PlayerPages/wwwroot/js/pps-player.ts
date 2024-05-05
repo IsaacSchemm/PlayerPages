@@ -70,7 +70,6 @@ class PPSPlayer {
 
         mediaElement.addEventListener("error", e => {
             console.error(e);
-            alert("The media could not be played on this device.");
         });
 
         mediaElement.addEventListener("timeupdate", _ => {

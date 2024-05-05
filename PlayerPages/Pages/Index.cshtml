@@ -19,7 +19,7 @@
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
-            <a class="media" href="@media.HttpSrc" data-src="@media.src">@media.title</a>
+            <a class="media" target="_blank" href="@media.HttpSrc" data-src="@media.src">@media.title</a>
         }
         @foreach (var link in Model.PageProperties.links)
         {
@@ -37,18 +37,32 @@
         }
         <main>
             <div id="video-parent">
-                <!-- ko if: false -->
-                @foreach (var media in Model.PageProperties.media)
-                {
-                    <h1>@media.title</h1>
-                    <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
-                        <param name="src" value="@media.HttpSrc" />
-                        <param name="autoplay" value="false" />
-
-                        <video controls src="@media.src"></video>
-                    </object>
-                }
-                <!-- /ko -->
+                <h1>Play with browser</h1>
+                <details>
+                    <summary>
+                        Play with browser (Chrome, Edge, Firefox, Safari)
+                    </summary>
+                    @foreach (var media in Model.PageProperties.media)
+                    {
+                        <h2>@media.title</h2>
+                        <video controls width="640" height="320" src="@media.src"></video>
+                    }
+                </details>
+                <h1>Play with VLC media player</h1>
+                <details>
+                    <summary>
+                        Play with VLC media player (Internet Explorer, Netscape)
+                    </summary>
+                    @foreach (var media in Model.PageProperties.media)
+                    {
+                        <h2>@media.title</h2>
+                        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
+                            <param name="src" value="@media.src" />
+                            <param name="autoplay" value="false" />
+                            <embed type="application/x-vlc-plugin" name="vlc" width="640" height="320" src="@media.src" autoplay="false" />
+                        </object>
+                    }
+                </details>
             </div>
             <!-- ko with: controllablePlayer -->
             <div class="controls" style="display: none" data-bind="visible: true">

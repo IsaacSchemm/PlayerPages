@@ -53,7 +53,6 @@ var PPSPlayer = /** @class */ (function () {
         });
         mediaElement.addEventListener("error", function (e) {
             console.error(e);
-            alert("The media could not be played on this device.");
         });
         mediaElement.addEventListener("timeupdate", function (_) {
             _this.updateInterface = true;
