@@ -14,6 +14,7 @@ var PPSPlayer = /** @class */ (function () {
         this.hasSubtitles = ko.pureComputed(function () { return _this.subtitleTracks().length > 0; });
         this.currentSubtitleTrack = ko.observable(null);
         this.nativeControls = ko.observable(false);
+        this.showLevelPicker = ko.observable(false);
         this.currentTimeStr = ko.pureComputed(function () {
             var milliseconds = _this.currentTimeMs();
             var h = Math.floor(milliseconds / 3600000);
@@ -100,6 +101,13 @@ var PPSPlayer = /** @class */ (function () {
                 newValue.mode = "showing";
         });
     }
+    PPSPlayer.prototype.areControlsShown = function (type) {
+        if (this.showLevelPicker())
+            return type == "levels";
+        if (this.nativeControls())
+            return false;
+        return type == "playback" || type == "seek";
+    };
     PPSPlayer.prototype.togglePlay = function () {
         if (this.mediaElement.paused) {
             this.mediaElement.play();

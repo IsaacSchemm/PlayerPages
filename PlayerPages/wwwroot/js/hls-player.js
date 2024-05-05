@@ -20,20 +20,36 @@ var HLSPlayer = /** @class */ (function (_super) {
         _this.mainElement = mainElement;
         _this.mediaElement = mediaElement;
         _this.src = src;
+        _this.levels = ko.observableArray();
+        _this.levelButtons = ko.pureComputed(function () {
+            var arr = [{
+                    activate: function () { return _this.playWithLevel(-1); },
+                    name: "Automatic"
+                }];
+            var i = 0;
+            var _loop_1 = function (level) {
+                var index = i;
+                arr.push({
+                    activate: function () { return _this.playWithLevel(index); },
+                    name: "".concat(Math.ceil(level.bitrate / 1024), " Kbps (").concat(level.width, "x").concat(level.height, ")")
+                });
+                i++;
+            };
+            for (var _i = 0, _a = _this.levels(); _i < _a.length; _i++) {
+                var level = _a[_i];
+                _loop_1(level);
+            }
+            return arr;
+        });
         _this.hls = new Hls();
         _this.hls.attachMedia(mediaElement);
         _this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
             _this.hls.loadSource(src);
-            _this.hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
-                console.log("manifest loaded, found " + data.levels.length + " quality level");
-            });
-            _this.hls.on(Hls.Events.LEVEL_LOADED, function (data) {
-                if (data.details.live) {
-                    _this.live(true);
-                }
+            _this.hls.on(Hls.Events.MANIFEST_PARSED, function (_, data) {
+                _this.levels(data.levels);
+                _this.showLevelPicker(true);
             });
             _this.hls.on(Hls.Events.LEVEL_UPDATED, function (_, data) {
-                console.log(data.details);
                 if (data.details.live) {
                     _this.live(true);
                 }
@@ -48,6 +64,11 @@ var HLSPlayer = /** @class */ (function (_super) {
         });
         return _this;
     }
+    HLSPlayer.prototype.playWithLevel = function (index) {
+        this.hls.currentLevel = index;
+        this.mediaElement.play();
+        this.showLevelPicker(false);
+    };
     HLSPlayer.prototype.destroy = function () {
         this.hls.destroy();
         _super.prototype.destroy.call(this);

@@ -1,3 +1,4 @@
+type PPSLevel = { bitrate: number, height: number, width: number };
 
 class PPSPlayer {
     readonly playing = ko.observable(false);
@@ -13,6 +14,7 @@ class PPSPlayer {
     readonly currentSubtitleTrack = ko.observable<TextTrack>(null);
 
     readonly nativeControls = ko.observable(false);
+    readonly showLevelPicker = ko.observable(false);
 
     readonly currentTimeStr = ko.pureComputed(() => {
         const milliseconds = this.currentTimeMs();
@@ -120,6 +122,16 @@ class PPSPlayer {
             if (newValue)
                 newValue.mode = "showing";
         });
+    }
+
+    areControlsShown(type: string) {
+        if (this.showLevelPicker())
+            return type == "levels";
+
+        if (this.nativeControls())
+            return false;
+
+        return type == "playback" || type == "seek";
     }
 
     togglePlay() {

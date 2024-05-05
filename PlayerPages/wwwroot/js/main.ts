@@ -4,12 +4,7 @@ declare var wiiu: any;
 
 const player = ko.observable<PPSPlayer>();
 
-ko.applyBindings({
-    controllablePlayer: ko.pureComputed(() => {
-        const pl = player();
-        return pl && !pl.nativeControls() ? pl : null;
-    })
-}, document.getElementsByTagName("main")[0]);
+ko.applyBindings({ player }, document.getElementsByTagName("main")[0]);
 
 const getContentTypeAsync = async (src: string) => {
     try {

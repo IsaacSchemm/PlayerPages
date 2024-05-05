@@ -37,12 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _this = this;
 var player = ko.observable();
-ko.applyBindings({
-    controllablePlayer: ko.pureComputed(function () {
-        var pl = player();
-        return pl && !pl.nativeControls() ? pl : null;
-    })
-}, document.getElementsByTagName("main")[0]);
+ko.applyBindings({ player: player }, document.getElementsByTagName("main")[0]);
 var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 0, function () {
     var resp, e_1;
     return __generator(this, function (_a) {

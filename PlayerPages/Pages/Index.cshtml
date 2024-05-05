@@ -64,8 +64,19 @@
                     }
                 </details>
             </div>
-            <!-- ko with: controllablePlayer -->
-            <div class="controls" style="display: none" data-bind="visible: true">
+            <!-- ko with: player -->
+            <!-- ko if: showLevelPicker -->
+            <div class="controls" style="display: none" data-bind="visible: areControlsShown('levels')">
+                <div class="status line-separator">
+                    Quality:
+                </div>
+                <!-- ko foreach: levelButtons -->
+                <button data-bind="click: activate, text: name" style="flex: 0 1 auto"></button>
+                <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: showLevelPicker -->
+            <div class="controls" style="display: none" data-bind="visible: areControlsShown('playback')">
                 <button data-bind="click: togglePlay">
                     <!-- ko if: playing -->
                     <span class="material-icons" aria-hidden="true">pause</span>
@@ -138,6 +149,10 @@
                     <span class="material-icons" aria-hidden="true">remove</span>
                     <span class="sr-only">Volume down</span>
                 </button>
+                <button data-bind="visible: levels">
+                    <span class="material-icons" aria-hidden="true">remove</span>
+                    <span class="sr-only">Volume down</span>
+                </button>
                 <button>
                     @* This button should request to start Google Cast, which should then trigger the player to switch modes *@
                     @* Should be hidden if not supported in browser *@
@@ -161,7 +176,7 @@
                     <!-- /ko -->
                 </button>
             </div>
-            <div class="controls" style="display: none" data-bind="visible: true">
+            <div class="controls" style="display: none" data-bind="visible: areControlsShown('seek')">
                 <div class="status timestamp line-separator">
                     <span class="sr-only">Timestamp:</span>
                     <span data-bind="text: currentTimeStr">0:00</span>
@@ -175,6 +190,7 @@
                     <span data-bind="text: durationStr">0:00</span>
                 </div>
             </div>
+            <!-- /ko -->
             <!-- /ko -->
         </main>
         @if (!Model.PageProperties.right.IsEmpty) {
