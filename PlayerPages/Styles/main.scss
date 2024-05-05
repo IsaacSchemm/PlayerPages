@@ -46,7 +46,7 @@
     }
 }
 
-@supports (display: flex) and (object-fit: contain) {
+@supports (display: flex) and (object-fit: contain) and selector(summary) {
     html {
         width: 100%;
         height: 100%;

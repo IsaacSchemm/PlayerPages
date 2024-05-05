@@ -38,35 +38,45 @@
         }
         <main>
             <div id="video-parent">
-                <h1>Play with browser</h1>
-                <details>
-                    <summary>
-                        Play with browser (Chrome, Edge, Firefox, Safari)
-                    </summary>
-                    @foreach (var media in Model.PageProperties.media)
-                    {
+                @* This section will appear if JavaScript is disabled or did not load properly *@
+                <p>
+                    JavaScript is disabled on this web browser or did not
+                    load properly.
+                </p>
+                <p>
+                    The media player below will use your device's native
+                    codec and media format support to attempt to play the
+                    media.
+                </p>
+                @foreach (var media in Model.PageProperties.media)
+                {
+                    <div>
                         <h2>@media.title</h2>
+
+                        @* Include an HTML video element (for mobile devices) *@
                         <video controls width="640" height="320" src="@media.src"></video>
-                    }
-                </details>
-                <h1>Play with VLC media player</h1>
-                <details>
-                    <summary>
-                        Play with VLC media player (Internet Explorer, Netscape)
-                    </summary>
-                    @foreach (var media in Model.PageProperties.media)
-                    {
-                        <h2>@media.title</h2>
-                        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
-                            <param name="src" value="@media.src" />
-                            <param name="autoplay" value="false" />
-                            <embed type="application/x-vlc-plugin" name="vlc" width="640" height="320" src="@media.src" autoplay="false" />
-                        </object>
-                    }
-                </details>
+
+                        @* Include an ActiveX control (for Internet Explorer) *@
+                        @* The header on this page sets all Internet Explorer versions to emulate Internet Explorer 5, for consistency *@
+                        <div>
+                            <!--[if IE]>
+                            <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
+                                <param name="src" value="@media.src" />
+                                <param name="autoplay" value="false" />
+                            </object>
+                            <![endif]-->
+                        </div>
+
+                        @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
+                        @* In any case, TenFourFox works fine with the standard PPSPlayer *@
+                    </div>
+                }
             </div>
             <!-- ko with: player -->
+            @* The controls are hidden initially, and shown once Knockout has been loaded. *@
             <div class="controlgroup" style="display: none" data-bind="visible: true">
+                @* The HLS player activates this level picker when it loads, which hides the rest of the controls. *@
+                @* This is done to allow users of low-powered devices the opportunity to pick a lower-quality video stream. *@
                 <div class="controls" data-bind="if: levelPickerActive">
                     <div class="status line-separator">
                         Quality:
@@ -80,6 +90,7 @@
                     </button>
                 </div>
                 <div class="controlgroup" data-bind="ifnot: levelPickerActive">
+                    @* These controls are hidden if the level picker is active (see above) or the user enables native HTML controls on the video element (Shift + right-click in Firefox). *@
                     <div class="controls">
                         <button data-bind="click: togglePlay">
                             <!-- ko if: playing -->
@@ -97,6 +108,8 @@
                         </div>
                         <!-- /ko -->
                         <!-- ko ifnot: live -->
+                        @* These buttons are presented to screen readers, but are hidden from view unless you use the Tab key to reveal them. *@
+                        @* Like the seek controls, they are omitted when playing back a live stream. *@
                         <button class="adv" data-bind="click: back10">
                             <span class="material-icons" aria-hidden="true">replay_10</span>
                             <span class="sr-only">Back 10 seconds</span>
@@ -145,6 +158,7 @@
                                aria-label="Volume"
                                step="0.1" />
                         <div class="line-separator"></div>
+                        @* These two buttons are presented to screen readers, but are hidden from view unless you use the Tab key to reveal them. *@
                         <button class="adv">
                             <span class="material-icons" aria-hidden="true">add</span>
                             <span class="sr-only">Volume up</span>
@@ -153,23 +167,25 @@
                             <span class="material-icons" aria-hidden="true">remove</span>
                             <span class="sr-only">Volume down</span>
                         </button>
+                        @* This button reveals the quality level picker (again), which hides the rest of the controls. *@
                         <button data-bind="visible: levels().length > 1, click: showLevelPicker">
                             <span class="material-icons" aria-hidden="true">hd</span>
                             <span class="sr-only">Select quality level</span>
                         </button>
                         <button>
-                            @* This button should request to start Google Cast, which should then trigger the player to switch modes *@
+                            @* TODO: This button should request to start Google Cast, which should then trigger the player to switch modes *@
                             @* Should be hidden if not supported in browser *@
                             <span class="material-icons" aria-hidden="true">cast</span>
                             <span class="sr-only">Cast</span>
                         </button>
                         <button>
-                            @* This button should show the Safari/iOS AirPlay dialog *@
+                            @* TODO: This button should show the Safari/iOS AirPlay dialog *@
                             @* Should be hidden if not supported in browser *@
                             <span class="material-icons" aria-hidden="true">airplay</span>
                             <span class="sr-only">AirPlay</span>
                         </button>
                         <button data-bind="click: toggleFullscreen">
+                            @* TODO: This button should be hidden if the fullscreen browser API is not supported *@
                             <!-- ko if: fullscreen -->
                             <span class="material-icons" aria-hidden="true">fullscreen_exit</span>
                             <span class="sr-only">Exit full screen</span>

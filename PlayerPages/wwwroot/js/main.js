@@ -62,22 +62,29 @@ var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 
 }); };
 var loadMedia = function (src, contentType) {
     try {
+        // Clean up previous player (if any)
         var oldPlayer = player();
         if (oldPlayer) {
             player(null);
             oldPlayer.destroy();
         }
+        // Create new HTML video player element and place it onto the page
         var video = document.createElement("video");
         var videoParent = document.getElementById("video-parent");
         videoParent.innerHTML = "";
         videoParent.appendChild(video);
+        // Determine which JavaScript player to use
         var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
             || contentType.toLowerCase() == "application/x-mpegurl";
+        // If hls.js is not loaded or will not work, just use an HTML player
+        // (may allow at least some versions of iOS to work)
         if ("Hls" in window && !Hls.isSupported())
             isHLS = false;
+        // Initialize the player
         var pl = isHLS
             ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
             : new HTMLPlayer(document.getElementsByTagName("main")[0], video, src);
+        // Bind the player controls
         player(pl);
     }
     catch (e) {
@@ -101,20 +108,24 @@ var loadMedia = function (src, contentType) {
                                 if (!(mediaLink instanceof HTMLAnchorElement))
                                     return [2 /*return*/, "continue"];
                                 src = mediaLink.getAttribute("data-src");
-                                if (!src)
-                                    return [2 /*return*/, "continue"];
                                 return [4 /*yield*/, getContentTypeAsync(src)];
                             case 1:
                                 contentType = _b.sent();
                                 if (contentType) {
+                                    // We were able to confirm that this URL exists, and we know
+                                    // its content type
                                     mediaLink.addEventListener("click", function (e) {
                                         e.preventDefault();
+                                        // Close the menu
                                         document.getElementById("menu").removeAttribute("open");
+                                        // Load the media
                                         loadMedia(src, contentType);
                                     });
                                     if (first) {
+                                        // Load the media now
                                         console.log("Automatically loading: ".concat(mediaLink.href));
                                         loadMedia(src, contentType);
+                                        // Do not automatically load any other media
                                         first = false;
                                     }
                                 }
@@ -136,7 +147,7 @@ var loadMedia = function (src, contentType) {
             case 4: return [3 /*break*/, 6];
             case 5:
                 e_2 = _a.sent();
-                console.warn("Could not automatically load media", e_2);
+                console.warn("Could not configure media link handlers", e_2);
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
         }
