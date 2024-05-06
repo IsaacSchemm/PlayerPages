@@ -7,7 +7,7 @@ html .image-parent {
 html details summary {
   margin: 1em;
 }
-html details a {
+html details .row a {
   display: block;
   margin: 1em;
 }
@@ -17,9 +17,10 @@ html img {
   height: 240px;
   object-fit: contain;
 }
-html video, html iframe {
-  width: 640px;
-  max-width: calc(100vw - 40px);
+html video {
+  width: 300px;
+  width: calc(100vw - 40px);
+  max-width: 640px;
 }
 html .controls {
   display: flex;
@@ -29,9 +30,15 @@ html .controls {
 }
 html .controls .line-separator {
   width: 100%;
+  line-height: 36px;
 }
 html .controls button {
   flex: 0 0 auto;
+  min-height: 36px;
+  overflow: visible;
+}
+html .controls button .material-icons {
+  font-size: inherit;
 }
 
 @supports (display: flex) and (object-fit: contain) and selector(summary) {
@@ -56,20 +63,28 @@ html .controls button {
   }
   html body details {
     flex: 0 0 auto;
+    text-align: left;
   }
-  html body details a {
-    display: block;
+  html body details .row {
+    display: flex;
+    flex-direction: row;
+  }
+  html body details .row a {
+    flex: 0 0 auto;
+  }
+  html body details .row a:first-child {
+    flex-grow: 1;
   }
   html body details summary,
-  html body details a {
+  html body details .row a {
     padding: 8px;
     cursor: pointer;
     margin: 0;
   }
   html body details summary:focus,
   html body details summary:hover,
-  html body details a:focus,
-  html body details a:hover {
+  html body details .row a:focus,
+  html body details .row a:hover {
     background-color: Highlight;
     color: HighlightText;
   }
@@ -122,12 +137,7 @@ html .controls button {
     height: 100%;
     top: 0;
     left: 0;
-  }
-  html body #center-row main #video-parent > iframe {
-    border: 0;
-    width: 100%;
-    height: 100%;
-    height: calc(100% - 4px);
+    max-width: initial;
   }
   html body #center-row main .controlgroup {
     flex: 0 0 auto;

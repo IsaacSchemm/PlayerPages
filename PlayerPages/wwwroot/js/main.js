@@ -37,6 +37,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 var player = ko.observable();
 ko.applyBindings({ player: player }, document.getElementsByTagName("main")[0]);
+function delay(ms) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2 /*return*/, new Promise(function (r) { return setTimeout(r, ms); })];
+        });
+    });
+}
 var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 0, function () {
     var resp, e_1;
     return __generator(this, function (_a) {
@@ -44,11 +51,12 @@ var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, fetch(src, {
-                        method: "HEAD"
+                        method: "HEAD",
+                        cache: "no-store"
                     })];
             case 1:
                 resp = _a.sent();
-                if (resp.ok) {
+                if (resp && resp.ok) {
                     return [2 /*return*/, resp.headers.get("Content-Type")];
                 }
                 return [3 /*break*/, 3];
@@ -77,8 +85,7 @@ var loadMedia = function (src, contentType) {
         var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
             || contentType.toLowerCase() == "application/x-mpegurl";
         // If hls.js is not loaded or will not work, just use an HTML player
-        // (may allow at least some versions of iOS to work)
-        if ("Hls" in window && !Hls.isSupported())
+        if (!("Hls" in window) || !Hls.isSupported())
             isHLS = false;
         // Initialize the player
         var pl = isHLS
@@ -91,73 +98,69 @@ var loadMedia = function (src, contentType) {
         console.error(e);
     }
 };
-(function () { return __awaiter(_this, void 0, void 0, function () {
-    var mediaLinks, first, _loop_1, i, e_2;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if ("wiiu" in window) {
-                    // Do not use a JavaScript-based media player on the Wii U - it does
-                    // not offer any advantages to opening the media in the browser's own
-                    // player and may introduce bugs.
-                    return [2 /*return*/];
-                }
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 6, , 7]);
-                mediaLinks = document.querySelectorAll("a.media");
-                first = true;
-                _loop_1 = function (i) {
-                    var mediaLink, src, contentType;
-                    return __generator(this, function (_b) {
-                        switch (_b.label) {
-                            case 0:
-                                mediaLink = mediaLinks[i];
-                                if (!(mediaLink instanceof HTMLAnchorElement))
-                                    return [2 /*return*/, "continue"];
-                                src = mediaLink.getAttribute("data-src");
-                                return [4 /*yield*/, getContentTypeAsync(src)];
-                            case 1:
-                                contentType = _b.sent();
-                                if (contentType) {
-                                    // We were able to confirm that this URL exists, and we know
-                                    // its content type
-                                    mediaLink.addEventListener("click", function (e) {
-                                        e.preventDefault();
-                                        // Close the menu
-                                        document.getElementById("menu").removeAttribute("open");
-                                        // Load the media
-                                        loadMedia(src, contentType);
-                                    });
-                                    if (first) {
-                                        // Load the media now
-                                        console.log("Automatically loading: ".concat(mediaLink.href));
-                                        loadMedia(src, contentType);
-                                        // Do not automatically load any other media
-                                        first = false;
-                                    }
-                                }
-                                return [2 /*return*/];
-                        }
+function attachHandlerAsync(mediaLink, autoload) {
+    return __awaiter(this, void 0, void 0, function () {
+        var contentType_1, http, e_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 4, , 5]);
+                    return [4 /*yield*/, getContentTypeAsync(mediaLink.href)];
+                case 1:
+                    contentType_1 = _a.sent();
+                    if (!!contentType_1) return [3 /*break*/, 3];
+                    http = mediaLink.href
+                        .replace(/^https:\/\/([^\/:]+\.streamlock\.net)\//, "http://$1:1935/")
+                        .replace(/^https:\/\/([^\/:]+)\//, "http://$1/");
+                    if (!(http != mediaLink.href)) return [3 /*break*/, 3];
+                    return [4 /*yield*/, getContentTypeAsync(http)];
+                case 2:
+                    contentType_1 = _a.sent();
+                    if (contentType_1) {
+                        mediaLink.href = http;
+                        mediaLink.innerText += " (HTTP)";
+                    }
+                    _a.label = 3;
+                case 3:
+                    // If we couldn't access this media and determine its type, then just
+                    // leave the link as-is
+                    if (!contentType_1)
+                        return [2 /*return*/];
+                    mediaLink.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        // Close the menu
+                        document.getElementById("menu").removeAttribute("open");
+                        // Load the media
+                        loadMedia(mediaLink.href, contentType_1);
                     });
-                };
-                i = 0;
-                _a.label = 2;
-            case 2:
-                if (!(i < mediaLinks.length)) return [3 /*break*/, 5];
-                return [5 /*yield**/, _loop_1(i)];
-            case 3:
-                _a.sent();
-                _a.label = 4;
-            case 4:
-                i++;
-                return [3 /*break*/, 2];
-            case 5: return [3 /*break*/, 7];
-            case 6:
-                e_2 = _a.sent();
-                console.warn("Could not configure media link handlers", e_2);
-                return [3 /*break*/, 7];
-            case 7: return [2 /*return*/];
-        }
+                    // The first media in the list should be loaded automatically
+                    if (autoload) {
+                        loadMedia(mediaLink.href, contentType_1);
+                    }
+                    return [3 /*break*/, 5];
+                case 4:
+                    e_2 = _a.sent();
+                    console.warn("Could not configure media link handler", e_2);
+                    return [3 /*break*/, 5];
+                case 5: return [2 /*return*/];
+            }
+        });
     });
-}); })();
+}
+try {
+    // These media links were placed on the page, and currently are just
+    // normal links to the media URLs.
+    // Loop through these links, see if we can fetch their URLs, and then
+    // attach click handlers so the links open the video on the page
+    // itself, instead.
+    var mediaLinks = document.querySelectorAll("a.media");
+    for (var i = 0; i < mediaLinks.length; i++) {
+        var mediaLink = mediaLinks[i];
+        if (!(mediaLink instanceof HTMLAnchorElement))
+            continue;
+        attachHandlerAsync(mediaLink, i == 0);
+    }
+}
+catch (e) {
+    console.warn("Could not configure media link handlers", e);
+}

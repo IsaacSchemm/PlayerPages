@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="material-icons/iconfont/material-icons.css" />
     <base href="@(Request.Scheme)://@(Request.Host)/" />
     <meta http-equiv="X-UA-Compatible" content="IE=5" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
     @foreach (var embed in Model.PageProperties.top)
@@ -20,13 +21,17 @@
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
-            @* Link to a non-HTTPS version of the media, for support on devices like the Wii U with outdated certificates *@
-            @* The JavaScript player will load the original media URL from media.src *@
-            <a class="media" target="_blank" href="@media.HttpSrc" data-src="@media.src">@media.title</a>
+            <div class="row">
+                @* This link will open the media URL in a new tab if JavaScript is not loaded *@
+                @* If JavaScript is loaded, this will open the media in a PPSPlayer *@
+                <a class="media" target="_blank" href="@media.src">@media.title</a>
+            </div>
         }
         @foreach (var link in Model.PageProperties.links)
         {
-            <a href="@link.href" target="_blank">@link.title</a>
+            <div class="row">
+                <a href="@link.href" target="_blank">@link.title</a>
+            </div>
         }
     </details>
     <!--<![endif]-->
@@ -56,12 +61,7 @@
         <main>
             <div id="video-parent">
                 <p>
-                    JavaScript is disabled on this web browser or did not
-                    load properly.
-                </p>
-                <p>
-                    Use the menu above to select media to play; your browser
-                    will attempt to open the media in a new window or tab.
+                    Use the menu above to select media to play.
                 </p>
             </div>
             <!-- ko with: player -->
@@ -92,30 +92,13 @@
                             <span class="sr-only">Play</span>
                             <!-- /ko -->
                         </button>
+                        <div class="line-separator sr-only">
+                            <hr />
+                        </div>
                         <!-- ko if: live -->
                         <div class="status line-separator">
                             Live
                         </div>
-                        <!-- /ko -->
-                        <!-- ko ifnot: live -->
-                        @* These buttons are presented to screen readers, but are hidden from view unless you use the Tab key to reveal them. *@
-                        @* Like the seek controls, they are omitted when playing back a live stream. *@
-                        <button class="adv" data-bind="click: back10">
-                            <span class="material-icons" aria-hidden="true">replay_10</span>
-                            <span class="sr-only">Back 10 seconds</span>
-                        </button>
-                        <button class="adv" data-bind="click: forward10">
-                            <span class="material-icons" aria-hidden="true">forward_10</span>
-                            <span class="sr-only">Forward 10 seconds</span>
-                        </button>
-                        <button class="adv" data-bind="click: back30">
-                            <span class="material-icons" aria-hidden="true">replay_30</span>
-                            <span class="sr-only">Back 30 seconds</span>
-                        </button>
-                        <button class="adv" data-bind="click: forward30">
-                            <span class="material-icons" aria-hidden="true">forward_30</span>
-                            <span class="sr-only">Forward 30 seconds</span>
-                        </button>
                         <!-- /ko -->
                         <div class="spacer" role="none"></div>
                         <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
@@ -186,7 +169,7 @@
                             <!-- /ko -->
                         </button>
                     </div>
-                    <div class="controls">
+                    <div class="controls" data-bind="ifnot: live">
                         <div class="status timestamp line-separator">
                             <span class="sr-only">Timestamp:</span>
                             <span data-bind="text: currentTimeStr">0:00</span>
@@ -199,6 +182,23 @@
                             <span class="sr-only">Duration:</span>
                             <span data-bind="text: durationStr">0:00</span>
                         </div>
+                        @* These buttons are presented to screen readers, but are hidden from view unless you use the Tab key to reveal them. *@
+                        <button class="adv" data-bind="click: back10">
+                            <span class="material-icons" aria-hidden="true">replay_10</span>
+                            <span class="sr-only">Back 10 seconds</span>
+                        </button>
+                        <button class="adv" data-bind="click: forward10">
+                            <span class="material-icons" aria-hidden="true">forward_10</span>
+                            <span class="sr-only">Forward 10 seconds</span>
+                        </button>
+                        <button class="adv" data-bind="click: back30">
+                            <span class="material-icons" aria-hidden="true">replay_30</span>
+                            <span class="sr-only">Back 30 seconds</span>
+                        </button>
+                        <button class="adv" data-bind="click: forward30">
+                            <span class="material-icons" aria-hidden="true">forward_30</span>
+                            <span class="sr-only">Forward 30 seconds</span>
+                        </button>
                     </div>
                 </div>
             </div>

@@ -2,12 +2,17 @@
 
 ko.applyBindings({ player }, document.getElementsByTagName("main")[0]);
 
+async function delay(ms: number) {
+    return new Promise<void>(r => setTimeout(r, ms));
+}
+
 const getContentTypeAsync = async (src: string) => {
     try {
         const resp = await fetch(src, {
-            method: "HEAD"
+            method: "HEAD",
+            cache: "no-store"
         });
-        if (resp.ok) {
+        if (resp && resp.ok) {
             return resp.headers.get("Content-Type");
         }
     } catch (e) {
@@ -38,9 +43,7 @@ const loadMedia = (src: string, contentType: string) => {
             || contentType.toLowerCase() == "application/x-mpegurl";
 
         // If hls.js is not loaded or will not work, just use an HTML player
-        // (may allow at least some versions of iOS to work)
-
-        if ("Hls" in window && !Hls.isSupported())
+        if (!("Hls" in window) || !Hls.isSupported())
             isHLS = false;
 
         // Initialize the player
@@ -61,63 +64,72 @@ const loadMedia = (src: string, contentType: string) => {
     }
 }
 
-(async () => {
-    if ("wiiu" in window) {
-        // Do not use a JavaScript-based media player on the Wii U - it does
-        // not offer any advantages to opening the media in the browser's own
-        // player and may introduce bugs.
-        return;
-    }
-
+async function attachHandlerAsync(mediaLink: HTMLAnchorElement, autoload: boolean) {
     try {
-        // These media links were placed on the page, and currently are just
-        // normal links to the media URLs.
+        // Check the content type, to determine which player to use and to
+        // confirm that the media exists. If this fails because of a CORS
+        // issue, chances are the media won't work anyway (e.g. HLS) or maybe
+        // opening in a new tab is perfectly fine (e.g. mp4).
+        let contentType = await getContentTypeAsync(mediaLink.href);
 
-        // Loop through these links, see if we can fetch their URLs, and then
-        // attach click handlers so the links open the video on the page
-        // itself, instead.
+        if (!contentType) {
+            // On Wii U, most requests to HTTPS servers will fail due to its
+            // old certificate store, but it will allow requests to an HTTP
+            // server from an HTTPS page. If that succeeds, we know the stream
+            // is accessible over HTTP, so we should update the link.
 
-        // The first link that can be fetched will also be loaded into the
-        // player automatically.
-
-        const mediaLinks = document.querySelectorAll("a.media");
-        let first = true;
-
-        for (let i = 0; i < mediaLinks.length; i++) {
-            const mediaLink = mediaLinks[i];
-            if (!(mediaLink instanceof HTMLAnchorElement))
-                continue;
-
-            const src = mediaLink.getAttribute("data-src");
-
-            // Try to fetch the media
-            const contentType = await getContentTypeAsync(src);
-
-            if (contentType) {
-                // We were able to confirm that this URL exists, and we know
-                // its content type
-
-                mediaLink.addEventListener("click", e => {
-                    e.preventDefault();
-
-                    // Close the menu
-                    document.getElementById("menu").removeAttribute("open");
-
-                    // Load the media
-                    loadMedia(src, contentType);
-                });
-
-                if (first) {
-                    // Load the media now
-                    console.log(`Automatically loading: ${mediaLink.href}`);
-                    loadMedia(src, contentType);
-
-                    // Do not automatically load any other media
-                    first = false;
+            const http = mediaLink.href
+                .replace(/^https:\/\/([^\/:]+\.streamlock\.net)\//, "http://$1:1935/")
+                .replace(/^https:\/\/([^\/:]+)\//, "http://$1/");
+            if (http != mediaLink.href) {
+                contentType = await getContentTypeAsync(http);
+                if (contentType) {
+                    mediaLink.href = http;
+                    mediaLink.innerText += " (HTTP)";
                 }
             }
         }
+
+        // If we couldn't access this media and determine its type, then just
+        // leave the link as-is
+        if (!contentType)
+            return;
+
+        mediaLink.addEventListener("click", e => {
+            e.preventDefault();
+
+            // Close the menu
+            document.getElementById("menu").removeAttribute("open");
+
+            // Load the media
+            loadMedia(mediaLink.href, contentType);
+        });
+
+        // The first media in the list should be loaded automatically
+        if (autoload) {
+            loadMedia(mediaLink.href, contentType);
+        }
     } catch (e) {
-        console.warn("Could not configure media link handlers", e);
+        console.warn("Could not configure media link handler", e);
     }
-})();
+}
+
+try {
+    // These media links were placed on the page, and currently are just
+    // normal links to the media URLs.
+
+    // Loop through these links, see if we can fetch their URLs, and then
+    // attach click handlers so the links open the video on the page
+    // itself, instead.
+    const mediaLinks = document.querySelectorAll("a.media");
+
+    for (let i = 0; i < mediaLinks.length; i++) {
+        const mediaLink = mediaLinks[i];
+        if (!(mediaLink instanceof HTMLAnchorElement))
+            continue;
+
+        attachHandlerAsync(mediaLink, i == 0);
+    }
+} catch (e) {
+    console.warn("Could not configure media link handlers", e);
+}

@@ -90,9 +90,11 @@ var PPSPlayer = /** @class */ (function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
             mediaElement.removeEventListener("mousemove", onmousemove);
         };
-        this.mediaElement.textTracks.addEventListener("addtrack", function (e) {
-            _this.subtitleTracks.push(e.track);
-        });
+        if (this.mediaElement.textTracks) {
+            this.mediaElement.textTracks.addEventListener("addtrack", function (e) {
+                _this.subtitleTracks.push(e.track);
+            });
+        }
         this.currentSubtitleTrack.subscribe(function (newValue) {
             for (var _i = 0, _a = _this.subtitleTracks(); _i < _a.length; _i++) {
                 var track = _a[_i];

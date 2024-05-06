@@ -113,9 +113,11 @@ abstract class PPSPlayer {
             mediaElement.removeEventListener("mousemove", onmousemove);
         };
 
-        this.mediaElement.textTracks.addEventListener("addtrack", e => {
-            this.subtitleTracks.push(e.track);
-        });
+        if (this.mediaElement.textTracks) {
+            this.mediaElement.textTracks.addEventListener("addtrack", e => {
+                this.subtitleTracks.push(e.track);
+            });
+        }
 
         this.currentSubtitleTrack.subscribe(newValue => {
             for (const track of this.subtitleTracks())

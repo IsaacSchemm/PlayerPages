@@ -8,6 +8,8 @@ PlayerPages/wwwroot/*.mp3
 PlayerPages/wwwroot/*.mp4
 !PlayerPages/wwwroot/Big_Buck_Bunny_360_10s_1MB.mp4
 
+* - Web Deploy
+
 # User-specific files
 *.rsuser
 *.suo

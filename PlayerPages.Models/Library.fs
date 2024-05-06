@@ -5,11 +5,7 @@ open System
 type Media = {
     title: string
     src: string
-} with
-    member this.HttpSrc =
-        match Uri.TryCreate(this.src, UriKind.Absolute) with
-        | true, uri when uri.Scheme = "https" && uri.IsDefaultPort -> $"http:{this.src.Substring(6)}"
-        | _ -> this.src
+}
 
 type Link = {
     title: string
@@ -54,11 +50,7 @@ module PageProperties =
                 src = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
             }
             {
-                title = "Duck Cam (HTTP only)"
-                src = "http://58e7f1650ff36.streamlock.net:1935/duckcam/smil:duckcam.smil/playlist.m3u8"
-            }
-            {
-                title = "Duck Cam (HTTPS only)"
+                title = "Duck Cam"
                 src = "https://58e7f1650ff36.streamlock.net/duckcam/smil:duckcam.smil/playlist.m3u8"
             }
             {

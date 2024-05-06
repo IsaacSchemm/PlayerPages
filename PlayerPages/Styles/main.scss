@@ -12,7 +12,7 @@
             margin: 1em;
         }
 
-        a {
+        .row a {
             display: block;
             margin: 1em;
         }
@@ -25,9 +25,10 @@
         object-fit: contain;
     }
 
-    video, iframe {
-        width: 640px;
-        max-width: calc(100vw - 40px);
+    video {
+        width: 300px;
+        width: calc(100vw - 40px);
+        max-width: 640px;
     }
 
     .controls {
@@ -38,10 +39,17 @@
 
         .line-separator {
             width: 100%;
+            line-height: 36px;
         }
 
         button {
             flex: 0 0 auto;
+            min-height: 36px;
+            overflow: visible;
+
+            .material-icons {
+                font-size: inherit;
+            }
         }
     }
 }
@@ -69,13 +77,23 @@
 
             details {
                 flex: 0 0 auto;
+                text-align: left;
 
-                a {
-                    display: block;
+                .row {
+                    display: flex;
+                    flex-direction: row;
+                }
+
+                .row a {
+                    flex: 0 0 auto;
+
+                    &:first-child {
+                        flex-grow: 1;
+                    }
                 }
 
                 summary,
-                a {
+                .row a {
                     padding: 8px;
                     cursor: pointer;
                     margin: 0;
@@ -83,8 +101,8 @@
 
                 summary:focus,
                 summary:hover,
-                a:focus,
-                a:hover {
+                .row a:focus,
+                .row a:hover {
                     background-color: Highlight;
                     color: HighlightText;
                 }
@@ -141,13 +159,7 @@
                             height: 100%;
                             top: 0;
                             left: 0;
-                        }
-
-                        & > iframe {
-                            border: 0;
-                            width: 100%;
-                            height: 100%;
-                            height: calc(100% - 4px);
+                            max-width: initial;
                         }
                     }
 
