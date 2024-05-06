@@ -52,6 +52,7 @@
     <div id="center-row">
         <main>
             <div id="video-parent">
+                @* The contents of this element are controlled by JavaScript, which will insert a media player and a play button. *@
                 <p>
                     Use the menu above to select media to play.
                 </p>
@@ -129,7 +130,7 @@
                             <span class="material-icons" aria-hidden="true">remove</span>
                             <span class="sr-only">Volume down</span>
                         </button>
-                        @* This button reveals the quality level picker (again), which hides the rest of the controls. *@
+                        @* This button reveals the quality level picker. *@
                         <button data-bind="visible: levels().length > 1, click: showLevelPicker">
                             <span class="material-icons" aria-hidden="true">hd</span>
                             <span class="sr-only">Select quality level</span>
@@ -143,7 +144,6 @@
                             <span class="sr-only">AirPlay</span>
                         </button>
                         <button data-bind="visible: canFullscreen, click: toggleFullscreen">
-                            @* TODO: This button should be hidden if the fullscreen browser API is not supported *@
                             <!-- ko if: fullscreen -->
                             <span class="material-icons" aria-hidden="true">fullscreen_exit</span>
                             <span class="sr-only">Exit full screen</span>
@@ -154,6 +154,7 @@
                             <!-- /ko -->
                         </button>
                     </div>
+                    @* The seek bar is hidden if native controls are enabled or if the stream is live. *@
                     <div class="controls" data-bind="ifnot: live">
                         <div class="status timestamp line-separator">
                             <span class="sr-only">Timestamp:</span>

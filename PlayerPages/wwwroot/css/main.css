@@ -138,6 +138,9 @@ html .controls button {
     position: absolute;
     top: calc(50% - 24px);
     left: calc(50% - 32px);
+    width: 64px;
+    height: 48px;
+    font-size: 24px;
     z-index: 1;
   }
   html body #center-row main #video-parent > video {

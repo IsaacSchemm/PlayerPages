@@ -9,14 +9,13 @@ async function delay(ms: number) {
 const getContentTypeAsync = async (src: string) => {
     try {
         const resp = await fetch(src, {
-            method: "HEAD",
-            cache: "no-store"
+            method: "HEAD"
         });
         if (resp && resp.ok) {
             return resp.headers.get("Content-Type");
         }
     } catch (e) {
-        console.warn(e);
+        console.log(`Could not determine content type of remote media at ${src}`, e);
     }
 
     return null;
@@ -31,6 +30,7 @@ const loadMedia = (src: string, contentType: string) => {
             oldPlayer.destroy();
         }
 
+        // Create new player and play button
         const videoParent = document.getElementById("video-parent");
         videoParent.innerHTML = "";
 
@@ -63,6 +63,7 @@ const loadMedia = (src: string, contentType: string) => {
                 video,
                 src);
 
+        // Set up play button
         pl.playing.subscribe(newValue => {
             playButton.style.visibility = newValue ? "hidden" : "";
         });
@@ -128,22 +129,19 @@ async function attachHandlerAsync(mediaLink: HTMLAnchorElement, autoload: boolea
     }
 }
 
-try {
-    // These media links were placed on the page, and currently are just
-    // normal links to the media URLs.
+// These media links were placed on the page, and currently are just
+// normal links to the media URLs.
 
-    // Loop through these links, see if we can fetch their URLs, and then
-    // attach click handlers so the links open the video on the page
-    // itself, instead.
-    const mediaLinks = document.querySelectorAll("a.media");
+// Loop through these links, see if we can fetch their URLs, and then
+// attach click handlers so the links open the video on the page
+// itself, instead.
 
-    for (let i = 0; i < mediaLinks.length; i++) {
-        const mediaLink = mediaLinks[i];
-        if (!(mediaLink instanceof HTMLAnchorElement))
-            continue;
+const mediaLinks = document.querySelectorAll("a.media");
 
-        attachHandlerAsync(mediaLink, i == 0);
-    }
-} catch (e) {
-    console.warn("Could not configure media link handlers", e);
+for (let i = 0; i < mediaLinks.length; i++) {
+    const mediaLink = mediaLinks[i];
+    if (!(mediaLink instanceof HTMLAnchorElement))
+        continue;
+
+    attachHandlerAsync(mediaLink, i == 0);
 }

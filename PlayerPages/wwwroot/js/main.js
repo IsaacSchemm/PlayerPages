@@ -51,8 +51,7 @@ var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, fetch(src, {
-                        method: "HEAD",
-                        cache: "no-store"
+                        method: "HEAD"
                     })];
             case 1:
                 resp = _a.sent();
@@ -62,7 +61,7 @@ var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 
                 return [3 /*break*/, 3];
             case 2:
                 e_1 = _a.sent();
-                console.warn(e_1);
+                console.log("Could not determine content type of remote media at ".concat(src), e_1);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/, null];
         }
@@ -76,6 +75,7 @@ var loadMedia = function (src, contentType) {
             player(null);
             oldPlayer.destroy();
         }
+        // Create new player and play button
         var videoParent = document.getElementById("video-parent");
         videoParent.innerHTML = "";
         var playButton_1 = document.createElement("button");
@@ -95,6 +95,7 @@ var loadMedia = function (src, contentType) {
         var pl = isHLS
             ? new HLSPlayer(document.getElementsByTagName("main")[0], video_1, src)
             : new HTMLPlayer(document.getElementsByTagName("main")[0], video_1, src);
+        // Set up play button
         pl.playing.subscribe(function (newValue) {
             playButton_1.style.visibility = newValue ? "hidden" : "";
         });
@@ -158,20 +159,15 @@ function attachHandlerAsync(mediaLink, autoload) {
         });
     });
 }
-try {
-    // These media links were placed on the page, and currently are just
-    // normal links to the media URLs.
-    // Loop through these links, see if we can fetch their URLs, and then
-    // attach click handlers so the links open the video on the page
-    // itself, instead.
-    var mediaLinks = document.querySelectorAll("a.media");
-    for (var i = 0; i < mediaLinks.length; i++) {
-        var mediaLink = mediaLinks[i];
-        if (!(mediaLink instanceof HTMLAnchorElement))
-            continue;
-        attachHandlerAsync(mediaLink, i == 0);
-    }
-}
-catch (e) {
-    console.warn("Could not configure media link handlers", e);
+// These media links were placed on the page, and currently are just
+// normal links to the media URLs.
+// Loop through these links, see if we can fetch their URLs, and then
+// attach click handlers so the links open the video on the page
+// itself, instead.
+var mediaLinks = document.querySelectorAll("a.media");
+for (var i = 0; i < mediaLinks.length; i++) {
+    var mediaLink = mediaLinks[i];
+    if (!(mediaLink instanceof HTMLAnchorElement))
+        continue;
+    attachHandlerAsync(mediaLink, i == 0);
 }

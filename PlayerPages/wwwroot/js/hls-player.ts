@@ -15,7 +15,6 @@ class HLSPlayer extends PPSPlayer {
             name: `Automatic`,
             activate: () => {
                 this.hls.selectedLevel = -1;
-                this.mediaElement.play();
                 this.hideLevelPicker();
             }
         }]);
@@ -33,7 +32,6 @@ class HLSPlayer extends PPSPlayer {
                         name: `${Math.ceil(level.bitrate / 1024)} Kbps (${level.width}x${level.height})`,
                         activate: () => {
                             this.hls.currentLevel = index;
-                            this.mediaElement.play();
                             this.hideLevelPicker();
                         }
                     });

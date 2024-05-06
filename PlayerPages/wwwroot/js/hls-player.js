@@ -24,7 +24,6 @@ var HLSPlayer = /** @class */ (function (_super) {
                 name: "Automatic",
                 activate: function () {
                     _this.hls.selectedLevel = -1;
-                    _this.mediaElement.play();
                     _this.hideLevelPicker();
                 }
             }]);
@@ -40,7 +39,6 @@ var HLSPlayer = /** @class */ (function (_super) {
                         name: "".concat(Math.ceil(level.bitrate / 1024), " Kbps (").concat(level.width, "x").concat(level.height, ")"),
                         activate: function () {
                             _this.hls.currentLevel = index;
-                            _this.mediaElement.play();
                             _this.hideLevelPicker();
                         }
                     });
