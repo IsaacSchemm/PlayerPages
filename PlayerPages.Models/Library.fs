@@ -52,8 +52,8 @@ module PageProperties =
                 src = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
             }
             {
-                title = "Big_Buck_Bunny_360_10s_1MB.mp4"
-                src = "Big_Buck_Bunny_360_10s_1MB.mp4"
+                title = "big-buck-bunny-480p-30sec.mp4"
+                src = "https://cdn.jsdelivr.net/npm/video-media-samples@1.0.0/big-buck-bunny-480p-30sec.mp4"
             }
             {
                 title = "Green Greens"

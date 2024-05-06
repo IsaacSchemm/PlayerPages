@@ -81,7 +81,7 @@ var PPSMain;
             // Appears when the player is paused (including initally)
             var playButton_1 = document.createElement("button");
             playButton_1.id = "play-button";
-            playButton_1.innerHTML = "<span class=\"material-icons\" aria-hidden=\"true\">play_arrow</span>";
+            playButton_1.innerHTML = "<span class=\"material-icons\" aria-hidden=\"true\">play_arrow</span> Play";
             videoParent.appendChild(playButton_1);
             // Put the play button on its own line (only matters for fallback CSS)
             videoParent.appendChild(document.createElement("div"));

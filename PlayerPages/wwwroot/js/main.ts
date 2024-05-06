@@ -43,7 +43,7 @@
             // Appears when the player is paused (including initally)
             const playButton = document.createElement("button");
             playButton.id = "play-button";
-            playButton.innerHTML = `<span class="material-icons" aria-hidden="true">play_arrow</span>`;
+            playButton.innerHTML = `<span class="material-icons" aria-hidden="true">play_arrow</span> Play`;
             videoParent.appendChild(playButton);
 
             // Put the play button on its own line (only matters for fallback CSS)
@@ -98,10 +98,11 @@
             let contentType = await getContentTypeAsync(mediaLink.href);
 
             if (!contentType) {
-                // On Wii U, most requests to HTTPS servers will fail due to its
-                // old certificate store, but it will allow requests to an HTTP
-                // server from an HTTPS page. If that succeeds, we know the stream
-                // is accessible over HTTP, so we should update the link.
+                // On Wii U, most requests to HTTPS servers fail due to its
+                // old certificate store, but it allows requests to an HTTP
+                // server from an HTTPS page, so we can check if the stream is
+                // available over HTTP. We'll need to make a guess as to the
+                // correct port number, though.
 
                 const http = mediaLink.href
                     .replace(/^https:\/\/([^\/:]+\.streamlock\.net)\//, "http://$1:1935/")
