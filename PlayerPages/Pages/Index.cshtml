@@ -5,11 +5,22 @@
 <html class="application">
 <head>
     <title>@Model.PageProperties.title</title>
+
+    @* Allow Firefox users to view the fallback CSS from View > Page Style *@
     <link rel="stylesheet" href="css/main.css" title="Application View" />
     <link rel="stylesheet alternate" href="css/simple.css" title="Page View" />
+
     <link rel="stylesheet" href="material-icons/iconfont/material-icons.css" />
-    <base href="@(Request.Scheme)://@(Request.Host)/" />
+
+    @* Allow this page to be proxied while pulling CSS and JavaScript from the original server *@
+    @* If you're using a CDN, put the CDN path for this page here instead *@
+    <base href="@(Request.Scheme)://@(Request.Host)@(Request.Path)" />
+
+    @* Internet Explorer "support" is provided via VLC's ActiveX plugin *@
+    @* Limit support to IE5 to keep things simple; have all other IE versions emulate it *@
     <meta http-equiv="X-UA-Compatible" content="IE=5" />
+
+    @* Use "native" viewport on mobile devices instead of a desktop-width viewport *@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
@@ -18,19 +29,21 @@
         @await Html.PartialAsync("Embed", embed)
     }
     <!--[if !IE]><!-->
+    @* The top menu bar (not shown on Internet Explorer). *@
     <details id="menu">
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
             <div class="row">
-                @* This link will open the media URL in a new tab if JavaScript is not loaded *@
-                @* If JavaScript is loaded, this will open the media in a PPSPlayer *@
+                @* By default, this link will open the media URL in a new tab *@
+                @* Usually, the JavaScript will attach an event handler to open the media in the JS player instead *@
                 <a class="media" target="_blank" href="@media.src">@media.title</a>
             </div>
         }
         @foreach (var link in Model.PageProperties.links)
         {
             <div class="row">
+                @* This is just a normal external link *@
                 <a href="@link.href" target="_blank">@link.title</a>
             </div>
         }
@@ -38,7 +51,6 @@
     <!--<![endif]-->
     <!--[if IE]>
     @* Include an ActiveX control (for Internet Explorer) *@
-    @* The header on this page sets all Internet Explorer versions to emulate Internet Explorer 5, for consistency *@
     @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
     @foreach (var media in Model.PageProperties.media)
     {
@@ -73,7 +85,6 @@
                     </button>
                 </div>
                 <div class="controlgroup">
-                    @* These controls are hidden if the user enables native HTML controls on the video element (Shift + right-click in Firefox). *@
                     <div class="controls">
                         <button data-bind="click: togglePlay">
                             <!-- ko if: playing -->
@@ -154,7 +165,7 @@
                             <!-- /ko -->
                         </button>
                     </div>
-                    @* The seek bar is hidden if native controls are enabled or if the stream is live. *@
+                    @* The seek bar is hidden if the stream is live. *@
                     <div class="controls" data-bind="ifnot: live">
                         <div class="status timestamp line-separator">
                             <span class="sr-only">Timestamp:</span>

@@ -46,7 +46,9 @@ var PPSPlayer = /** @class */ (function () {
             ].join(":");
         });
         this.updateInterface = false;
+        this.canFullscreen("requestFullscreen" in mediaElement);
         this.vol(mediaElement.volume);
+        // Event listeners (update custom controls when media state changes)
         mediaElement.addEventListener("play", function (_) {
             _this.playing(true);
         });
@@ -70,6 +72,7 @@ var PPSPlayer = /** @class */ (function () {
             _this.muted(mediaElement.muted);
             _this.updateInterface = false;
         });
+        // Listen for changes made to the seek / volume bars and update media
         this.currentTimeMs.subscribe(function (value) {
             if (_this.updateInterface)
                 return;
@@ -80,20 +83,16 @@ var PPSPlayer = /** @class */ (function () {
                 return;
             mediaElement.volume = value;
         });
-        this.canFullscreen("requestFullscreen" in mediaElement);
+        // Maintain state of full-screen button
         var onfullscreenchange = function () {
             _this.fullscreen(document.fullscreenElement === mainElement);
         };
-        var onmousemove = function () {
-            _this.nativeControls(mediaElement.controls);
-            _this.fullscreen(document.fullscreenElement === mainElement);
-        };
         document.addEventListener("fullscreenchange", onfullscreenchange);
-        mediaElement.addEventListener("mousemove", onmousemove);
+        // Clean up event handlers when player is replaced
         this.onDestroy = function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
-            mediaElement.removeEventListener("mousemove", onmousemove);
         };
+        // Allow user to toggle through subtitles with custom controls
         if (this.mediaElement.textTracks) {
             this.mediaElement.textTracks.addEventListener("addtrack", function (e) {
                 _this.subtitleTracks.push(e.track);
@@ -149,8 +148,15 @@ var PPSPlayer = /** @class */ (function () {
     PPSPlayer.prototype.hideLevelPicker = function () {
         this.levelPickerActive(false);
     };
-    PPSPlayer.prototype.activateCast = function () { };
-    PPSPlayer.prototype.activateAirPlay = function () { };
+    PPSPlayer.prototype.activateCast = function () {
+        // The plan is for this function to trigger Google Cast.
+        // The code will need to detect that it's been enabled (from here or
+        // from the browser) and replace the player with one that controls the
+        // Chromecast device.
+    };
+    PPSPlayer.prototype.activateAirPlay = function () {
+        // This button should just show the Safari/iOS AirPlay dialog.
+    };
     PPSPlayer.prototype.toggleFullscreen = function () {
         if (document.fullscreenElement === this.mainElement) {
             document.exitFullscreen();

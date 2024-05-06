@@ -1,5 +1,3 @@
-type PPSLevel = { name: string, activate: () => void };
-
 abstract class PPSPlayer {
     readonly playing = ko.observable(false);
     readonly live = ko.observable(false);
@@ -19,7 +17,7 @@ abstract class PPSPlayer {
     readonly levelPickerActive = ko.observable(false);
     readonly nativeControls = ko.observable(false);
 
-    readonly levels = ko.observableArray<PPSLevel>();
+    readonly levels = ko.observableArray<{ name: string, activate: () => void }>();
 
     readonly currentTimeStr = ko.pureComputed(() => {
         const milliseconds = this.currentTimeMs();
@@ -63,8 +61,10 @@ abstract class PPSPlayer {
         readonly mainElement: HTMLElement,
         readonly mediaElement: HTMLMediaElement
     ) {
+        this.canFullscreen("requestFullscreen" in mediaElement);
         this.vol(mediaElement.volume);
 
+        // Event listeners (update custom controls when media state changes)
         mediaElement.addEventListener("play", _ => {
             this.playing(true);
         });
@@ -91,6 +91,7 @@ abstract class PPSPlayer {
             this.updateInterface = false;
         });
 
+        // Listen for changes made to the seek / volume bars and update media
         this.currentTimeMs.subscribe(value => {
             if (this.updateInterface) return;
             mediaElement.currentTime = value / 1000;
@@ -100,24 +101,19 @@ abstract class PPSPlayer {
             mediaElement.volume = value;
         });
 
-        this.canFullscreen("requestFullscreen" in mediaElement);
-
+        // Maintain state of full-screen button
         const onfullscreenchange = () => {
-            this.fullscreen(document.fullscreenElement === mainElement);
-        };
-        const onmousemove = () => {
-            this.nativeControls(mediaElement.controls);
             this.fullscreen(document.fullscreenElement === mainElement);
         };
 
         document.addEventListener("fullscreenchange", onfullscreenchange);
-        mediaElement.addEventListener("mousemove", onmousemove);
 
+        // Clean up event handlers when player is replaced
         this.onDestroy = () => {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
-            mediaElement.removeEventListener("mousemove", onmousemove);
         };
 
+        // Allow user to toggle through subtitles with custom controls
         if (this.mediaElement.textTracks) {
             this.mediaElement.textTracks.addEventListener("addtrack", e => {
                 this.subtitleTracks.push(e.track);
@@ -192,9 +188,16 @@ abstract class PPSPlayer {
         this.levelPickerActive(false);
     }
 
-    activateCast() { }
+    activateCast() {
+        // The plan is for this function to trigger Google Cast.
+        // The code will need to detect that it's been enabled (from here or
+        // from the browser) and replace the player with one that controls the
+        // Chromecast device.
+    }
 
-    activateAirPlay() { }
+    activateAirPlay() {
+        // This button should just show the Safari/iOS AirPlay dialog.
+    }
 
     toggleFullscreen() {
         if (document.fullscreenElement === this.mainElement) {
