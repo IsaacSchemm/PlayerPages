@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\" />
+    <UpToDateCheckInput Remove="Styles\simple.scss" />
   </ItemGroup>
 
 </Project>

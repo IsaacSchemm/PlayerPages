@@ -1,0 +1,42 @@
+html body {
+  text-align: center;
+}
+html .image-parent {
+  display: inline-block;
+}
+html details summary {
+  margin: 1em;
+}
+html details .row a {
+  display: block;
+  margin: 1em;
+}
+html img {
+  width: 240px;
+  max-width: calc(100vw - 40px);
+  height: 240px;
+  object-fit: contain;
+}
+html video {
+  width: 300px;
+  width: calc(100vw - 40px);
+  max-width: 640px;
+}
+html .controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+html .controls .line-separator {
+  width: 100%;
+}
+html .controls button {
+  flex: 0 0 auto;
+  overflow: visible;
+}
+html .controls button .material-icons {
+  font-size: inherit;
+}
+
+/*# sourceMappingURL=simple.css.map */
