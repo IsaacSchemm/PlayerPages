@@ -31,11 +31,17 @@ const loadMedia = (src: string, contentType: string) => {
             oldPlayer.destroy();
         }
 
-        // Create new HTML video player element and place it onto the page
-        const video = document.createElement("video");
-
         const videoParent = document.getElementById("video-parent");
         videoParent.innerHTML = "";
+
+        const playButton = document.createElement("button");
+        playButton.id = "play-button";
+        playButton.innerHTML = `<span class="material-icons" aria-hidden="true">play_arrow</span>`;
+        videoParent.appendChild(playButton);
+
+        videoParent.appendChild(document.createElement("div"));
+
+        const video = document.createElement("video");
         videoParent.appendChild(video);
 
         // Determine which JavaScript player to use
@@ -56,6 +62,14 @@ const loadMedia = (src: string, contentType: string) => {
                 document.getElementsByTagName("main")[0],
                 video,
                 src);
+
+        pl.playing.subscribe(newValue => {
+            playButton.style.visibility = newValue ? "hidden" : "";
+        });
+        playButton.addEventListener("click", e => {
+            e.preventDefault();
+            video.play();
+        });
 
         // Bind the player controls
         player(pl);

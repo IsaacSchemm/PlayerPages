@@ -50,15 +50,6 @@
     }
     <![endif]-->
     <div id="center-row">
-        @if (!Model.PageProperties.left.IsEmpty)
-        {
-            <div class="embed-column">
-                @foreach (var embed in Model.PageProperties.left)
-                {
-                    @await Html.PartialAsync("Embed", embed)
-                }
-            </div>
-        }
         <main>
             <div id="video-parent">
                 <p>
@@ -93,9 +84,6 @@
                             <span class="sr-only">Play</span>
                             <!-- /ko -->
                         </button>
-                        <div class="line-separator sr-only">
-                            <hr />
-                        </div>
                         <!-- ko if: live -->
                         <div class="status line-separator">
                             Live

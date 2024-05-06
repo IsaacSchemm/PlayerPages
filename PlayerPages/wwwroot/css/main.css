@@ -1,6 +1,15 @@
 html body {
   text-align: center;
 }
+html button .material-icons {
+  font-size: inherit;
+}
+html #play-button {
+  width: 64px;
+  height: 48px;
+  font-size: 24px;
+  margin: 1em 0;
+}
 html .image-parent {
   display: inline-block;
 }
@@ -33,10 +42,6 @@ html .controls .line-separator {
 }
 html .controls button {
   flex: 0 0 auto;
-  overflow: visible;
-}
-html .controls button .material-icons {
-  font-size: inherit;
 }
 
 @supports (display: flex) and (object-fit: contain) and selector(summary) {
@@ -128,6 +133,12 @@ html .controls button .material-icons {
   html body #center-row main #video-parent {
     flex: 1 0 100px;
     position: relative;
+  }
+  html body #center-row main #video-parent #play-button {
+    position: absolute;
+    top: calc(50% - 24px);
+    left: calc(50% - 32px);
+    z-index: 1;
   }
   html body #center-row main #video-parent > video {
     position: absolute;

@@ -3,6 +3,17 @@
         text-align: center;
     }
 
+    button .material-icons {
+        font-size: inherit;
+    }
+
+    #play-button {
+        width: 64px;
+        height: 48px;
+        font-size: 24px;
+        margin: 1em 0;
+    }
+
     .image-parent {
         display: inline-block;
     }
@@ -43,11 +54,6 @@
 
         button {
             flex: 0 0 auto;
-            overflow: visible;
-
-            .material-icons {
-                font-size: inherit;
-            }
         }
     }
 }

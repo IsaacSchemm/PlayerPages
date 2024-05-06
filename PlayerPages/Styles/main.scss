@@ -99,6 +99,13 @@
                         flex: 1 0 100px;
                         position: relative;
 
+                        #play-button {
+                            position: absolute;
+                            top: calc(50% - 24px);
+                            left: calc(50% - 32px);
+                            z-index: 1;
+                        }
+
                         & > video {
                             position: absolute;
                             width: 100%;

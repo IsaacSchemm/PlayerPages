@@ -76,11 +76,15 @@ var loadMedia = function (src, contentType) {
             player(null);
             oldPlayer.destroy();
         }
-        // Create new HTML video player element and place it onto the page
-        var video = document.createElement("video");
         var videoParent = document.getElementById("video-parent");
         videoParent.innerHTML = "";
-        videoParent.appendChild(video);
+        var playButton_1 = document.createElement("button");
+        playButton_1.id = "play-button";
+        playButton_1.innerHTML = "<span class=\"material-icons\" aria-hidden=\"true\">play_arrow</span>";
+        videoParent.appendChild(playButton_1);
+        videoParent.appendChild(document.createElement("div"));
+        var video_1 = document.createElement("video");
+        videoParent.appendChild(video_1);
         // Determine which JavaScript player to use
         var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
             || contentType.toLowerCase() == "application/x-mpegurl";
@@ -89,8 +93,15 @@ var loadMedia = function (src, contentType) {
             isHLS = false;
         // Initialize the player
         var pl = isHLS
-            ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
-            : new HTMLPlayer(document.getElementsByTagName("main")[0], video, src);
+            ? new HLSPlayer(document.getElementsByTagName("main")[0], video_1, src)
+            : new HTMLPlayer(document.getElementsByTagName("main")[0], video_1, src);
+        pl.playing.subscribe(function (newValue) {
+            playButton_1.style.visibility = newValue ? "hidden" : "";
+        });
+        playButton_1.addEventListener("click", function (e) {
+            e.preventDefault();
+            video_1.play();
+        });
         // Bind the player controls
         player(pl);
     }
