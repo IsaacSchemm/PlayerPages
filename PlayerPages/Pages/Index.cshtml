@@ -134,19 +134,15 @@
                             <span class="material-icons" aria-hidden="true">hd</span>
                             <span class="sr-only">Select quality level</span>
                         </button>
-                        <button>
-                            @* TODO: This button should request to start Google Cast, which should then trigger the player to switch modes *@
-                            @* Should be hidden if not supported in browser *@
+                        <button data-bind="visible: canCast, click: activateCast">
                             <span class="material-icons" aria-hidden="true">cast</span>
                             <span class="sr-only">Cast</span>
                         </button>
-                        <button>
-                            @* TODO: This button should show the Safari/iOS AirPlay dialog *@
-                            @* Should be hidden if not supported in browser *@
+                        <button data-bind="visible: canAirPlay, click: activateAirPlay">
                             <span class="material-icons" aria-hidden="true">airplay</span>
                             <span class="sr-only">AirPlay</span>
                         </button>
-                        <button data-bind="click: toggleFullscreen">
+                        <button data-bind="visible: canFullscreen, click: toggleFullscreen">
                             @* TODO: This button should be hidden if the fullscreen browser API is not supported *@
                             <!-- ko if: fullscreen -->
                             <span class="material-icons" aria-hidden="true">fullscreen_exit</span>

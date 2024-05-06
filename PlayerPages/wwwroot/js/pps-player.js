@@ -9,6 +9,9 @@ var PPSPlayer = /** @class */ (function () {
         this.currentTimeMs = ko.observable(0);
         this.vol = ko.observable(0);
         this.muted = ko.observable(false);
+        this.canCast = ko.observable(false);
+        this.canAirPlay = ko.observable(false);
+        this.canFullscreen = ko.observable(false);
         this.fullscreen = ko.observable(false);
         this.subtitleTracks = ko.observableArray();
         this.hasSubtitles = ko.pureComputed(function () { return _this.subtitleTracks().length > 0; });
@@ -77,6 +80,7 @@ var PPSPlayer = /** @class */ (function () {
                 return;
             mediaElement.volume = value;
         });
+        this.canFullscreen("requestFullscreen" in mediaElement);
         var onfullscreenchange = function () {
             _this.fullscreen(document.fullscreenElement === mainElement);
         };
@@ -145,6 +149,8 @@ var PPSPlayer = /** @class */ (function () {
     PPSPlayer.prototype.hideLevelPicker = function () {
         this.levelPickerActive(false);
     };
+    PPSPlayer.prototype.activateCast = function () { };
+    PPSPlayer.prototype.activateAirPlay = function () { };
     PPSPlayer.prototype.toggleFullscreen = function () {
         if (document.fullscreenElement === this.mainElement) {
             document.exitFullscreen();

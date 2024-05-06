@@ -7,6 +7,9 @@ abstract class PPSPlayer {
     readonly currentTimeMs = ko.observable(0);
     readonly vol = ko.observable(0);
     readonly muted = ko.observable(false);
+    readonly canCast = ko.observable(false);
+    readonly canAirPlay = ko.observable(false);
+    readonly canFullscreen = ko.observable(false);
     readonly fullscreen = ko.observable(false);
 
     readonly subtitleTracks = ko.observableArray<TextTrack>();
@@ -97,6 +100,8 @@ abstract class PPSPlayer {
             mediaElement.volume = value;
         });
 
+        this.canFullscreen("requestFullscreen" in mediaElement);
+
         const onfullscreenchange = () => {
             this.fullscreen(document.fullscreenElement === mainElement);
         };
@@ -186,6 +191,10 @@ abstract class PPSPlayer {
     hideLevelPicker() {
         this.levelPickerActive(false);
     }
+
+    activateCast() { }
+
+    activateAirPlay() { }
 
     toggleFullscreen() {
         if (document.fullscreenElement === this.mainElement) {
