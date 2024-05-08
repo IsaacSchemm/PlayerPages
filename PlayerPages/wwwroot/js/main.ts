@@ -1,11 +1,19 @@
 ﻿namespace PPSMain {
     const player = ko.observable<PPSPlayer>();
 
-    ko.applyBindings({ player }, document.getElementsByTagName("main")[0]);
-
-    const delay = async (ms: number) => {
-        return new Promise<void>(r => setTimeout(r, ms));
-    }
+    ko.applyBindings({
+        player,
+        paused: ko.pureComputed(() => {
+            const pl = player();
+            return pl ? !pl.playing() : false;
+        }),
+        play: () => {
+            const pl = player();
+            if (pl) {
+                pl.mediaElement.play();
+            }
+        }
+    }, document.getElementsByTagName("main")[0]);
 
     const getContentTypeAsync = async (src: string) => {
         // Make a HEAD request to get the content type.
@@ -39,16 +47,6 @@
             const videoParent = document.getElementById("video-parent");
             videoParent.innerHTML = "";
 
-            // Create play button
-            // Appears when the player is paused (including initally)
-            const playButton = document.createElement("button");
-            playButton.id = "play-button";
-            playButton.innerHTML = `<span class="material-icons" aria-hidden="true">play_arrow</span> Play`;
-            videoParent.appendChild(playButton);
-
-            // Put the play button on its own line (only matters for fallback CSS)
-            videoParent.appendChild(document.createElement("div"));
-
             // Create video element
             const video = document.createElement("video");
             videoParent.appendChild(video);
@@ -71,15 +69,6 @@
                     document.getElementsByTagName("main")[0],
                     video,
                     src);
-
-            // Set up play button
-            pl.playing.subscribe(newValue => {
-                playButton.style.visibility = newValue ? "hidden" : "";
-            });
-            playButton.addEventListener("click", e => {
-                e.preventDefault();
-                video.play();
-            });
 
             // Bind the player controls
             player(pl);

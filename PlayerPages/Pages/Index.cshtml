@@ -63,11 +63,17 @@
     <![endif]-->
     <div id="center-row">
         <main>
-            <div id="video-parent">
-                @* The contents of this element are controlled by JavaScript, which will insert a media player and a play button. *@
-                <p>
-                    Use the menu above to select media to play.
-                </p>
+            <div id="video-controls-parent">
+                <button id="play-button" data-bind="click: play, style: { visibility: paused() ? '' : 'hidden' }">
+                    <span class="material-icons" aria-hidden="true">play_arrow</span> Play
+                </button>
+                <div></div>
+                <div id="video-parent">
+                    @* The contents of this element are controlled by JavaScript, which will insert a media player and a play button. *@
+                    <p>
+                        Use the menu above to select media to play.
+                    </p>
+                </div>
             </div>
             <!-- ko with: player -->
             @* The controls are hidden initially, and shown once Knockout has been loaded. *@

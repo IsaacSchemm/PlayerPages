@@ -38,12 +38,19 @@ var PPSMain;
 (function (PPSMain) {
     var _this = this;
     var player = ko.observable();
-    ko.applyBindings({ player: player }, document.getElementsByTagName("main")[0]);
-    var delay = function (ms) { return __awaiter(_this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            return [2 /*return*/, new Promise(function (r) { return setTimeout(r, ms); })];
-        });
-    }); };
+    ko.applyBindings({
+        player: player,
+        paused: ko.pureComputed(function () {
+            var pl = player();
+            return pl ? !pl.playing() : false;
+        }),
+        play: function () {
+            var pl = player();
+            if (pl) {
+                pl.mediaElement.play();
+            }
+        }
+    }, document.getElementsByTagName("main")[0]);
     var getContentTypeAsync = function (src) { return __awaiter(_this, void 0, void 0, function () {
         var resp, e_1;
         return __generator(this, function (_a) {
@@ -77,17 +84,9 @@ var PPSMain;
             // Clear player container
             var videoParent = document.getElementById("video-parent");
             videoParent.innerHTML = "";
-            // Create play button
-            // Appears when the player is paused (including initally)
-            var playButton_1 = document.createElement("button");
-            playButton_1.id = "play-button";
-            playButton_1.innerHTML = "<span class=\"material-icons\" aria-hidden=\"true\">play_arrow</span> Play";
-            videoParent.appendChild(playButton_1);
-            // Put the play button on its own line (only matters for fallback CSS)
-            videoParent.appendChild(document.createElement("div"));
             // Create video element
-            var video_1 = document.createElement("video");
-            videoParent.appendChild(video_1);
+            var video = document.createElement("video");
+            videoParent.appendChild(video);
             // Determine which JavaScript player to use
             var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
                 || contentType.toLowerCase() == "application/x-mpegurl";
@@ -96,16 +95,8 @@ var PPSMain;
                 isHLS = false;
             // Initialize the player
             var pl = isHLS
-                ? new HLSPlayer(document.getElementsByTagName("main")[0], video_1, src)
-                : new HTMLPlayer(document.getElementsByTagName("main")[0], video_1, src);
-            // Set up play button
-            pl.playing.subscribe(function (newValue) {
-                playButton_1.style.visibility = newValue ? "hidden" : "";
-            });
-            playButton_1.addEventListener("click", function (e) {
-                e.preventDefault();
-                video_1.play();
-            });
+                ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
+                : new HTMLPlayer(document.getElementsByTagName("main")[0], video, src);
             // Bind the player controls
             player(pl);
         }
