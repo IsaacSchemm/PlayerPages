@@ -6,10 +6,10 @@ class HLSPlayer extends PPSPlayer {
 
     constructor(
         readonly mainElement: HTMLElement,
-        readonly mediaElement: HTMLMediaElement,
+        readonly parentElement: HTMLElement,
         readonly src: string
     ) {
-        super(mainElement, mediaElement);
+        super(mainElement, parentElement, src);
 
         this.levels([{
             name: `Automatic`,
@@ -20,7 +20,7 @@ class HLSPlayer extends PPSPlayer {
         }]);
 
         this.hls = new Hls();
-        this.hls.attachMedia(mediaElement);
+        this.hls.attachMedia(this.mediaElement);
         this.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
             this.hls.loadSource(src);
 

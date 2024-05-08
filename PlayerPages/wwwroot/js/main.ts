@@ -1,4 +1,8 @@
-﻿namespace PPSMain {
+﻿declare var Castjs: any;
+
+namespace PPS {
+    export const cjs = new Castjs();
+
     const player = ko.observable<PPSPlayer>();
 
     ko.applyBindings({
@@ -43,14 +47,6 @@
                 oldPlayer.destroy();
             }
 
-            // Clear player container
-            const videoParent = document.getElementById("video-parent");
-            videoParent.innerHTML = "";
-
-            // Create video element
-            const video = document.createElement("video");
-            videoParent.appendChild(video);
-
             // Determine which JavaScript player to use
             let isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
                 || contentType.toLowerCase() == "application/x-mpegurl";
@@ -63,11 +59,11 @@
             const pl = isHLS
                 ? new HLSPlayer(
                     document.getElementsByTagName("main")[0],
-                    video,
+                    document.getElementById("video-parent")!,
                     src)
                 : new HTMLPlayer(
                     document.getElementsByTagName("main")[0],
-                    video,
+                    document.getElementById("video-parent")!,
                     src);
 
             // Bind the player controls

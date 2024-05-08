@@ -1,10 +1,10 @@
 class HTMLPlayer extends PPSPlayer {
     constructor(
         mainElement: HTMLElement,
-        mediaElement: HTMLMediaElement,
+        parentElement: HTMLElement,
         src: string
     ) {
-        super(mainElement, mediaElement);
-        mediaElement.src = src;
+        super(mainElement, parentElement, src);
+        this.mediaElement.src = src;
     }
 }

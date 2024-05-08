@@ -34,9 +34,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var PPSMain;
-(function (PPSMain) {
+var PPS;
+(function (PPS) {
     var _this = this;
+    PPS.cjs = new Castjs();
     var player = ko.observable();
     ko.applyBindings({
         player: player,
@@ -81,12 +82,6 @@ var PPSMain;
                 player(null);
                 oldPlayer.destroy();
             }
-            // Clear player container
-            var videoParent = document.getElementById("video-parent");
-            videoParent.innerHTML = "";
-            // Create video element
-            var video = document.createElement("video");
-            videoParent.appendChild(video);
             // Determine which JavaScript player to use
             var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
                 || contentType.toLowerCase() == "application/x-mpegurl";
@@ -95,8 +90,8 @@ var PPSMain;
                 isHLS = false;
             // Initialize the player
             var pl = isHLS
-                ? new HLSPlayer(document.getElementsByTagName("main")[0], video, src)
-                : new HTMLPlayer(document.getElementsByTagName("main")[0], video, src);
+                ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
+                : new HTMLPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
             // Bind the player controls
             player(pl);
         }
@@ -165,4 +160,4 @@ var PPSMain;
             continue;
         attachHandlerAsync(mediaLink, i == 0);
     }
-})(PPSMain || (PPSMain = {}));
+})(PPS || (PPS = {}));

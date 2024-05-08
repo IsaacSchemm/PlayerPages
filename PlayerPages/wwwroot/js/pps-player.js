@@ -1,8 +1,9 @@
 var PPSPlayer = /** @class */ (function () {
-    function PPSPlayer(mainElement, mediaElement) {
+    function PPSPlayer(fullscreenElement, parentElement, src) {
         var _this = this;
-        this.mainElement = mainElement;
-        this.mediaElement = mediaElement;
+        this.fullscreenElement = fullscreenElement;
+        this.parentElement = parentElement;
+        this.src = src;
         this.playing = ko.observable(false);
         this.live = ko.observable(false);
         this.durationMs = ko.observable(0);
@@ -46,6 +47,12 @@ var PPSPlayer = /** @class */ (function () {
             ].join(":");
         });
         this.updateInterface = false;
+        // Clear player container
+        parentElement.innerHTML = "";
+        // Create video element
+        var mediaElement = document.createElement("video");
+        parentElement.appendChild(mediaElement);
+        this.mediaElement = mediaElement;
         this.canFullscreen("requestFullscreen" in mediaElement);
         this.vol(mediaElement.volume);
         // Event listeners (update custom controls when media state changes)
@@ -85,7 +92,7 @@ var PPSPlayer = /** @class */ (function () {
         });
         // Maintain state of full-screen button
         var onfullscreenchange = function () {
-            _this.fullscreen(document.fullscreenElement === mainElement);
+            _this.fullscreen(document.fullscreenElement === fullscreenElement);
         };
         document.addEventListener("fullscreenchange", onfullscreenchange);
         // Clean up event handlers when player is replaced
@@ -93,8 +100,8 @@ var PPSPlayer = /** @class */ (function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
         };
         // Allow user to toggle through subtitles with custom controls
-        if (this.mediaElement.textTracks) {
-            this.mediaElement.textTracks.addEventListener("addtrack", function (e) {
+        if (mediaElement.textTracks) {
+            mediaElement.textTracks.addEventListener("addtrack", function (e) {
                 _this.subtitleTracks.push(e.track);
             });
         }
@@ -106,6 +113,8 @@ var PPSPlayer = /** @class */ (function () {
             if (newValue)
                 newValue.mode = "showing";
         });
+        this.canCast(PPS.cjs.available);
+        PPS.cjs.on("available", function () { return _this.canCast(true); });
     }
     PPSPlayer.prototype.togglePlay = function () {
         if (this.mediaElement.paused) {
@@ -153,16 +162,19 @@ var PPSPlayer = /** @class */ (function () {
         // The code will need to detect that it's been enabled (from here or
         // from the browser) and replace the player with one that controls the
         // Chromecast device.
+        if (PPS.cjs.available) {
+            PPS.cjs.cast(this.src);
+        }
     };
     PPSPlayer.prototype.activateAirPlay = function () {
         // This button should just show the Safari/iOS AirPlay dialog.
     };
     PPSPlayer.prototype.toggleFullscreen = function () {
-        if (document.fullscreenElement === this.mainElement) {
+        if (document.fullscreenElement === this.fullscreenElement) {
             document.exitFullscreen();
         }
         else {
-            this.mainElement.requestFullscreen();
+            this.fullscreenElement.requestFullscreen();
         }
     };
     PPSPlayer.prototype.destroy = function () {

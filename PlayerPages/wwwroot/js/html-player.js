@@ -15,9 +15,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var HTMLPlayer = /** @class */ (function (_super) {
     __extends(HTMLPlayer, _super);
-    function HTMLPlayer(mainElement, mediaElement, src) {
-        var _this = _super.call(this, mainElement, mediaElement) || this;
-        mediaElement.src = src;
+    function HTMLPlayer(mainElement, parentElement, src) {
+        var _this = _super.call(this, mainElement, parentElement, src) || this;
+        _this.mediaElement.src = src;
         return _this;
     }
     return HTMLPlayer;

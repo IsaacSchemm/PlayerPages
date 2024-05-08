@@ -15,10 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var HLSPlayer = /** @class */ (function (_super) {
     __extends(HLSPlayer, _super);
-    function HLSPlayer(mainElement, mediaElement, src) {
-        var _this = _super.call(this, mainElement, mediaElement) || this;
+    function HLSPlayer(mainElement, parentElement, src) {
+        var _this = _super.call(this, mainElement, parentElement, src) || this;
         _this.mainElement = mainElement;
-        _this.mediaElement = mediaElement;
+        _this.parentElement = parentElement;
         _this.src = src;
         _this.levels([{
                 name: "Automatic",
@@ -28,7 +28,7 @@ var HLSPlayer = /** @class */ (function (_super) {
                 }
             }]);
         _this.hls = new Hls();
-        _this.hls.attachMedia(mediaElement);
+        _this.hls.attachMedia(_this.mediaElement);
         _this.hls.on(Hls.Events.MEDIA_ATTACHED, function () {
             _this.hls.loadSource(src);
             _this.hls.on(Hls.Events.MANIFEST_PARSED, function (_, data) {

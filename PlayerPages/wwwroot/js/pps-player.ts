@@ -55,12 +55,23 @@ abstract class PPSPlayer {
 
     private updateInterface = false;
 
+    readonly mediaElement: HTMLVideoElement;
     readonly onDestroy: () => void;
 
     constructor(
-        readonly mainElement: HTMLElement,
-        readonly mediaElement: HTMLMediaElement
+        readonly fullscreenElement: HTMLElement,
+        readonly parentElement: HTMLElement,
+        readonly src: string
     ) {
+        // Clear player container
+        parentElement.innerHTML = "";
+
+        // Create video element
+        const mediaElement = document.createElement("video");
+        parentElement.appendChild(mediaElement);
+
+        this.mediaElement = mediaElement;
+
         this.canFullscreen("requestFullscreen" in mediaElement);
         this.vol(mediaElement.volume);
 
@@ -103,7 +114,7 @@ abstract class PPSPlayer {
 
         // Maintain state of full-screen button
         const onfullscreenchange = () => {
-            this.fullscreen(document.fullscreenElement === mainElement);
+            this.fullscreen(document.fullscreenElement === fullscreenElement);
         };
 
         document.addEventListener("fullscreenchange", onfullscreenchange);
@@ -114,8 +125,8 @@ abstract class PPSPlayer {
         };
 
         // Allow user to toggle through subtitles with custom controls
-        if (this.mediaElement.textTracks) {
-            this.mediaElement.textTracks.addEventListener("addtrack", e => {
+        if (mediaElement.textTracks) {
+            mediaElement.textTracks.addEventListener("addtrack", e => {
                 this.subtitleTracks.push(e.track);
             });
         }
@@ -127,6 +138,9 @@ abstract class PPSPlayer {
             if (newValue)
                 newValue.mode = "showing";
         });
+
+        this.canCast(PPS.cjs.available);
+        PPS.cjs.on("available", () => this.canCast(true));
     }
 
     togglePlay() {
@@ -193,6 +207,10 @@ abstract class PPSPlayer {
         // The code will need to detect that it's been enabled (from here or
         // from the browser) and replace the player with one that controls the
         // Chromecast device.
+
+        if (PPS.cjs.available) {
+            PPS.cjs.cast(this.src);
+        }
     }
 
     activateAirPlay() {
@@ -200,10 +218,10 @@ abstract class PPSPlayer {
     }
 
     toggleFullscreen() {
-        if (document.fullscreenElement === this.mainElement) {
+        if (document.fullscreenElement === this.fullscreenElement) {
             document.exitFullscreen();
         } else {
-            this.mainElement.requestFullscreen();
+            this.fullscreenElement.requestFullscreen();
         }
     }
 
