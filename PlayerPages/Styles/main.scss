@@ -13,18 +13,39 @@
             height: 1px;
         }
 
+        body, main, button {
+            background-color: black;
+            color: white;
+        }
+
+        a {
+            color: dodgerblue;
+
+            &:visited {
+                color: magenta;
+            }
+
+            &:active {
+                color: red;
+            }
+        }
+
         button {
             appearance: none;
-            background-color: Window;
             border: 0;
-            color: WindowText;
             cursor: pointer;
             font: inherit;
 
             &:focus, &:hover {
-                background-color: Highlight;
-                color: HighlightText;
+                background-color: dodgerblue;
+                color: white;
                 outline: 0;
+
+                @media (forced-colors: active) {
+                    background-color: Highlight;
+                    color: HighlightText;
+                    forced-color-adjust: none;
+                }
             }
         }
 
@@ -64,8 +85,14 @@
                 summary:hover,
                 .row a:focus,
                 .row a:hover {
-                    background-color: Highlight;
-                    color: HighlightText;
+                    background-color: dodgerblue;
+                    color: white;
+
+                    @media (forced-colors: active) {
+                        background-color: Highlight;
+                        color: HighlightText;
+                        forced-color-adjust: none;
+                    }
                 }
             }
 
@@ -110,7 +137,7 @@
                     display: flex;
                     flex-direction: column;
 
-                    #video-controls-parent {
+                    #video-box-parent {
                         flex: 1 0 100px;
                         position: relative;
 
@@ -150,8 +177,6 @@
                     }
 
                     .controls {
-                        background-color: Window;
-                        color: WindowText;
                         flex: 0 0 32px;
                         display: flex;
                         flex-direction: row;
@@ -216,8 +241,8 @@
 
                         .adv:not(:focus) {
                             position: absolute;
-                            top: 0;
-                            left: 0;
+                            top: -100px;
+                            left: -100px;
                             width: 0;
                             height: 0;
                             overflow: hidden;

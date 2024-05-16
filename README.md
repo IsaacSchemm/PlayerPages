@@ -46,10 +46,10 @@ Techniques used to accompish some of the more uncommon goals of this project inc
 
 TODO:
 
+* Autohide controls in full screen mode
 * Google Cast support
 * AirPlay support
 * Make sure screen reader region navigaton (NVDA: D / Shift+D) works well
-* Test system colors, high contast
 * Test right-to-left text, if applicable
 * Add backend to store pages, and API to add/edit/delete them
 * Add a way for API user to view a page that isn't public (make sure base href works)

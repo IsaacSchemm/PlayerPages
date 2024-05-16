@@ -55,18 +55,36 @@ html .controls button {
     width: 1px;
     height: 1px;
   }
+  html body, html main, html button {
+    background-color: black;
+    color: white;
+  }
+  html a {
+    color: dodgerblue;
+  }
+  html a:visited {
+    color: magenta;
+  }
+  html a:active {
+    color: red;
+  }
   html button {
     appearance: none;
-    background-color: Window;
     border: 0;
-    color: WindowText;
     cursor: pointer;
     font: inherit;
   }
   html button:focus, html button:hover {
-    background-color: Highlight;
-    color: HighlightText;
+    background-color: dodgerblue;
+    color: white;
     outline: 0;
+  }
+  @media (forced-colors: active) {
+    html button:focus, html button:hover {
+      background-color: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
   }
   html body {
     width: 100%;
@@ -100,8 +118,18 @@ html .controls button {
   html body details summary:hover,
   html body details .row a:focus,
   html body details .row a:hover {
-    background-color: Highlight;
-    color: HighlightText;
+    background-color: dodgerblue;
+    color: white;
+  }
+  @media (forced-colors: active) {
+    html body details summary:focus,
+    html body details summary:hover,
+    html body details .row a:focus,
+    html body details .row a:hover {
+      background-color: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
   }
   html body .image-parent {
     flex: 0 0 50px;
@@ -142,11 +170,11 @@ html .controls button {
     display: flex;
     flex-direction: column;
   }
-  html body #center-row main #video-controls-parent {
+  html body #center-row main #video-box-parent {
     flex: 1 0 100px;
     position: relative;
   }
-  html body #center-row main #video-controls-parent #play-button {
+  html body #center-row main #video-box-parent #play-button {
     position: absolute;
     margin: 0;
     top: calc(50% - 24px);
@@ -156,14 +184,14 @@ html .controls button {
     font-size: 24px;
     z-index: 1;
   }
-  html body #center-row main #video-controls-parent #video-parent {
+  html body #center-row main #video-box-parent #video-parent {
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
   }
-  html body #center-row main #video-controls-parent #video-parent > video {
+  html body #center-row main #video-box-parent #video-parent > video {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -177,8 +205,6 @@ html .controls button {
     flex-direction: column;
   }
   html body #center-row main .controls {
-    background-color: Window;
-    color: WindowText;
     flex: 0 0 32px;
     display: flex;
     flex-direction: row;
@@ -232,8 +258,8 @@ html .controls button {
   }
   html body #center-row main .controls .adv:not(:focus) {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: -100px;
+    left: -100px;
     width: 0;
     height: 0;
     overflow: hidden;
