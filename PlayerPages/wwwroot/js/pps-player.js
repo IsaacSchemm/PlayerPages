@@ -17,6 +17,7 @@ var PPSPlayer = /** @class */ (function () {
         this.subtitleTracks = ko.observableArray();
         this.hasSubtitles = ko.pureComputed(function () { return _this.subtitleTracks().length > 0; });
         this.currentSubtitleTrack = ko.observable(null);
+        this.mouseIdle = ko.observable(false);
         this.levelPickerActive = ko.observable(false);
         this.nativeControls = ko.observable(false);
         this.levels = ko.observableArray();
@@ -94,7 +95,15 @@ var PPSPlayer = /** @class */ (function () {
         var onfullscreenchange = function () {
             _this.fullscreen(document.fullscreenElement === fullscreenElement);
         };
+        // Hide controls on mouse idle
+        var mousewait = setTimeout(function () { }, 0);
+        var onmousemove = function () {
+            clearTimeout(mousewait);
+            _this.mouseIdle(false);
+            mousewait = setTimeout(function () { return _this.mouseIdle(true); }, 2000);
+        };
         document.addEventListener("fullscreenchange", onfullscreenchange);
+        document.addEventListener("mousemove", onmousemove);
         // Clean up event handlers when player is replaced
         this.onDestroy = function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);

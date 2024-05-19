@@ -14,6 +14,8 @@ abstract class PPSPlayer {
     readonly hasSubtitles = ko.pureComputed(() => this.subtitleTracks().length > 0);
     readonly currentSubtitleTrack = ko.observable<TextTrack>(null);
 
+    readonly mouseIdle = ko.observable(false);
+
     readonly levelPickerActive = ko.observable(false);
     readonly nativeControls = ko.observable(false);
 
@@ -117,7 +119,16 @@ abstract class PPSPlayer {
             this.fullscreen(document.fullscreenElement === fullscreenElement);
         };
 
+        // Hide controls on mouse idle
+        let mousewait = setTimeout(() => { }, 0);
+        const onmousemove = () => {
+            clearTimeout(mousewait);
+            this.mouseIdle(false);
+            mousewait = setTimeout(() => this.mouseIdle(true), 2000);
+        };
+
         document.addEventListener("fullscreenchange", onfullscreenchange);
+        document.addEventListener("mousemove", onmousemove);
 
         // Clean up event handlers when player is replaced
         this.onDestroy = () => {

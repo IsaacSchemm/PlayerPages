@@ -7,6 +7,10 @@ namespace PPS {
 
     ko.applyBindings({
         player,
+        idle: ko.pureComputed(() => {
+            const pl = player();
+            return pl && pl.mouseIdle() /*&& pl.fullscreen()*/ && pl.playing();
+        }),
         paused: ko.pureComputed(() => {
             const pl = player();
             return pl ? !pl.playing() : false;

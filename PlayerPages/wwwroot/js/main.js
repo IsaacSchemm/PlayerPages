@@ -41,6 +41,10 @@ var PPS;
     var player = ko.observable();
     ko.applyBindings({
         player: player,
+        idle: ko.pureComputed(function () {
+            var pl = player();
+            return pl && pl.mouseIdle() /*&& pl.fullscreen()*/ && pl.playing();
+        }),
         paused: ko.pureComputed(function () {
             var pl = player();
             return pl ? !pl.playing() : false;

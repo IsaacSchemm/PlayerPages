@@ -38,7 +38,7 @@ Techniques used to accompish some of the more uncommon goals of this project inc
       page is served over plain HTTP from a CDN; required for Wii U support)
 * Adding "hidden" buttons to the player controls for quick volume (up/down)
   and seek (+/- 10/30 sec) actions - these buttons are available to screen
-  readers,, where operating a range control is more awkward, and can be
+  readers, where operating a range control is more awkward, and can be
   revealed with the Tab key
 * Only using the flexbox-based layout on browsers that fully support it, and
   falling back to minimalist CSS that renders the app as a single page on
@@ -46,7 +46,6 @@ Techniques used to accompish some of the more uncommon goals of this project inc
 
 TODO:
 
-* Autohide controls in full screen mode
 * Google Cast support
 * AirPlay support
 * Make sure screen reader region navigaton (NVDA: D / Shift+D) works well
