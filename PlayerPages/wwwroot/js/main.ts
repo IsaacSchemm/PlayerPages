@@ -62,14 +62,19 @@ namespace PPS {
         try {
             // Clean up previous player (if any)
             const oldPlayer = player();
+
+            // Store old player's source and seek time
+            const oldSrc = oldPlayer?.src;
+            const oldTime = oldPlayer?.currentTimeMs();
+
             if (oldPlayer) {
                 player(null);
                 oldPlayer.destroy();
             }
 
             // Determine which JavaScript player to use
-            let isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
-                || contentType.toLowerCase() == "application/x-mpegurl";
+            let isHLS = contentType?.toLowerCase() === "application/vnd.apple.mpegurl"
+                || contentType?.toLowerCase() == "application/x-mpegurl";
 
             // If hls.js is not loaded or will not work, just use an HTML player
             if (!("Hls" in window) || !Hls.isSupported())
@@ -88,7 +93,7 @@ namespace PPS {
                             document.getElementsByTagName("main")[0],
                             document.getElementById("video-parent")!,
                             src)
-                        : new HTMLPlayer(
+                        : new PPSPlayer(
                             document.getElementsByTagName("main")[0],
                             document.getElementById("video-parent")!,
                             src)
@@ -98,6 +103,22 @@ namespace PPS {
             // Bind the player controls
             player(pl);
 
+            // If it's the same media as before, try to seek to the same point
+            // (for better Google Cast experience)
+            if (pl.src === oldSrc) {
+                (async () => {
+                    // Wait for media to start playing
+                    while (!pl.playing()) {
+                        await new Promise<void>(r => pl.playing.subscribe(() => r()));
+                    }
+
+                    // Seek to the same timestamp that the player was at previously
+                    pl.currentTimeMs(oldTime);
+                })();
+            }
+
+            // Hook up the reloadMedia function
+            // (used when Google Cast connects or disconnects)
             reloadMedia = () => loadMedia(src, contentType);
         } catch (e) {
             console.error(e);
@@ -132,12 +153,13 @@ namespace PPS {
                 }
             }
 
-            // If we couldn't access this media and determine its type, then just
-            // leave the link as-is
-            if (!contentType)
-                return;
-
             mediaLink.addEventListener("click", e => {
+                // If we couldn't access this media and determine its type,
+                // just take the default link action of opening in a new tab,
+                // unless Google Cast is already active
+                if (!contentType && !casting())
+                    return;
+
                 e.preventDefault();
 
                 // Close the menu

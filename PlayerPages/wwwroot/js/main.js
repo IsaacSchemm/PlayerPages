@@ -93,29 +93,54 @@ var PPS;
         try {
             // Clean up previous player (if any)
             var oldPlayer = player();
+            // Store old player's source and seek time
+            var oldSrc = oldPlayer === null || oldPlayer === void 0 ? void 0 : oldPlayer.src;
+            var oldTime_1 = oldPlayer === null || oldPlayer === void 0 ? void 0 : oldPlayer.currentTimeMs();
             if (oldPlayer) {
                 player(null);
                 oldPlayer.destroy();
             }
             // Determine which JavaScript player to use
-            var isHLS_1 = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
-                || contentType.toLowerCase() == "application/x-mpegurl";
+            var isHLS_1 = (contentType === null || contentType === void 0 ? void 0 : contentType.toLowerCase()) === "application/vnd.apple.mpegurl"
+                || (contentType === null || contentType === void 0 ? void 0 : contentType.toLowerCase()) == "application/x-mpegurl";
             // If hls.js is not loaded or will not work, just use an HTML player
             if (!("Hls" in window) || !Hls.isSupported())
                 isHLS_1 = false;
             // Initialize the player
-            var pl = (function () {
+            var pl_1 = (function () {
                 if (casting()) {
                     return new CastjsPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
                 }
                 else {
                     return isHLS_1
                         ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
-                        : new HTMLPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
+                        : new PPSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
                 }
             })();
             // Bind the player controls
-            player(pl);
+            player(pl_1);
+            // If it's the same media as before, try to seek to the same point
+            // (for better Google Cast experience)
+            if (pl_1.src === oldSrc) {
+                (function () { return __awaiter(_this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                if (!!pl_1.playing()) return [3 /*break*/, 2];
+                                return [4 /*yield*/, new Promise(function (r) { return pl_1.playing.subscribe(function () { return r(); }); })];
+                            case 1:
+                                _a.sent();
+                                return [3 /*break*/, 0];
+                            case 2:
+                                // Seek to the same timestamp that the player was at previously
+                                pl_1.currentTimeMs(oldTime_1);
+                                return [2 /*return*/];
+                        }
+                    });
+                }); })();
+            }
+            // Hook up the reloadMedia function
+            // (used when Google Cast connects or disconnects)
             reloadMedia = function () { return loadMedia(src, contentType); };
         }
         catch (e) {
@@ -146,11 +171,12 @@ var PPS;
                         }
                         _a.label = 3;
                     case 3:
-                        // If we couldn't access this media and determine its type, then just
-                        // leave the link as-is
-                        if (!contentType_1)
-                            return [2 /*return*/];
                         mediaLink.addEventListener("click", function (e) {
+                            // If we couldn't access this media and determine its type,
+                            // just take the default link action of opening in a new tab,
+                            // unless Google Cast is already active
+                            if (!contentType_1 && !casting())
+                                return;
                             e.preventDefault();
                             // Close the menu
                             document.getElementById("menu").removeAttribute("open");

@@ -153,8 +153,14 @@
                             <span class="sr-only">Select quality level</span>
                         </button>
                         <button data-bind="visible: canCast, click: activateCast">
+                            <!-- ko if: $data instanceof CastjsPlayer -->
+                            <span class="material-icons" aria-hidden="true">cast_connected</span>
+                            <span class="sr-only">Stop casting</span>
+                            <!-- /ko -->
+                            <!-- ko ifnot: $data instanceof CastjsPlayer -->
                             <span class="material-icons" aria-hidden="true">cast</span>
                             <span class="sr-only">Cast</span>
+                            <!-- /ko -->
                         </button>
                         <button data-bind="visible: canAirPlay, click: activateAirPlay">
                             <span class="material-icons" aria-hidden="true">airplay</span>

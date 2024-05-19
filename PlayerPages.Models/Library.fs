@@ -52,12 +52,8 @@ module PageProperties =
                 src = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
             }
             {
-                title = "big-buck-bunny-480p-30sec.mp4"
-                src = "https://cdn.jsdelivr.net/npm/video-media-samples@1.0.0/big-buck-bunny-480p-30sec.mp4"
-            }
-            {
-                title = "Green Greens"
-                src = "02 Green Greens [星のカービィ].mp3"
+                title = "ForBiggerFun.mp4"
+                src = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
             }
         ]
         top = [

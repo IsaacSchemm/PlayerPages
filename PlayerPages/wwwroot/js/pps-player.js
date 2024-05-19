@@ -66,7 +66,7 @@ var PPSPlayer = /** @class */ (function () {
             _this.durationMs(mediaElement.duration * 1000);
         });
         mediaElement.addEventListener("error", function (e) {
-            console.error(e);
+            console.error("Cast error", e);
         });
         mediaElement.addEventListener("timeupdate", function (_) {
             _this.updateInterface = true;
@@ -109,6 +109,7 @@ var PPSPlayer = /** @class */ (function () {
         };
         this.canCast(PPS.cjs.available);
         PPS.cjs.on("available", function () { return _this.canCast(true); });
+        this.mediaElement.src = src;
     }
     PPSPlayer.prototype.play = function () {
         this.mediaElement.play();

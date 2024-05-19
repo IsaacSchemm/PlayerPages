@@ -1,4 +1,4 @@
-abstract class PPSPlayer {
+class PPSPlayer {
     readonly playing = ko.observable(false);
     readonly live = ko.observable(false);
     readonly durationMs = ko.observable(0);
@@ -88,7 +88,7 @@ abstract class PPSPlayer {
         });
 
         mediaElement.addEventListener("error", e => {
-            console.error(e);
+            console.error("Cast error", e);
         });
 
         mediaElement.addEventListener("timeupdate", _ => {
@@ -136,6 +136,8 @@ abstract class PPSPlayer {
 
         this.canCast(PPS.cjs.available);
         PPS.cjs.on("available", () => this.canCast(true));
+
+        this.mediaElement.src = src;
     }
 
     play() {
