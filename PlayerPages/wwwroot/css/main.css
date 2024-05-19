@@ -94,6 +94,11 @@ html .controls button {
     flex-direction: column;
     font-family: sans-serif;
   }
+  html body header {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
   html body details {
     flex: 0 0 auto;
     text-align: left;

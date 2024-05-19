@@ -29,8 +29,6 @@ PlayerPages is designed to make a media player as accessible as possible, for va
 
 TODO:
 
-* Make sure screen reader region navigaton (NVDA: D / Shift+D) works well
-* Test right-to-left text, if applicable
 * Add backend to store pages, and API to add/edit/delete them
 * Add a way for API user to view a page that isn't public (make sure base href works)
 * Add an interface to invalidate CDN (no-op for now)

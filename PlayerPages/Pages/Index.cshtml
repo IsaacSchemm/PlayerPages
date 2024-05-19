@@ -25,13 +25,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
-    @foreach (var embed in Model.PageProperties.top)
-    {
-        @await Html.PartialAsync("Embed", embed)
+    @if (Model.PageProperties.top.Length > 0) {
+        <header>
+            @foreach (var embed in Model.PageProperties.top)
+            {
+                @await Html.PartialAsync("Embed", embed)
+            }
+        </header>
     }
     <!--[if !IE]><!-->
     @* The top menu bar (not shown on Internet Explorer). *@
-    <details id="menu">
+    <details id="menu" role="navigation">
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
@@ -218,12 +222,12 @@
         </main>
         @if (!Model.PageProperties.right.IsEmpty)
         {
-            <div class="embed-column">
+            <aside class="embed-column">
                 @foreach (var embed in Model.PageProperties.right)
                 {
                     @await Html.PartialAsync("Embed", embed)
                 }
-            </div>
+            </aside>
         }
     </div>
     <script src="lib/knockout/build/output/knockout-latest.debug.js"></script>

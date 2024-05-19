@@ -54,6 +54,12 @@
         flex-direction: column;
         font-family: sans-serif;
 
+        header {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
         details {
             flex: 0 0 auto;
             text-align: left;

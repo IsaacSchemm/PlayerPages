@@ -61,17 +61,13 @@ module PageProperties =
                 src = "square.png"
                 alt = "an avatar"
                 bgcolor = "pink"
-                href = Some "https://www.weau.com"
+                href = Some "https://www.example.com"
             }
         ]
         links = [
             {
-                title = "WQOW"
-                href = "https://www.wqow.com"
-            }
-            {
-                title = "WXOW"
-                href = "https://www.wxow.com"
+                title = "example.net"
+                href = "https://www.example.net"
             }
         ]
         right = [
@@ -79,13 +75,13 @@ module PageProperties =
                 src = "415b.png"
                 alt = "tyler sitting on a pole"
                 bgcolor = "cyan"
-                href = Some "https://www.weau.com"
+                href = None
             }
             {
                 src = "415.png"
                 alt = "tyler standing 1"
                 bgcolor = "lightgray"
-                href = Some "https://www.xkcd.com"
+                href = Some "https://www.example.org"
             }
         ]
     }
