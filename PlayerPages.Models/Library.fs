@@ -58,7 +58,7 @@ module PageProperties =
         ]
         top = [
             {
-                src = "square.png"
+                src = "../square.png"
                 alt = "an avatar"
                 bgcolor = "pink"
                 href = Some "https://www.example.com"
@@ -72,13 +72,13 @@ module PageProperties =
         ]
         right = [
             {
-                src = "415b.png"
+                src = "../415b.png"
                 alt = "tyler sitting on a pole"
                 bgcolor = "cyan"
                 href = None
             }
             {
-                src = "415.png"
+                src = "../415.png"
                 alt = "tyler standing 1"
                 bgcolor = "lightgray"
                 href = Some "https://www.example.org"
