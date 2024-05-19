@@ -15,6 +15,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Styles\complex.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Styles\complex.scss" />
     <Content Include="Styles\main.scss" />
   </ItemGroup>
 
@@ -46,6 +51,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Styles\complex.scss" />
   </ItemGroup>
 
 </Project>

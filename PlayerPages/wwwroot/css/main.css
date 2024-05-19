@@ -43,7 +43,7 @@ html .controls button {
   flex: 0 0 auto;
 }
 
-@supports (display: flex) and (object-fit: contain) and selector(summary) and selector(:focus-within) {
+@supports (display: flex) and (object-fit: contain) and selector(:focus-within) {
   html {
     width: 100%;
     height: 100%;
@@ -171,7 +171,7 @@ html .controls button {
     flex-direction: column;
   }
   html body #center-row main #video-box-parent {
-    flex: 1 0 100px;
+    flex: 1 1 100px;
     position: relative;
   }
   html body #center-row main #video-box-parent #play-button {
