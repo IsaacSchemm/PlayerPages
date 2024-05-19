@@ -1,19 +1,18 @@
-﻿@page "{id}"
-@using Microsoft.FSharp.Core
+﻿@using Microsoft.FSharp.Core
 @using PlayerPages
 @inject IContentDeliveryNetwork contentDeliveryNetwork
-@model PlayerPages.Pages.IndexModel
+@model PlayerPages.Data.Page
 <!DOCTYPE html>
 <html class="application">
 <head>
     <title>@Model.PageProperties.title</title>
 
     @* Allow Firefox users to view the fallback CSS from View > Page Style *@
-    <link rel="stylesheet" href="css/main.css" title="Default View" />
-    <link rel="stylesheet alternate" href="css/complex.css" title="Application View" />
-    <link rel="stylesheet alternate" href="css/simple.css" title="Page View" />
+    <link rel="stylesheet" href="../css/main.css" title="Default View" />
+    <link rel="stylesheet alternate" href="../css/complex.css" title="Application View" />
+    <link rel="stylesheet alternate" href="../css/simple.css" title="Page View" />
 
-    <link rel="stylesheet" href="material-icons/iconfont/material-icons.css" />
+    <link rel="stylesheet" href="../material-icons/iconfont/material-icons.css" />
 
     @* Allow this page to be proxied while pulling CSS and JavaScript from the original server *@
     <base href="@contentDeliveryNetwork.GetPagePath(Model.Id)" />
@@ -26,7 +25,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
-    @if (Model.PageProperties.top.Length > 0) {
+    @if (Model.PageProperties.top.Length > 0)
+    {
         <header>
             @foreach (var embed in Model.PageProperties.top)
             {
@@ -60,11 +60,11 @@
     @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
     @foreach (var media in Model.PageProperties.media)
     {
-        <h2>@media.title</h2>
-        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
-            <param name="src" value="@media.src" />
-            <param name="autoplay" value="false" />
-        </object>
+            <h2>@media.title</h2>
+            <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
+                <param name="src" value="@media.src" />
+                <param name="autoplay" value="false" />
+            </object>
     }
     <![endif]-->
     <div id="center-row">
@@ -231,14 +231,14 @@
             </aside>
         }
     </div>
-    <script src="lib/knockout/build/output/knockout-latest.debug.js"></script>
-    <script src="lib/npo.js"></script>
-    <script src="lib/fetch/dist/fetch.umd.js"></script>
-    <script src="lib/hls.js/hls.min.js"></script>
-    <script src="lib/cast.min.js"></script>
-    <script type="text/javascript" src="js/pps-player.js"></script>
-    <script type="text/javascript" src="js/hls-player.js"></script>
-    <script type="text/javascript" src="js/castjs-player.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
+    <script src="../lib/knockout/build/output/knockout-latest.debug.js"></script>
+    <script src="../lib/npo.js"></script>
+    <script src="../lib/fetch/dist/fetch.umd.js"></script>
+    <script src="../lib/hls.js/hls.min.js"></script>
+    <script src="../lib/cast.min.js"></script>
+    <script type="text/javascript" src="../js/pps-player.js"></script>
+    <script type="text/javascript" src="../js/hls-player.js"></script>
+    <script type="text/javascript" src="../js/castjs-player.js"></script>
+    <script type="text/javascript" src="../js/main.js"></script>
 </body>
 </html>

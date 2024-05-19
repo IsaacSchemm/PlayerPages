@@ -4,15 +4,14 @@ using PlayerPages.Models;
 
 namespace PlayerPages.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/pages")]
     [ApiController]
-    public class PagesController(IContentDeliveryNetwork cdn, PlayerPagesDbContext context) : ControllerBase
+    [PlayerPagesAdminAuthorization]
+    public class ManagementController(IContentDeliveryNetwork cdn, PlayerPagesDbContext context) : ControllerBase
     {
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(string id)
         {
-            if (Request.IsAdmin()) return Forbid();
-
             var page = await context.Pages.FindAsync(id);
             return page?.PageProperties is PageProperties pp
                 ? Ok(pp)
@@ -22,16 +21,12 @@ namespace PlayerPages.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] PageProperties value)
         {
-            if (Request.IsAdmin()) return Forbid();
-
             return await PutAsync($"{Guid.NewGuid()}", value);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAsync(string id, [FromBody] PageProperties value)
         {
-            if (Request.IsAdmin()) return Forbid();
-
             var page = await context.Pages.FindAsync(id);
             if (page == null)
             {
@@ -52,8 +47,6 @@ namespace PlayerPages.Controllers
         [HttpPost("{id}/show")]
         public async Task<IActionResult> ShowAsync(string id)
         {
-            if (Request.IsAdmin()) return Forbid();
-
             var page = await context.Pages.FindAsync(id);
             if (page != null && !page.Public)
             {
@@ -67,8 +60,6 @@ namespace PlayerPages.Controllers
         [HttpPost("{id}/hide")]
         public async Task<IActionResult> HideAsync(string id)
         {
-            if (Request.IsAdmin()) return Forbid();
-
             var page = await context.Pages.FindAsync(id);
             if (page != null && page.Public)
             {
@@ -82,8 +73,6 @@ namespace PlayerPages.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            if (Request.IsAdmin()) return Forbid();
-
             var page = await context.Pages.FindAsync(id);
             if (page != null)
             {

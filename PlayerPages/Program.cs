@@ -5,7 +5,6 @@ using PlayerPages.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
 builder.Services.AddMvc();
 builder.Services.AddControllers(options => options.EnableEndpointRouting = false);
 
@@ -33,7 +32,7 @@ if (!app.Environment.IsDevelopment())
 
 app.MapGet("/", () =>
 {
-    return Results.Redirect("/example1");
+    return Results.Redirect("/public/example1");
 });
 
 app.UseStaticFiles();
@@ -42,7 +41,6 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
 app.UseMvc();
 
 app.Run();

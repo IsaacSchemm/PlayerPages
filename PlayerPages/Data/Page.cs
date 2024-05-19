@@ -20,11 +20,11 @@ namespace PlayerPages.Data
         public string PagePropertiesJson { get; set; } = DefaultJson.Value;
 
         [NotMapped]
-        public PageProperties? PageProperties
+        public PageProperties PageProperties
         {
             get
             {
-                return JsonSerializer.Deserialize<PageProperties>(PagePropertiesJson);
+                return JsonSerializer.Deserialize<PageProperties>(PagePropertiesJson) ?? PagePropertiesModule.Empty;
             }
             set
             {
