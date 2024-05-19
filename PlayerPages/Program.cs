@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PlayerPages;
 using PlayerPages.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSassCompiler();
 
 builder.Services.AddDbContext<PlayerPagesDbContext>(options => options.UseInMemoryDatabase("PlayerPages1"));
+
+builder.Services.AddSingleton<IContentDeliveryNetwork, Standin>();
 
 var app = builder.Build();
 
@@ -43,3 +46,15 @@ app.MapRazorPages();
 app.UseMvc();
 
 app.Run();
+
+class Standin : IContentDeliveryNetwork
+{
+    public string GetPagePath(string playerPagesPageId) =>
+        $"https://localhost:7175/{Uri.EscapeDataString(playerPagesPageId)}";
+
+    public Task InvalidateCacheAsync(string playerPagesPageId)
+    {
+        System.Diagnostics.Debug.WriteLine($"This is where we would ask the CDN to invalidate its cache for {GetPagePath(playerPagesPageId)}");
+        return Task.CompletedTask;
+    }
+}

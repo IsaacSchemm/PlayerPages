@@ -6,11 +6,14 @@ namespace PlayerPages.Pages
 {
     public class IndexModel(PlayerPagesDbContext context) : PageModel
     {
-        public Models.PageProperties PageProperties { get; set; }
-            = Models.PagePropertiesModule.Empty;
+        public string Id { get; set; } = "";
+
+        public Models.PageProperties PageProperties { get; set; } = Models.PagePropertiesModule.Empty;
 
         public async Task OnGetAsync(string id)
         {
+            Id = id;
+
             if (!await context.Pages.AnyAsync())
             {
                 context.Pages.Add(new Data.Page

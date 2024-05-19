@@ -1,5 +1,7 @@
 ﻿@page "{id}"
 @using Microsoft.FSharp.Core
+@using PlayerPages
+@inject IContentDeliveryNetwork contentDeliveryNetwork
 @model PlayerPages.Pages.IndexModel
 <!DOCTYPE html>
 <html class="application">
@@ -14,8 +16,7 @@
     <link rel="stylesheet" href="material-icons/iconfont/material-icons.css" />
 
     @* Allow this page to be proxied while pulling CSS and JavaScript from the original server *@
-    @* If you're using a CDN, put the CDN path for this page here instead *@
-    <base href="@(Request.Scheme)://@(Request.Host)@(Request.Path)" />
+    <base href="@contentDeliveryNetwork.GetPagePath(Model.Id)" />
 
     @* Internet Explorer "support" is provided via VLC's ActiveX plugin *@
     @* Limit support to IE5 to keep things simple; have all other IE versions emulate it *@

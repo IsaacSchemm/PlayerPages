@@ -6,7 +6,7 @@ namespace PlayerPages.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PagesController(PlayerPagesDbContext context) : ControllerBase
+    public class PagesController(IContentDeliveryNetwork cdn, PlayerPagesDbContext context) : ControllerBase
     {
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(string id)
@@ -34,11 +34,14 @@ namespace PlayerPages.Controllers
             }
             page.PageProperties = value;
             await context.SaveChangesAsync();
+
+            await cdn.InvalidateCacheAsync(id);
+
             return new CreatedResult();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
             var page = await context.Pages.FindAsync(id);
             if (page != null)
@@ -47,6 +50,8 @@ namespace PlayerPages.Controllers
                 await context.SaveChangesAsync();
                 return NoContent();
             }
+
+            await cdn.InvalidateCacheAsync(id);
 
             return NotFound();
         }
