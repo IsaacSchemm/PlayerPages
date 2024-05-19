@@ -45,10 +45,12 @@ var PPS;
     PPS.cjs.on("disconnect", function () {
         casting(false);
     });
-    var reloadMedia = function () { };
     var player = ko.observable();
     casting.subscribe(function () {
-        reloadMedia();
+        var pl = player();
+        if (!pl)
+            return;
+        loadMedia(pl.src, pl instanceof HLSPlayer ? "hls" : "unknown");
     });
     ko.applyBindings({
         player: player,
@@ -87,7 +89,7 @@ var PPS;
             }
         });
     }); };
-    var loadMedia = function (src, contentType) {
+    var loadMedia = function (src, format) {
         // Called when the user selects a media link from the menu (if handlers
         // are set up); may be called on page load for the first media link.
         try {
@@ -100,48 +102,45 @@ var PPS;
                 player(null);
                 oldPlayer.destroy();
             }
-            // Determine which JavaScript player to use
-            var isHLS_1 = (contentType === null || contentType === void 0 ? void 0 : contentType.toLowerCase()) === "application/vnd.apple.mpegurl"
-                || (contentType === null || contentType === void 0 ? void 0 : contentType.toLowerCase()) == "application/x-mpegurl";
-            // If hls.js is not loaded or will not work, just use an HTML player
-            if (!("Hls" in window) || !Hls.isSupported())
-                isHLS_1 = false;
             // Initialize the player
-            var pl_1 = (function () {
-                if (casting()) {
-                    return new CastjsPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
-                }
-                else {
-                    return isHLS_1
-                        ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
-                        : new PPSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
-                }
-            })();
+            var pl_1 = casting()
+                ? new CastjsPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
+                : format === "hls" && "Hls" in window && Hls.isSupported()
+                    ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
+                    : new PPSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
             // Bind the player controls
             player(pl_1);
             // If it's the same media as before, try to seek to the same point
             // (for better Google Cast experience)
             if (pl_1.src === oldSrc) {
                 (function () { return __awaiter(_this, void 0, void 0, function () {
+                    var e_2;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                if (!!pl_1.playing()) return [3 /*break*/, 2];
-                                return [4 /*yield*/, new Promise(function (r) { return pl_1.playing.subscribe(function () { return r(); }); })];
+                                _a.trys.push([0, 4, , 5]);
+                                // Request autoplay in this situation
+                                pl_1.play();
+                                _a.label = 1;
                             case 1:
-                                _a.sent();
-                                return [3 /*break*/, 0];
+                                if (!!pl_1.playing()) return [3 /*break*/, 3];
+                                return [4 /*yield*/, new Promise(function (r) { return pl_1.playing.subscribe(function () { return r(); }); })];
                             case 2:
+                                _a.sent();
+                                return [3 /*break*/, 1];
+                            case 3:
                                 // Seek to the same timestamp that the player was at previously
                                 pl_1.currentTimeMs(oldTime_1);
-                                return [2 /*return*/];
+                                return [3 /*break*/, 5];
+                            case 4:
+                                e_2 = _a.sent();
+                                console.warn(e_2);
+                                return [3 /*break*/, 5];
+                            case 5: return [2 /*return*/];
                         }
                     });
                 }); })();
             }
-            // Hook up the reloadMedia function
-            // (used when Google Cast connects or disconnects)
-            reloadMedia = function () { return loadMedia(src, contentType); };
         }
         catch (e) {
             console.error(e);
@@ -149,7 +148,7 @@ var PPS;
     };
     function attachHandlerAsync(mediaLink, autoload) {
         return __awaiter(this, void 0, void 0, function () {
-            var contentType_1, http, e_2;
+            var contentType_1, http, isHLS, format_1, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -171,6 +170,9 @@ var PPS;
                         }
                         _a.label = 3;
                     case 3:
+                        isHLS = (contentType_1 === null || contentType_1 === void 0 ? void 0 : contentType_1.toLowerCase()) === "application/vnd.apple.mpegurl"
+                            || (contentType_1 === null || contentType_1 === void 0 ? void 0 : contentType_1.toLowerCase()) == "application/x-mpegurl";
+                        format_1 = isHLS ? "hls" : "unknown";
                         mediaLink.addEventListener("click", function (e) {
                             // If we couldn't access this media and determine its type,
                             // just take the default link action of opening in a new tab,
@@ -181,16 +183,16 @@ var PPS;
                             // Close the menu
                             document.getElementById("menu").removeAttribute("open");
                             // Load the media
-                            loadMedia(mediaLink.href, contentType_1);
+                            loadMedia(mediaLink.href, format_1);
                         });
                         // The first media in the list should be loaded automatically
                         if (autoload) {
-                            loadMedia(mediaLink.href, contentType_1);
+                            loadMedia(mediaLink.href, format_1);
                         }
                         return [3 /*break*/, 5];
                     case 4:
-                        e_2 = _a.sent();
-                        console.warn("Could not configure media link handler", e_2);
+                        e_3 = _a.sent();
+                        console.warn("Could not configure media link handler", e_3);
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }

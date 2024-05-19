@@ -13,12 +13,16 @@ namespace PPS {
         casting(false);
     });
 
-    let reloadMedia = () => { };
-
     const player = ko.observable<PPSPlayer | CastjsPlayer>();
 
     casting.subscribe(() => {
-        reloadMedia();
+        const pl = player();
+        if (!pl)
+            return;
+
+        loadMedia(
+            pl.src,
+            pl instanceof HLSPlayer ? "hls" : "unknown");
     });
 
     ko.applyBindings({
@@ -55,7 +59,7 @@ namespace PPS {
         return null;
     }
 
-    const loadMedia = (src: string, contentType: string) => {
+    const loadMedia = (src: string, format: "hls" | "unknown") => {
         // Called when the user selects a media link from the menu (if handlers
         // are set up); may be called on page load for the first media link.
 
@@ -72,33 +76,22 @@ namespace PPS {
                 oldPlayer.destroy();
             }
 
-            // Determine which JavaScript player to use
-            let isHLS = contentType?.toLowerCase() === "application/vnd.apple.mpegurl"
-                || contentType?.toLowerCase() == "application/x-mpegurl";
-
-            // If hls.js is not loaded or will not work, just use an HTML player
-            if (!("Hls" in window) || !Hls.isSupported())
-                isHLS = false;
-
             // Initialize the player
-            const pl = (() => {
-                if (casting()) {
-                    return new CastjsPlayer(
+            const pl =
+                casting()
+                    ? new CastjsPlayer(
+                        document.getElementsByTagName("main")[0],
+                        document.getElementById("video-parent")!,
+                        src)
+                : format === "hls" && "Hls" in window && Hls.isSupported()
+                    ? new HLSPlayer(
+                        document.getElementsByTagName("main")[0],
+                        document.getElementById("video-parent")!,
+                        src)
+                    : new PPSPlayer(
                         document.getElementsByTagName("main")[0],
                         document.getElementById("video-parent")!,
                         src);
-                } else {
-                    return isHLS
-                        ? new HLSPlayer(
-                            document.getElementsByTagName("main")[0],
-                            document.getElementById("video-parent")!,
-                            src)
-                        : new PPSPlayer(
-                            document.getElementsByTagName("main")[0],
-                            document.getElementById("video-parent")!,
-                            src)
-                }
-            })();
 
             // Bind the player controls
             player(pl);
@@ -107,19 +100,22 @@ namespace PPS {
             // (for better Google Cast experience)
             if (pl.src === oldSrc) {
                 (async () => {
-                    // Wait for media to start playing
-                    while (!pl.playing()) {
-                        await new Promise<void>(r => pl.playing.subscribe(() => r()));
-                    }
+                    try {
+                        // Request autoplay in this situation
+                        pl.play();
 
-                    // Seek to the same timestamp that the player was at previously
-                    pl.currentTimeMs(oldTime);
+                        // Wait for media to start playing
+                        while (!pl.playing()) {
+                            await new Promise<void>(r => pl.playing.subscribe(() => r()));
+                        }
+
+                        // Seek to the same timestamp that the player was at previously
+                        pl.currentTimeMs(oldTime);
+                    } catch (e) {
+                        console.warn(e);
+                    }
                 })();
             }
-
-            // Hook up the reloadMedia function
-            // (used when Google Cast connects or disconnects)
-            reloadMedia = () => loadMedia(src, contentType);
         } catch (e) {
             console.error(e);
         }
@@ -153,6 +149,11 @@ namespace PPS {
                 }
             }
 
+            // Determine which JavaScript player to use
+            const isHLS = contentType?.toLowerCase() === "application/vnd.apple.mpegurl"
+                || contentType?.toLowerCase() == "application/x-mpegurl";
+            const format = isHLS ? "hls" : "unknown";
+
             mediaLink.addEventListener("click", e => {
                 // If we couldn't access this media and determine its type,
                 // just take the default link action of opening in a new tab,
@@ -166,12 +167,12 @@ namespace PPS {
                 document.getElementById("menu").removeAttribute("open");
 
                 // Load the media
-                loadMedia(mediaLink.href, contentType);
+                loadMedia(mediaLink.href, format);
             });
 
             // The first media in the list should be loaded automatically
             if (autoload) {
-                loadMedia(mediaLink.href, contentType);
+                loadMedia(mediaLink.href, format);
             }
         } catch (e) {
             console.warn("Could not configure media link handler", e);
