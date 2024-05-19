@@ -107,8 +107,17 @@ var PPSPlayer = /** @class */ (function () {
         this.onDestroy = function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
         };
+        // Google Cast
         this.canCast(PPS.cjs.available);
         PPS.cjs.on("available", function () { return _this.canCast(true); });
+        // AirPlay
+        if ("WebKitPlaybackTargetAvailabilityEvent" in window) {
+            var handler_1 = function (e) {
+                _this.canAirPlay(e.availability === "available");
+                _this.mediaElement.removeEventListener("webkitplaybacktargetavailabilitychanged", handler_1);
+            };
+            this.mediaElement.addEventListener("webkitplaybacktargetavailabilitychanged", handler_1);
+        }
         this.mediaElement.src = src;
     }
     PPSPlayer.prototype.play = function () {
@@ -145,16 +154,12 @@ var PPSPlayer = /** @class */ (function () {
         this.levelPickerActive(false);
     };
     PPSPlayer.prototype.activateCast = function () {
-        // The plan is for this function to trigger Google Cast.
-        // The code will need to detect that it's been enabled (from here or
-        // from the browser) and replace the player with one that controls the
-        // Chromecast device.
         if (PPS.cjs.available) {
             PPS.cjs.cast(this.src);
         }
     };
     PPSPlayer.prototype.activateAirPlay = function () {
-        // This button should just show the Safari/iOS AirPlay dialog.
+        this.mediaElement.webkitShowPlaybackTargetPicker();
     };
     PPSPlayer.prototype.toggleFullscreen = function () {
         if (document.fullscreenElement === this.fullscreenElement) {
