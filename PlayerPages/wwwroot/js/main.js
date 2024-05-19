@@ -157,10 +157,8 @@ var PPS;
                     case 1:
                         contentType_1 = _a.sent();
                         if (!!contentType_1) return [3 /*break*/, 3];
-                        http = mediaLink.href
-                            .replace(/^https:\/\/([^\/:]+\.streamlock\.net)\//, "http://$1:1935/")
-                            .replace(/^https:\/\/([^\/:]+)\//, "http://$1/");
-                        if (!(http != mediaLink.href)) return [3 /*break*/, 3];
+                        http = mediaLink.getAttribute("data-httpuri");
+                        if (!http) return [3 /*break*/, 3];
                         return [4 /*yield*/, getContentTypeAsync(http)];
                     case 2:
                         contentType_1 = _a.sent();

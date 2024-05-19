@@ -47,8 +47,9 @@ app.Run();
 
 class Standin : IContentDeliveryNetwork
 {
-    public string GetPagePath(string playerPagesPageId) =>
-        $"https://localhost:7175/{Uri.EscapeDataString(playerPagesPageId)}";
+    public string? GetPagePath(string playerPagesPageId) =>
+        //$"https://localhost:7175/{Uri.EscapeDataString(playerPagesPageId)}";
+        null;
 
     public Task InvalidateCacheAsync(string playerPagesPageId)
     {

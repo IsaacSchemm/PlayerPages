@@ -1,7 +1,5 @@
 ﻿namespace PlayerPages.Models
 
-open System
-
 type Media = {
     title: string
     src: string

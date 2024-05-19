@@ -136,10 +136,8 @@ namespace PPS {
                 // available over HTTP. We'll need to make a guess as to the
                 // correct port number, though.
 
-                const http = mediaLink.href
-                    .replace(/^https:\/\/([^\/:]+\.streamlock\.net)\//, "http://$1:1935/")
-                    .replace(/^https:\/\/([^\/:]+)\//, "http://$1/");
-                if (http != mediaLink.href) {
+                const http = mediaLink.getAttribute("data-httpuri");
+                if (http) {
                     contentType = await getContentTypeAsync(http);
                     if (contentType) {
                         mediaLink.href = http;

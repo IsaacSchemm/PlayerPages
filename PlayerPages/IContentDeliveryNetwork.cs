@@ -2,7 +2,7 @@
 {
     public interface IContentDeliveryNetwork
     {
-        string GetPagePath(string playerPagesPageId);
+        string? GetPagePath(string playerPagesPageId);
         Task InvalidateCacheAsync(string playerPagesPageId);
     }
 }

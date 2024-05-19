@@ -43,7 +43,7 @@
             <div class="row">
                 @* By default, this link will open the media URL in a new tab *@
                 @* Usually, the JavaScript will attach an event handler to open the media in the JS player instead *@
-                <a class="media" target="_blank" href="@media.src">@media.title</a>
+                <a class="media" target="_blank" href="@media.src" data-httpuri="@media.GuessHttpUrl()">@media.title</a>
             </div>
         }
         @foreach (var link in Model.PageProperties.links)
@@ -60,11 +60,11 @@
     @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
     @foreach (var media in Model.PageProperties.media)
     {
-            <h2>@media.title</h2>
-            <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
-                <param name="src" value="@media.src" />
-                <param name="autoplay" value="false" />
-            </object>
+        <h2>@media.title</h2>
+        <object classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" width="640" height="320">
+            <param name="src" value="@(media.GuessHttpUrl() ?? media.src)" />
+            <param name="autoplay" value="false" />
+        </object>
     }
     <![endif]-->
     <div id="center-row">
