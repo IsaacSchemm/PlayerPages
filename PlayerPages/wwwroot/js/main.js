@@ -37,16 +37,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var PPS;
 (function (PPS) {
     var _this = this;
-    PPS.cjs = new Castjs();
-    var casting = ko.observable(PPS.cjs.connected);
-    PPS.cjs.on("connect", function () {
-        casting(true);
-    });
-    PPS.cjs.on("disconnect", function () {
-        casting(false);
-    });
+    PPS.cjs = typeof Castjs === "function"
+        ? new Castjs()
+        : null;
+    if (PPS.cjs) {
+        PPS.cjs.on("connect", function () { return PPS.casting(true); });
+        PPS.cjs.on("disconnect", function () { return PPS.casting(false); });
+    }
+    PPS.casting = ko.observable(PPS.cjs === null || PPS.cjs === void 0 ? void 0 : PPS.cjs.connected);
     var player = ko.observable();
-    casting.subscribe(function () {
+    PPS.casting.subscribe(function () {
         var pl = player();
         if (!pl)
             return;
@@ -103,7 +103,7 @@ var PPS;
                 oldPlayer.destroy();
             }
             // Initialize the player
-            var pl_1 = casting()
+            var pl_1 = PPS.casting()
                 ? new CastjsPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
                 : format === "hls" && "Hls" in window && Hls.isSupported()
                     ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
@@ -177,7 +177,7 @@ var PPS;
                             // If we couldn't access this media and determine its type,
                             // just take the default link action of opening in a new tab,
                             // unless Google Cast is already active
-                            if (!contentType_1 && !casting())
+                            if (!contentType_1 && !PPS.casting())
                                 return;
                             e.preventDefault();
                             // Close the menu

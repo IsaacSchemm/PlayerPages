@@ -1,17 +1,16 @@
 ﻿declare var Castjs: any;
 
 namespace PPS {
-    export const cjs = new Castjs();
+    export const cjs = typeof Castjs === "function"
+        ? new Castjs()
+        : null;
 
-    const casting = ko.observable(cjs.connected);
+    if (cjs) {
+        cjs.on("connect", () => casting(true));
+        cjs.on("disconnect", () => casting(false));
+    }
 
-    cjs.on("connect", () => {
-        casting(true);
-    });
-
-    cjs.on("disconnect", () => {
-        casting(false);
-    });
+    export const casting = ko.observable(cjs?.connected);
 
     const player = ko.observable<PPSPlayer | CastjsPlayer>();
 

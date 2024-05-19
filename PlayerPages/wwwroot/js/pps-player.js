@@ -108,8 +108,10 @@ var PPSPlayer = /** @class */ (function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
         };
         // Google Cast
-        this.canCast(PPS.cjs.available);
-        PPS.cjs.on("available", function () { return _this.canCast(true); });
+        if (PPS.cjs) {
+            this.canCast(PPS.cjs.available);
+            PPS.cjs.on("available", function () { return _this.canCast(true); });
+        }
         // AirPlay
         if ("WebKitPlaybackTargetAvailabilityEvent" in window) {
             var handler_1 = function (e) {

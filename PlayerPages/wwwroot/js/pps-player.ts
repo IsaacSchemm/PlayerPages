@@ -135,8 +135,10 @@ class PPSPlayer {
         };
 
         // Google Cast
-        this.canCast(PPS.cjs.available);
-        PPS.cjs.on("available", () => this.canCast(true));
+        if (PPS.cjs) {
+            this.canCast(PPS.cjs.available);
+            PPS.cjs.on("available", () => this.canCast(true));
+        }
 
         // AirPlay
         if ("WebKitPlaybackTargetAvailabilityEvent" in window) {
