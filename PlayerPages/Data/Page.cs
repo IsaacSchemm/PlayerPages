@@ -12,6 +12,8 @@ namespace PlayerPages.Data
         [StringLength(20)]
         public string Id { get; set; } = "";
 
+        public bool Public { get; set; }
+
         private static readonly Lazy<string> DefaultJson = new(() => JsonSerializer.Serialize(PagePropertiesModule.Empty));
 
         [JsonIgnore]

@@ -30,6 +30,26 @@ Public Class Form1
         sender.Enabled = False
         Try
             Dim response = Await _client.DeleteAsync($"/api/Pages/{Uri.EscapeDataString(TextBox1.Text)}")
+            response.EnsureSuccessStatusCode
+        Finally
+            sender.Enabled = True
+        End Try
+    End Sub
+
+    Private Async Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        sender.Enabled = False
+        Try
+            Dim response = Await _client.PostAsync($"/api/Pages/{Uri.EscapeDataString(TextBox1.Text)}/show", New StringContent(""))
+            response.EnsureSuccessStatusCode()
+        Finally
+            sender.Enabled = True
+        End Try
+    End Sub
+
+    Private Async Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        sender.Enabled = False
+        Try
+            Dim response = Await _client.PostAsync($"/api/Pages/{Uri.EscapeDataString(TextBox1.Text)}/hide", New StringContent(""))
             response.EnsureSuccessStatusCode()
         Finally
             sender.Enabled = True

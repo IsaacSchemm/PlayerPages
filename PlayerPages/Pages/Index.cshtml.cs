@@ -19,13 +19,17 @@ namespace PlayerPages.Pages
                 context.Pages.Add(new Data.Page
                 {
                     Id = "example1",
-                    PageProperties = Models.PagePropertiesModule.Example1
+                    PageProperties = Models.PagePropertiesModule.Example1,
+                    Public = true
                 });
                 await context.SaveChangesAsync();
             }
 
+            bool isAdmin = Request.IsAdmin();
+
             var page = await context.Pages
                 .Where(p => p.Id == id)
+                .Where(p => p.Public || isAdmin)
                 .SingleOrDefaultAsync();
 
             PageProperties = page?.PageProperties ?? Models.PagePropertiesModule.Empty;

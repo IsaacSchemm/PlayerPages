@@ -29,6 +29,8 @@ Partial Class Form1
         Button1 = New Button()
         Button2 = New Button()
         Button3 = New Button()
+        Button4 = New Button()
+        Button5 = New Button()
         SuspendLayout()
         ' 
         ' Label1
@@ -70,7 +72,7 @@ Partial Class Form1
         ' Button1
         ' 
         Button1.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        Button1.Location = New Point(551, 415)
+        Button1.Location = New Point(339, 415)
         Button1.Name = "Button1"
         Button1.Size = New Size(75, 23)
         Button1.TabIndex = 4
@@ -80,7 +82,7 @@ Partial Class Form1
         ' Button2
         ' 
         Button2.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        Button2.Location = New Point(632, 415)
+        Button2.Location = New Point(420, 415)
         Button2.Name = "Button2"
         Button2.Size = New Size(75, 23)
         Button2.TabIndex = 5
@@ -90,18 +92,40 @@ Partial Class Form1
         ' Button3
         ' 
         Button3.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
-        Button3.Location = New Point(713, 415)
+        Button3.Location = New Point(501, 415)
         Button3.Name = "Button3"
         Button3.Size = New Size(75, 23)
         Button3.TabIndex = 6
         Button3.Text = "Delete"
         Button3.UseVisualStyleBackColor = True
         ' 
+        ' Button4
+        ' 
+        Button4.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        Button4.Location = New Point(582, 415)
+        Button4.Name = "Button4"
+        Button4.Size = New Size(100, 23)
+        Button4.TabIndex = 7
+        Button4.Text = "Make Public"
+        Button4.UseVisualStyleBackColor = True
+        ' 
+        ' Button5
+        ' 
+        Button5.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        Button5.Location = New Point(688, 415)
+        Button5.Name = "Button5"
+        Button5.Size = New Size(100, 23)
+        Button5.TabIndex = 8
+        Button5.Text = "Make Private"
+        Button5.UseVisualStyleBackColor = True
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 450)
+        Controls.Add(Button5)
+        Controls.Add(Button4)
         Controls.Add(Button3)
         Controls.Add(Button2)
         Controls.Add(Button1)
@@ -122,5 +146,7 @@ Partial Class Form1
     Friend WithEvents Button1 As Button
     Friend WithEvents Button2 As Button
     Friend WithEvents Button3 As Button
+    Friend WithEvents Button4 As Button
+    Friend WithEvents Button5 As Button
 
 End Class
