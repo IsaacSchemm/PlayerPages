@@ -1,14 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PlayerPages.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddMvc();
+builder.Services.AddControllers(options => options.EnableEndpointRouting = false);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSassCompiler();
+
+builder.Services.AddDbContext<PlayerPagesDbContext>(options => options.UseInMemoryDatabase("PlayerPages1"));
 
 var app = builder.Build();
 
@@ -35,5 +40,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.UseMvc();
 
 app.Run();
