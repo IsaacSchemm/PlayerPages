@@ -64,9 +64,11 @@
     <div id="center-row">
         <main data-bind="css: { idle: idle }">
             <div id="video-box-parent">
-                <button id="play-button" data-bind="click: play, style: { visibility: paused() ? '' : 'hidden' }">
-                    <span class="material-icons" aria-hidden="true">play_arrow</span> Play
-                </button>
+                <div style="display: none" data-bind="visible: true">
+                    <button id="play-button" data-bind="click: play, style: { visibility: paused() ? '' : 'hidden' }">
+                        <span class="material-icons" aria-hidden="true">play_arrow</span> Play
+                    </button>
+                </div>
                 <div></div>
                 <div id="video-parent">
                     @* The contents of this element are controlled by JavaScript, which will insert a media player and a play button. *@
