@@ -109,10 +109,10 @@
                         <!-- /ko -->
                         <div class="spacer" role="none"></div>
                         <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
-                            <!-- ko ifnot: currentSubtitleTrack() -->
+                            <!-- ko ifnot: subtitlesActive -->
                             <span class="material-icons" aria-hidden="true">subtitles_off</span>
                             <!-- /ko -->
-                            <!-- ko if: currentSubtitleTrack() -->
+                            <!-- ko if: subtitlesActive -->
                             <span class="material-icons" aria-hidden="true">subtitles</span>
                             <!-- /ko -->
                             <span class="sr-only">Toggle subtitles</span>
@@ -225,6 +225,7 @@
     <script type="text/javascript" src="js/pps-player.js"></script>
     <script type="text/javascript" src="js/html-player.js"></script>
     <script type="text/javascript" src="js/hls-player.js"></script>
+    <script type="text/javascript" src="js/castjs-player.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

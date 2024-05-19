@@ -254,6 +254,7 @@
 
                         .controlgroup:not(:focus-within) {
                             height: 0;
+                            overflow: hidden;
                         }
                     }
                 }

@@ -38,12 +38,23 @@ var PPS;
 (function (PPS) {
     var _this = this;
     PPS.cjs = new Castjs();
+    var casting = ko.observable(PPS.cjs.connected);
+    PPS.cjs.on("connect", function () {
+        casting(true);
+    });
+    PPS.cjs.on("disconnect", function () {
+        casting(false);
+    });
+    var reloadMedia = function () { };
     var player = ko.observable();
+    casting.subscribe(function () {
+        reloadMedia();
+    });
     ko.applyBindings({
         player: player,
         idle: ko.pureComputed(function () {
             var pl = player();
-            return pl && pl.mouseIdle() /*&& pl.fullscreen()*/ && pl.playing();
+            return pl && pl.mouseIdle() && pl.playing();
         }),
         paused: ko.pureComputed(function () {
             var pl = player();
@@ -52,7 +63,7 @@ var PPS;
         play: function () {
             var pl = player();
             if (pl) {
-                pl.mediaElement.play();
+                pl.play();
             }
         }
     }, document.getElementsByTagName("main")[0]);
@@ -87,17 +98,25 @@ var PPS;
                 oldPlayer.destroy();
             }
             // Determine which JavaScript player to use
-            var isHLS = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
+            var isHLS_1 = contentType.toLowerCase() === "application/vnd.apple.mpegurl"
                 || contentType.toLowerCase() == "application/x-mpegurl";
             // If hls.js is not loaded or will not work, just use an HTML player
             if (!("Hls" in window) || !Hls.isSupported())
-                isHLS = false;
+                isHLS_1 = false;
             // Initialize the player
-            var pl = isHLS
-                ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
-                : new HTMLPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
+            var pl = (function () {
+                if (casting()) {
+                    return new CastjsPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
+                }
+                else {
+                    return isHLS_1
+                        ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
+                        : new HTMLPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
+                }
+            })();
             // Bind the player controls
             player(pl);
+            reloadMedia = function () { return loadMedia(src, contentType); };
         }
         catch (e) {
             console.error(e);

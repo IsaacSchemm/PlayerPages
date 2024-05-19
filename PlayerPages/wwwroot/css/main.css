@@ -269,6 +269,7 @@ html .controls button {
   }
   html body #center-row main.idle .controlgroup:not(:focus-within) {
     height: 0;
+    overflow: hidden;
   }
 }
 

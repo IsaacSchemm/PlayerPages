@@ -41,4 +41,11 @@
     <UpToDateCheckInput Remove="Styles\simple.scss" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\js\castjs-player.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -10,9 +10,8 @@ abstract class PPSPlayer {
     readonly canFullscreen = ko.observable(false);
     readonly fullscreen = ko.observable(false);
 
-    readonly subtitleTracks = ko.observableArray<TextTrack>();
-    readonly hasSubtitles = ko.pureComputed(() => this.subtitleTracks().length > 0);
-    readonly currentSubtitleTrack = ko.observable<TextTrack>(null);
+    readonly hasSubtitles = ko.observable(false);
+    readonly subtitlesActive = ko.observable(false);
 
     readonly mouseIdle = ko.observable(false);
 
@@ -135,23 +134,12 @@ abstract class PPSPlayer {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
         };
 
-        // Allow user to toggle through subtitles with custom controls
-        if (mediaElement.textTracks) {
-            mediaElement.textTracks.addEventListener("addtrack", e => {
-                this.subtitleTracks.push(e.track);
-            });
-        }
-
-        this.currentSubtitleTrack.subscribe(newValue => {
-            for (const track of this.subtitleTracks())
-                track.mode = "hidden";
-
-            if (newValue)
-                newValue.mode = "showing";
-        });
-
         this.canCast(PPS.cjs.available);
         PPS.cjs.on("available", () => this.canCast(true));
+    }
+
+    play() {
+        this.mediaElement.play();
     }
 
     togglePlay() {
@@ -186,20 +174,7 @@ abstract class PPSPlayer {
             this.mediaElement.currentTime + 30);
     }
 
-    toggleSubtitles() {
-        const currentTrack = this.currentSubtitleTrack();
-
-        let index = currentTrack
-            ? this.subtitleTracks().indexOf(currentTrack)
-            : -1;
-        index++;
-        if (index == this.subtitleTracks().length)
-            index = -1;
-
-        this.currentSubtitleTrack(index === -1
-            ? null
-            : this.subtitleTracks()[index]);
-    }
+    toggleSubtitles() { }
 
     toggleMute() {
         this.mediaElement.muted = !this.mediaElement.muted;

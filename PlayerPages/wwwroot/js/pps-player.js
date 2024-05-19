@@ -14,9 +14,8 @@ var PPSPlayer = /** @class */ (function () {
         this.canAirPlay = ko.observable(false);
         this.canFullscreen = ko.observable(false);
         this.fullscreen = ko.observable(false);
-        this.subtitleTracks = ko.observableArray();
-        this.hasSubtitles = ko.pureComputed(function () { return _this.subtitleTracks().length > 0; });
-        this.currentSubtitleTrack = ko.observable(null);
+        this.hasSubtitles = ko.observable(false);
+        this.subtitlesActive = ko.observable(false);
         this.mouseIdle = ko.observable(false);
         this.levelPickerActive = ko.observable(false);
         this.nativeControls = ko.observable(false);
@@ -108,23 +107,12 @@ var PPSPlayer = /** @class */ (function () {
         this.onDestroy = function () {
             document.removeEventListener("fullscreenchange", onfullscreenchange);
         };
-        // Allow user to toggle through subtitles with custom controls
-        if (mediaElement.textTracks) {
-            mediaElement.textTracks.addEventListener("addtrack", function (e) {
-                _this.subtitleTracks.push(e.track);
-            });
-        }
-        this.currentSubtitleTrack.subscribe(function (newValue) {
-            for (var _i = 0, _a = _this.subtitleTracks(); _i < _a.length; _i++) {
-                var track = _a[_i];
-                track.mode = "hidden";
-            }
-            if (newValue)
-                newValue.mode = "showing";
-        });
         this.canCast(PPS.cjs.available);
         PPS.cjs.on("available", function () { return _this.canCast(true); });
     }
+    PPSPlayer.prototype.play = function () {
+        this.mediaElement.play();
+    };
     PPSPlayer.prototype.togglePlay = function () {
         if (this.mediaElement.paused) {
             this.mediaElement.play();
@@ -145,18 +133,7 @@ var PPSPlayer = /** @class */ (function () {
     PPSPlayer.prototype.forward30 = function () {
         this.mediaElement.currentTime = Math.min(this.mediaElement.duration, this.mediaElement.currentTime + 30);
     };
-    PPSPlayer.prototype.toggleSubtitles = function () {
-        var currentTrack = this.currentSubtitleTrack();
-        var index = currentTrack
-            ? this.subtitleTracks().indexOf(currentTrack)
-            : -1;
-        index++;
-        if (index == this.subtitleTracks().length)
-            index = -1;
-        this.currentSubtitleTrack(index === -1
-            ? null
-            : this.subtitleTracks()[index]);
-    };
+    PPSPlayer.prototype.toggleSubtitles = function () { };
     PPSPlayer.prototype.toggleMute = function () {
         this.mediaElement.muted = !this.mediaElement.muted;
     };

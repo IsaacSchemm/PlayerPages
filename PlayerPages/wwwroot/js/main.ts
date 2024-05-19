@@ -3,13 +3,29 @@
 namespace PPS {
     export const cjs = new Castjs();
 
-    const player = ko.observable<PPSPlayer>();
+    const casting = ko.observable(cjs.connected);
+
+    cjs.on("connect", () => {
+        casting(true);
+    });
+
+    cjs.on("disconnect", () => {
+        casting(false);
+    });
+
+    let reloadMedia = () => { };
+
+    const player = ko.observable<PPSPlayer | CastjsPlayer>();
+
+    casting.subscribe(() => {
+        reloadMedia();
+    });
 
     ko.applyBindings({
         player,
         idle: ko.pureComputed(() => {
             const pl = player();
-            return pl && pl.mouseIdle() /*&& pl.fullscreen()*/ && pl.playing();
+            return pl && pl.mouseIdle() && pl.playing();
         }),
         paused: ko.pureComputed(() => {
             const pl = player();
@@ -18,7 +34,7 @@ namespace PPS {
         play: () => {
             const pl = player();
             if (pl) {
-                pl.mediaElement.play();
+                pl.play();
             }
         }
     }, document.getElementsByTagName("main")[0]);
@@ -60,18 +76,29 @@ namespace PPS {
                 isHLS = false;
 
             // Initialize the player
-            const pl = isHLS
-                ? new HLSPlayer(
-                    document.getElementsByTagName("main")[0],
-                    document.getElementById("video-parent")!,
-                    src)
-                : new HTMLPlayer(
-                    document.getElementsByTagName("main")[0],
-                    document.getElementById("video-parent")!,
-                    src);
+            const pl = (() => {
+                if (casting()) {
+                    return new CastjsPlayer(
+                        document.getElementsByTagName("main")[0],
+                        document.getElementById("video-parent")!,
+                        src);
+                } else {
+                    return isHLS
+                        ? new HLSPlayer(
+                            document.getElementsByTagName("main")[0],
+                            document.getElementById("video-parent")!,
+                            src)
+                        : new HTMLPlayer(
+                            document.getElementsByTagName("main")[0],
+                            document.getElementById("video-parent")!,
+                            src)
+                }
+            })();
 
             // Bind the player controls
             player(pl);
+
+            reloadMedia = () => loadMedia(src, contentType);
         } catch (e) {
             console.error(e);
         }
