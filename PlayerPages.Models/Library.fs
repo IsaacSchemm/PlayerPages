@@ -56,29 +56,29 @@ module PageProperties =
         ]
         top = [
             {
-                src = "../square.png"
-                alt = "an avatar"
-                bgcolor = "pink"
-                href = Some "https://www.example.com"
+                src = "../header.png"
+                alt = "Sample Header Image"
+                bgcolor = "darkred"
+                href = None
             }
         ]
         links = [
             {
-                title = "example.net"
-                href = "https://www.example.net"
+                title = "time.gov"
+                href = "https://www.time.gov"
             }
         ]
         right = [
             {
-                src = "../415b.png"
-                alt = "tyler sitting on a pole"
-                bgcolor = "cyan"
+                src = "../wide.png"
+                alt = "A cyan and blue gradient with the word \"Wide\""
+                bgcolor = "blue"
                 href = None
             }
             {
-                src = "../415.png"
-                alt = "tyler standing 1"
-                bgcolor = "lightgray"
+                src = "../tall.png"
+                alt = "A white and green gradient with the word \"Tall\""
+                bgcolor = "darkgreen"
                 href = Some "https://www.example.org"
             }
         ]

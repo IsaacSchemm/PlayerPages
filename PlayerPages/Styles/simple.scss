@@ -3,14 +3,22 @@
         text-align: center;
     }
 
-    button .material-icons {
-        font-size: inherit;
+    header img {
+        width: 600px;
+        height: 150px;
     }
 
-    #play-button {
-        height: 48px;
-        font-size: 24px;
-        margin: 1em 0;
+    button {
+        padding: 0.5em;
+        margin: 1em 0.5em;
+
+        &#play-button {
+            font-size: 125%;
+        }
+
+        .material-icons {
+            font-size: inherit;
+        }
     }
 
     .image-parent {

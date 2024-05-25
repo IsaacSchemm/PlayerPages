@@ -24,11 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\415.png" />
-    <None Include="wwwroot\415b.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.SassCompiler" Version="1.75.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />

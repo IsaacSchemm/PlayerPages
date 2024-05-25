@@ -8,10 +8,7 @@ namespace PlayerPages
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (!context.HttpContext.Request.Headers.UserAgent.Any(str => str?.Contains("SeaMonkey") == true))
-            {
-                context.Result = new StatusCodeResult(403);
-            }
+            context.Result = new StatusCodeResult(403);
         }
     }
 }

@@ -34,8 +34,7 @@
             }
         </header>
     }
-    <!--[if !IE]><!-->
-    @* The top menu bar (not shown on Internet Explorer). *@
+    @* The top menu bar. *@
     <details id="menu" role="navigation">
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
@@ -54,7 +53,6 @@
             </div>
         }
     </details>
-    <!--<![endif]-->
     <!--[if IE]>
     @* Include an ActiveX control (for Internet Explorer) *@
     @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
@@ -158,7 +156,7 @@
                         @* This button reveals the quality level picker. *@
                         <button data-bind="visible: levels().length > 1, click: showLevelPicker">
                             <span class="material-icons" aria-hidden="true">hd</span>
-                            <span class="sr-only">Select quality level</span>
+                            <span class="sr-only">Select quality level (options will be shown above)</span>
                         </button>
                         <button data-bind="visible: canCast, click: activateCast">
                             <!-- ko if: $data instanceof CastjsPlayer -->
