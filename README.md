@@ -76,6 +76,8 @@ in this mode, but can be accessed by screen readers or revealed with the Tab key
          width="300" />
 </a>
 
+In Firefox, you can switch between these two views using View > Page Style.
+
 ## JavaScript
 
 In modern browsers, PlayerPages will load media into the player whenever the user clicks one of the media
