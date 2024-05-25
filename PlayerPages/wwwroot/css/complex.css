@@ -13,6 +13,10 @@ html body, html main, html button {
   background-color: black;
   color: white;
 }
+html main:fullscreen {
+  background-color: black;
+  color: white;
+}
 html a {
   color: dodgerblue;
 }

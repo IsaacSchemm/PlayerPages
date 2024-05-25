@@ -31,6 +31,10 @@ html img {
   height: 240px;
   object-fit: contain;
 }
+html main:fullscreen {
+  background-color: Window;
+  color: WindowText;
+}
 html video {
   width: 300px;
   width: calc(100vw - 40px);
@@ -62,6 +66,10 @@ html .controls button {
     height: 1px;
   }
   html body, html main, html button {
+    background-color: black;
+    color: white;
+  }
+  html main:fullscreen {
     background-color: black;
     color: white;
   }

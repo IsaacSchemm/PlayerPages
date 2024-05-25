@@ -164,12 +164,16 @@ var PPSPlayer = /** @class */ (function () {
         this.mediaElement.webkitShowPlaybackTargetPicker();
     };
     PPSPlayer.prototype.toggleFullscreen = function () {
-        if (document.fullscreenElement === this.fullscreenElement) {
+        if (document.fullscreenElement === this.fullscreenElement || document.fullscreenElement === this.mediaElement) {
             document.exitFullscreen();
         }
         else {
             this.fullscreenElement.requestFullscreen();
         }
+    };
+    PPSPlayer.prototype.enterNativeFullscreen = function () {
+        this.mediaElement.controls = true;
+        this.mediaElement.requestFullscreen();
     };
     PPSPlayer.prototype.destroy = function () {
         this.onDestroy();

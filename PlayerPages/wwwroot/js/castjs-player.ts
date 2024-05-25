@@ -188,5 +188,7 @@ class CastjsPlayer {
 
     toggleFullscreen() { }
 
+    enterNativeFullscreen() { }
+
     destroy() { }
 }

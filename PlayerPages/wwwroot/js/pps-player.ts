@@ -213,11 +213,16 @@ class PPSPlayer {
     }
 
     toggleFullscreen() {
-        if (document.fullscreenElement === this.fullscreenElement) {
+        if (document.fullscreenElement === this.fullscreenElement || document.fullscreenElement === this.mediaElement) {
             document.exitFullscreen();
         } else {
             this.fullscreenElement.requestFullscreen();
         }
+    }
+
+    enterNativeFullscreen() {
+        this.mediaElement.controls = true;
+        this.mediaElement.requestFullscreen();
     }
 
     destroy() {

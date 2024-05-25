@@ -43,6 +43,11 @@
         object-fit: contain;
     }
 
+    main:fullscreen {
+        background-color: Window;
+        color: WindowText;
+    }
+
     video {
         width: 300px;
         width: calc(100vw - 40px);
