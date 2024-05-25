@@ -143,6 +143,12 @@ var CastjsPlayer = /** @class */ (function () {
             PPS.cjs.mute();
         }
     };
+    CastjsPlayer.prototype.volumeUp = function () {
+        this.vol(Math.min(+this.vol() * Math.pow(10, .3), 1));
+    };
+    CastjsPlayer.prototype.volumeDown = function () {
+        this.vol(+this.vol() / Math.pow(10, .3));
+    };
     CastjsPlayer.prototype.showLevelPicker = function () { };
     CastjsPlayer.prototype.hideLevelPicker = function () { };
     CastjsPlayer.prototype.activateCast = function () {

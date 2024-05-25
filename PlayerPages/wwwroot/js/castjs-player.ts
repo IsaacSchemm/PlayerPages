@@ -176,6 +176,17 @@ class CastjsPlayer {
         }
     }
 
+    volumeUp() {
+        this.vol(
+            Math.min(
+                +this.vol() * Math.pow(10, .3),
+                1));
+    }
+
+    volumeDown() {
+        this.vol(+this.vol() / Math.pow(10, .3));
+    }
+
     showLevelPicker() { }
 
     hideLevelPicker() { }

@@ -149,6 +149,12 @@ var PPSPlayer = /** @class */ (function () {
     PPSPlayer.prototype.toggleMute = function () {
         this.mediaElement.muted = !this.mediaElement.muted;
     };
+    PPSPlayer.prototype.volumeUp = function () {
+        this.vol(Math.min(this.vol() * Math.pow(10, .3), 1));
+    };
+    PPSPlayer.prototype.volumeDown = function () {
+        this.vol(this.vol() / Math.pow(10, .3));
+    };
     PPSPlayer.prototype.showLevelPicker = function () {
         this.levelPickerActive(true);
     };

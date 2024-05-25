@@ -142,16 +142,16 @@
                                min="0"
                                max="1"
                                aria-label="Volume"
-                               step="0.1" />
+                               step="0.01" />
                         <div class="line-separator"></div>
                         @* These two buttons are presented to screen readers, but are hidden from view unless you use the Tab key to reveal them. *@
-                        <button class="adv">
-                            <span class="material-icons" aria-hidden="true">add</span>
-                            <span class="sr-only">Volume up</span>
-                        </button>
-                        <button class="adv">
+                        <button class="adv" data-bind="click: volumeDown">
                             <span class="material-icons" aria-hidden="true">remove</span>
                             <span class="sr-only">Volume down</span>
+                        </button>
+                        <button class="adv" data-bind="click: volumeUp">
+                            <span class="material-icons" aria-hidden="true">add</span>
+                            <span class="sr-only">Volume up</span>
                         </button>
                         @* This button reveals the quality level picker. *@
                         <button data-bind="visible: levels().length > 1, click: showLevelPicker">
