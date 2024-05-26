@@ -32,7 +32,8 @@
 
         .row a {
             display: block;
-            margin: 1em;
+            display: inline-block;
+            margin: 1em 0;
         }
     }
 
@@ -49,9 +50,8 @@
     }
 
     video {
-        width: 300px;
-        width: calc(100vw - 40px);
-        max-width: 640px;
+        width: 600px;
+        max-width: calc(100vw - 40px);
     }
 
     .controls {

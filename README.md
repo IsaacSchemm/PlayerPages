@@ -98,11 +98,14 @@ directly, and most mobile browsers can play HLS directly as well. (For example, 
 can visit the page and view the video in this way, despite the scripts not running properly in the included
 version of Safari.)
 
+An additional "Alternate Links" menu is also placed on the page. This menu is intended for older mobile or
+TV-connected devices (e.g. Wii U and other game consoles), and each item is a direct link to the media itself
+over plain HTTP (not HTTPS). Like some of the media controls, this menu is normally hidden in Application
+View, but can be revealed with the Tab key.
+
 A special case is made for Internet Explorer, which also renders each media URL inside an instance of the
-VLC ActiveX plugin (which is installed by default when the VLC media player is installed). In this case, an
-HTTP (not HTTPS) media URL is used. Even if JavaScript is working, PlayerPages will try using an HTTP URL if
-it cannot fetch the HTTPS version; this allows the Wii U Internet Browser to work, and may help with other
-devices of a similar vintage.
+VLC ActiveX plugin (which is installed by default when the VLC media player is installed). In this case, the
+HTTP (not HTTPS) media URL is used.
 
 ## CDN
 

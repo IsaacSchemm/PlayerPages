@@ -129,23 +129,6 @@ namespace PPS {
 
             let contentType = await getContentTypeAsync(mediaLink.href);
 
-            if (!contentType) {
-                // On Wii U, most requests to HTTPS servers fail due to its
-                // old certificate store, but it allows requests to an HTTP
-                // server from an HTTPS page, so we can check if the stream is
-                // available over HTTP. We'll need to make a guess as to the
-                // correct port number, though.
-
-                const http = mediaLink.getAttribute("data-httpuri");
-                if (http) {
-                    contentType = await getContentTypeAsync(http);
-                    if (contentType) {
-                        mediaLink.href = http;
-                        mediaLink.innerText += " (HTTP)";
-                    }
-                }
-            }
-
             // Determine which JavaScript player to use
             const isHLS = contentType?.toLowerCase() === "application/vnd.apple.mpegurl"
                 || contentType?.toLowerCase() == "application/x-mpegurl";
@@ -168,7 +151,7 @@ namespace PPS {
             });
 
             // The first media in the list should be loaded automatically
-            if (autoload) {
+            if (contentType && autoload) {
                 loadMedia(mediaLink.href, format);
             }
         } catch (e) {

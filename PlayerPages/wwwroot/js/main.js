@@ -148,26 +148,14 @@ var PPS;
     };
     function attachHandlerAsync(mediaLink, autoload) {
         return __awaiter(this, void 0, void 0, function () {
-            var contentType_1, http, isHLS, format_1, e_3;
+            var contentType_1, isHLS, format_1, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, getContentTypeAsync(mediaLink.href)];
                     case 1:
                         contentType_1 = _a.sent();
-                        if (!!contentType_1) return [3 /*break*/, 3];
-                        http = mediaLink.getAttribute("data-httpuri");
-                        if (!http) return [3 /*break*/, 3];
-                        return [4 /*yield*/, getContentTypeAsync(http)];
-                    case 2:
-                        contentType_1 = _a.sent();
-                        if (contentType_1) {
-                            mediaLink.href = http;
-                            mediaLink.innerText += " (HTTP)";
-                        }
-                        _a.label = 3;
-                    case 3:
                         isHLS = (contentType_1 === null || contentType_1 === void 0 ? void 0 : contentType_1.toLowerCase()) === "application/vnd.apple.mpegurl"
                             || (contentType_1 === null || contentType_1 === void 0 ? void 0 : contentType_1.toLowerCase()) == "application/x-mpegurl";
                         format_1 = isHLS ? "hls" : "unknown";
@@ -184,15 +172,15 @@ var PPS;
                             loadMedia(mediaLink.href, format_1);
                         });
                         // The first media in the list should be loaded automatically
-                        if (autoload) {
+                        if (contentType_1 && autoload) {
                             loadMedia(mediaLink.href, format_1);
                         }
-                        return [3 /*break*/, 5];
-                    case 4:
+                        return [3 /*break*/, 3];
+                    case 2:
                         e_3 = _a.sent();
                         console.warn("Could not configure media link handler", e_3);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });

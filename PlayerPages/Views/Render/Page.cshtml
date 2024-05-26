@@ -22,7 +22,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=5" />
 
     @* Use "native" viewport on mobile devices instead of a desktop-width viewport *@
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=320, initial-scale=1" />
 </head>
 <body>
     @if (Model.PageProperties.top.Length > 0)
@@ -42,7 +42,9 @@
             <div class="row">
                 @* By default, this link will open the media URL in a new tab *@
                 @* Usually, the JavaScript will attach an event handler to open the media in the JS player instead *@
-                <a class="media" target="_blank" href="@media.src" data-httpuri="@media.GuessHttpUrl()">@media.title</a>
+                <a class="media" target="_blank" href="@media.src">
+                    @media.title
+                </a>
             </div>
         }
         @foreach (var link in Model.PageProperties.links)
@@ -53,6 +55,23 @@
             </div>
         }
     </details>
+    <div class="adv">
+        <p>
+            Having problems with the player on an older mobile or TV-connected device?
+            Try using the links below, which will take you to another page to play the media.
+        </p>
+        <details>
+            <summary>Alternate Links</summary>
+            @foreach (var media in Model.PageProperties.media)
+            {
+                <div class="row">
+                    <a href="@(media.GuessHttpUrl() ?? media.src)">
+                        @media.title
+                    </a>
+                </div>
+            }
+        </details>
+    </div>
     <!--[if IE]>
     @* Include an ActiveX control (for Internet Explorer) *@
     @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
