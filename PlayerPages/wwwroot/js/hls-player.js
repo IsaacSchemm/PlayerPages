@@ -55,8 +55,11 @@ var HLSPlayer = /** @class */ (function (_super) {
                 }
             });
             _this.playing.subscribe(function (newValue) {
+                console.log(0);
                 if (newValue === true) {
-                    if (_this.mediaElement.currentTime < _this.hls.liveSyncPosition) {
+                    console.log(1);
+                    if (_this.mediaElement.currentTime < _this.hls.liveSyncPosition && _this.live()) {
+                        console.log(2);
                         _this.mediaElement.currentTime = _this.hls.liveSyncPosition;
                     }
                 }
