@@ -5,6 +5,7 @@ class CastjsPlayer {
     readonly currentTimeMs = ko.observable<string | number>(0);
     readonly vol = ko.observable<string | number>(0);
     readonly muted = ko.observable(false);
+    readonly canSelectAudioOutput = ko.observable(false);
     readonly canCast = ko.observable(true);
     readonly canAirPlay = ko.observable(false);
     readonly canFullscreen = ko.observable(false);
@@ -186,6 +187,8 @@ class CastjsPlayer {
     volumeDown() {
         this.vol(+this.vol() / Math.pow(10, .3));
     }
+
+    selectAudioOutput() { }
 
     showLevelPicker() { }
 

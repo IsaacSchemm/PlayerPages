@@ -12,7 +12,7 @@ html button {
 html button#play-button {
   font-size: 125%;
 }
-html button .material-icons {
+html button .material-icons, html button .material-symbols-outlined {
   font-size: inherit;
 }
 html .image-parent {

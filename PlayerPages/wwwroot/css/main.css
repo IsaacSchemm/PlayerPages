@@ -12,7 +12,7 @@ html button {
 html button#play-button {
   font-size: 125%;
 }
-html button .material-icons {
+html button .material-icons, html button .material-symbols-outlined {
   font-size: inherit;
 }
 html .image-parent {
@@ -263,7 +263,7 @@ html .controls button {
   html body #center-row main .controls button {
     flex: 0 0 36px;
   }
-  html body #center-row main .controls button .material-icons {
+  html body #center-row main .controls button .material-icons, html body #center-row main .controls button .material-symbols-outlined {
     font-size: 24px;
     vertical-align: bottom;
   }

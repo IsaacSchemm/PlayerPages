@@ -13,6 +13,7 @@
     <link rel="stylesheet alternate" href="../css/simple.css" title="Page View" />
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Material+Icons" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
     @* Allow this page to be proxied while pulling CSS and JavaScript from the original server *@
     <base href="@contentDeliveryNetwork.GetPagePath(Model.Id)" />
@@ -171,6 +172,11 @@
                         <button class="adv" data-bind="click: volumeUp">
                             <span class="material-icons" aria-hidden="true">add</span>
                             <span class="sr-only">Volume up</span>
+                        </button>
+                        @* This button prompts the user to select an audio output device. *@
+                        <button data-bind="visible: canSelectAudioOutput, click: selectAudioOutput">
+                            <span class="material-symbols-outlined" aria-hidden="true">media_output</span>
+                            <span class="sr-only">Select audio output device</span>
                         </button>
                         @* This button reveals the quality level picker. *@
                         <button data-bind="visible: levels().length > 1, click: showLevelPicker">

@@ -5,6 +5,7 @@ class PPSPlayer {
     readonly currentTimeMs = ko.observable(0);
     readonly vol = ko.observable(0);
     readonly muted = ko.observable(false);
+    readonly canSelectAudioOutput = ko.observable("selectAudioOutput" in navigator.mediaDevices);
     readonly canCast = ko.observable(false);
     readonly canAirPlay = ko.observable(false);
     readonly canFullscreen = ko.observable(false);
@@ -203,6 +204,15 @@ class PPSPlayer {
 
     volumeDown() {
         this.vol(this.vol() / Math.pow(10, .3));
+    }
+
+    async selectAudioOutput() {
+        try {
+            const mediaDeviceInfo = await (navigator.mediaDevices as any).selectAudioOutput();
+            this.mediaElement.setSinkId(mediaDeviceInfo.deviceId);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     showLevelPicker() {

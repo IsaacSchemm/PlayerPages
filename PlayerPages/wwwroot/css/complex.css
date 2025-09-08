@@ -207,7 +207,7 @@ html body #center-row main .controls .line-separator {
 html body #center-row main .controls button {
   flex: 0 0 36px;
 }
-html body #center-row main .controls button .material-icons {
+html body #center-row main .controls button .material-icons, html body #center-row main .controls button .material-symbols-outlined {
   font-size: 24px;
   vertical-align: bottom;
 }

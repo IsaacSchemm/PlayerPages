@@ -10,6 +10,7 @@ var CastjsPlayer = /** @class */ (function () {
         this.currentTimeMs = ko.observable(0);
         this.vol = ko.observable(0);
         this.muted = ko.observable(false);
+        this.canSelectAudioOutput = ko.observable(false);
         this.canCast = ko.observable(true);
         this.canAirPlay = ko.observable(false);
         this.canFullscreen = ko.observable(false);
@@ -149,6 +150,7 @@ var CastjsPlayer = /** @class */ (function () {
     CastjsPlayer.prototype.volumeDown = function () {
         this.vol(+this.vol() / Math.pow(10, .3));
     };
+    CastjsPlayer.prototype.selectAudioOutput = function () { };
     CastjsPlayer.prototype.showLevelPicker = function () { };
     CastjsPlayer.prototype.hideLevelPicker = function () { };
     CastjsPlayer.prototype.activateCast = function () {
