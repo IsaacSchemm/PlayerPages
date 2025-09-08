@@ -38,18 +38,6 @@ module PageProperties =
         title = "My Page"
         media = [
             {
-                title = "Duck Cam"
-                src = "https://58e7f1650ff36.streamlock.net/duckcam/smil:duckcam.smil/playlist.m3u8"
-            }
-            {
-                title = "Intentional 404"
-                src = "https://www.example.com/2b61eb50-b8a1-4160-b2ef-8e07d29d52f0.mp4"
-            }
-            {
-                title = "MSL HLS test stream"
-                src = "https://cph-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
-            }
-            {
                 title = "ForBiggerFun.mp4"
                 src = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
             }

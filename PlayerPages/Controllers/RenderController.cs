@@ -11,6 +11,7 @@ namespace PlayerPages.Controllers
         [HttpGet("public/{id}")]
         public async Task<IActionResult> GetAsync(string id)
         {
+#if DEBUG
             if (!await context.Pages.AnyAsync())
             {
                 context.Pages.Add(new Page
@@ -21,6 +22,7 @@ namespace PlayerPages.Controllers
                 });
                 await context.SaveChangesAsync();
             }
+#endif
 
             var page = await context.Pages
                 .Where(p => p.Id == id)
@@ -47,7 +49,7 @@ namespace PlayerPages.Controllers
 
         [HttpPost("render")]
         [PlayerPagesAdminAuthorization]
-        public IActionResult GetPrivateAsync([FromBody]PageProperties pageProperties)
+        public IActionResult GetPrivateAsync([FromBody] PageProperties pageProperties)
         {
             return View("Page", new Page
             {
