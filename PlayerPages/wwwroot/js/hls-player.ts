@@ -1,4 +1,3 @@
-//import Hls from "../lib/hls.js/hls.js";
 declare var Hls: any;
 
 class HLSPlayer extends PPSPlayer {

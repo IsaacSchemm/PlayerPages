@@ -1,4 +1,6 @@
-﻿declare var Castjs: any;
+﻿/// <reference path="knockout.d.ts" />
+
+declare var Castjs: any;
 
 namespace PPS {
     export const cjs = typeof Castjs === "function"
