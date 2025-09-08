@@ -12,7 +12,6 @@
     <link rel="stylesheet alternate" href="../css/complex.css" title="Application View" />
     <link rel="stylesheet alternate" href="../css/simple.css" title="Page View" />
 
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Material+Icons" />
     <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
     @* Allow this page to be proxied while pulling CSS and JavaScript from the original server *@
@@ -90,7 +89,7 @@
             <div id="video-box-parent">
                 <div style="display: none" data-bind="visible: true">
                     <button id="play-button" data-bind="click: play, style: { visibility: paused() ? '' : 'hidden' }">
-                        <span class="material-icons" aria-hidden="true">play_arrow</span> Play
+                        <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span> Play
                     </button>
                 </div>
                 <div></div>
@@ -112,7 +111,7 @@
                     <button data-bind="click: activate, text: name" style="flex: 0 1 auto"></button>
                     <!-- /ko -->
                     <button data-bind="click: hideLevelPicker">
-                        <span class="material-icons" aria-hidden="true">close</span>
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
                         <span class="sr-only">Close</span>
                     </button>
                 </div>
@@ -120,11 +119,11 @@
                     <div class="controls">
                         <button data-bind="click: togglePlay">
                             <!-- ko if: playing -->
-                            <span class="material-icons" aria-hidden="true">pause</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">pause</span>
                             <span class="sr-only">Pause</span>
                             <!-- /ko -->
                             <!-- ko ifnot: playing -->
-                            <span class="material-icons" aria-hidden="true">play_arrow</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
                             <span class="sr-only">Play</span>
                             <!-- /ko -->
                         </button>
@@ -136,20 +135,20 @@
                         <div class="spacer" role="none"></div>
                         <button data-bind="visible: hasSubtitles, click: toggleSubtitles">
                             <!-- ko ifnot: subtitlesActive -->
-                            <span class="material-icons" aria-hidden="true">subtitles_off</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">subtitles_off</span>
                             <!-- /ko -->
                             <!-- ko if: subtitlesActive -->
-                            <span class="material-icons" aria-hidden="true">subtitles</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">subtitles</span>
                             <!-- /ko -->
                             <span class="sr-only">Toggle subtitles</span>
                         </button>
                         <button data-bind="click: toggleMute">
                             <!-- ko if: muted -->
-                            <span class="material-icons" aria-hidden="true">volume_off</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">volume_off</span>
                             <span class="sr-only">Unmute</span>
                             <!-- /ko -->
                             <!-- ko ifnot: muted -->
-                            <span class="material-icons" aria-hidden="true">volume_up</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">volume_up</span>
                             <span class="sr-only">Mute</span>
                             <!-- /ko -->
                         </button>
@@ -166,11 +165,11 @@
                         <div class="line-separator"></div>
                         @* These two buttons are presented to screen readers, but are hidden from view unless you use the Tab key to reveal them. *@
                         <button class="adv" data-bind="click: volumeDown">
-                            <span class="material-icons" aria-hidden="true">remove</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">remove</span>
                             <span class="sr-only">Volume down</span>
                         </button>
                         <button class="adv" data-bind="click: volumeUp">
-                            <span class="material-icons" aria-hidden="true">add</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">add</span>
                             <span class="sr-only">Volume up</span>
                         </button>
                         @* This button prompts the user to select an audio output device. *@
@@ -180,36 +179,36 @@
                         </button>
                         @* This button reveals the quality level picker. *@
                         <button data-bind="visible: levels().length > 1, click: showLevelPicker">
-                            <span class="material-icons" aria-hidden="true">hd</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">hd</span>
                             <span class="sr-only">Select quality level (options will be shown above)</span>
                         </button>
                         <button data-bind="visible: canCast, click: activateCast">
                             <!-- ko if: $data instanceof CastjsPlayer -->
-                            <span class="material-icons" aria-hidden="true">cast_connected</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">cast_connected</span>
                             <span class="sr-only">Stop casting</span>
                             <!-- /ko -->
                             <!-- ko ifnot: $data instanceof CastjsPlayer -->
-                            <span class="material-icons" aria-hidden="true">cast</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">cast</span>
                             <span class="sr-only">Cast</span>
                             <!-- /ko -->
                         </button>
                         <button data-bind="visible: canAirPlay, click: activateAirPlay">
-                            <span class="material-icons" aria-hidden="true">airplay</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">airplay</span>
                             <span class="sr-only">AirPlay</span>
                         </button>
                         <button data-bind="visible: canFullscreen, click: toggleFullscreen">
                             <!-- ko if: fullscreen -->
-                            <span class="material-icons" aria-hidden="true">fullscreen_exit</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">fullscreen_exit</span>
                             <span class="sr-only">Exit full screen</span>
                             <!-- /ko -->
                             <!-- ko ifnot: fullscreen -->
-                            <span class="material-icons" aria-hidden="true">fullscreen</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">fullscreen</span>
                             <span class="sr-only">Full screen</span>
                             <!-- /ko -->
                         </button>
                         <!-- ko ifnot: fullscreen -->
                         <button class="adv" data-bind="visible: canFullscreen, click: enterNativeFullscreen">
-                            <span class="material-icons" aria-hidden="true">video_settings</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">video_settings</span>
                             <span class="sr-only">Full screen (enable native controls)</span>
                         </button>
                         <!-- /ko -->
@@ -230,19 +229,19 @@
                         </div>
                         @* These buttons are presented to screen readers, but are hidden from view unless you use the Tab key to reveal them. *@
                         <button class="adv" data-bind="click: back10">
-                            <span class="material-icons" aria-hidden="true">replay_10</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">replay_10</span>
                             <span class="sr-only">Back 10 seconds</span>
                         </button>
                         <button class="adv" data-bind="click: forward10">
-                            <span class="material-icons" aria-hidden="true">forward_10</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">forward_10</span>
                             <span class="sr-only">Forward 10 seconds</span>
                         </button>
                         <button class="adv" data-bind="click: back30">
-                            <span class="material-icons" aria-hidden="true">replay_30</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">replay_30</span>
                             <span class="sr-only">Back 30 seconds</span>
                         </button>
                         <button class="adv" data-bind="click: forward30">
-                            <span class="material-icons" aria-hidden="true">forward_30</span>
+                            <span class="material-symbols-outlined" aria-hidden="true">forward_30</span>
                             <span class="sr-only">Forward 30 seconds</span>
                         </button>
                     </div>
