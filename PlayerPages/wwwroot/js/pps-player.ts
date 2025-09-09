@@ -5,7 +5,7 @@ class PPSPlayer {
     readonly currentTimeMs = ko.observable(0);
     readonly vol = ko.observable(0);
     readonly muted = ko.observable(false);
-    readonly canSelectAudioOutput = ko.observable("selectAudioOutput" in navigator.mediaDevices);
+    readonly canSelectAudioOutput = ko.observable("mediaDevices" in navigator && "selectAudioOutput" in navigator.mediaDevices);
     readonly canCast = ko.observable(false);
     readonly canAirPlay = ko.observable(false);
     readonly canFullscreen = ko.observable(false);

@@ -51,7 +51,7 @@ var PPS;
         var pl = player();
         if (!pl)
             return;
-        loadMedia(pl.src, pl instanceof HLSPlayer ? "hls" : "unknown");
+        loadMedia(pl.src);
     });
     ko.applyBindings({
         player: player,
@@ -84,118 +84,103 @@ var PPS;
                     return [3 /*break*/, 3];
                 case 2:
                     e_1 = _a.sent();
-                    console.log("Could not determine content type of remote media at ".concat(src), e_1);
                     return [3 /*break*/, 3];
-                case 3: return [2 /*return*/, null];
+                case 3: return [2 /*return*/, "application/octet-stream"];
             }
         });
     }); };
-    var loadMedia = function (src, format) {
-        // Called when the user selects a media link from the menu (if handlers
-        // are set up); may be called on page load for the first media link.
-        try {
-            // Clean up previous player (if any)
-            var oldPlayer = player();
-            // Store old player's source and seek time
-            var oldSrc = oldPlayer === null || oldPlayer === void 0 ? void 0 : oldPlayer.src;
-            var oldTime_1 = oldPlayer === null || oldPlayer === void 0 ? void 0 : oldPlayer.currentTimeMs();
-            if (oldPlayer) {
-                player(null);
-                oldPlayer.destroy();
+    var isHlsAsync = function (src) { return __awaiter(_this, void 0, void 0, function () {
+        var contentType;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!Hls.isSupported())
+                        return [2 /*return*/, false];
+                    return [4 /*yield*/, getContentTypeAsync(src)];
+                case 1:
+                    contentType = _a.sent();
+                    return [2 /*return*/, /^application\/(vnd.apple.mpegurl|x-mpegurl)$/i.test(contentType)];
             }
-            // Initialize the player
-            var pl_1 = PPS.casting()
-                ? new CastjsPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
-                : format === "hls" && "Hls" in window && Hls.isSupported()
-                    ? new HLSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src)
-                    : new PPSPlayer(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
-            // Bind the player controls
-            player(pl_1);
-            // If it's the same media as before, try to seek to the same point
-            // (for better Google Cast experience)
-            if (pl_1.src === oldSrc) {
-                (function () { return __awaiter(_this, void 0, void 0, function () {
-                    var e_2;
-                    return __generator(this, function (_a) {
-                        switch (_a.label) {
-                            case 0:
-                                _a.trys.push([0, 4, , 5]);
-                                // Request autoplay in this situation
-                                pl_1.play();
-                                _a.label = 1;
-                            case 1:
-                                if (!!pl_1.playing()) return [3 /*break*/, 3];
-                                return [4 /*yield*/, new Promise(function (r) { return pl_1.playing.subscribe(function () { return r(); }); })];
-                            case 2:
-                                _a.sent();
-                                return [3 /*break*/, 1];
-                            case 3:
-                                // Seek to the same timestamp that the player was at previously
-                                pl_1.currentTimeMs(oldTime_1);
-                                return [3 /*break*/, 5];
-                            case 4:
-                                e_2 = _a.sent();
-                                console.warn(e_2);
-                                return [3 /*break*/, 5];
-                            case 5: return [2 /*return*/];
-                        }
-                    });
-                }); })();
-            }
-        }
-        catch (e) {
-            console.error(e);
-        }
-    };
-    function attachHandlerAsync(mediaLink, autoload) {
-        return __awaiter(this, void 0, void 0, function () {
-            var contentType_1, isHLS, format_1, e_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, getContentTypeAsync(mediaLink.href)];
-                    case 1:
-                        contentType_1 = _a.sent();
-                        isHLS = (contentType_1 === null || contentType_1 === void 0 ? void 0 : contentType_1.toLowerCase()) === "application/vnd.apple.mpegurl"
-                            || (contentType_1 === null || contentType_1 === void 0 ? void 0 : contentType_1.toLowerCase()) == "application/x-mpegurl";
-                        format_1 = isHLS ? "hls" : "unknown";
-                        mediaLink.addEventListener("click", function (e) {
-                            // If we couldn't access this media and determine its type,
-                            // just take the default link action of opening in a new tab,
-                            // unless Google Cast is already active
-                            if (!contentType_1 && !PPS.casting())
-                                return;
-                            e.preventDefault();
-                            // Close the menu
-                            document.getElementById("menu").removeAttribute("open");
-                            // Load the media
-                            loadMedia(mediaLink.href, format_1);
-                        });
-                        // The first media in the list should be loaded automatically
-                        if (contentType_1 && autoload) {
-                            loadMedia(mediaLink.href, format_1);
-                        }
-                        return [3 /*break*/, 3];
-                    case 2:
-                        e_3 = _a.sent();
-                        console.warn("Could not configure media link handler", e_3);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
         });
-    }
+    }); };
+    PPS.selectPlayerTypeAsync = function (src) { return __awaiter(_this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!PPS.casting()) return [3 /*break*/, 1];
+                    return [2 /*return*/, CastjsPlayer];
+                case 1: return [4 /*yield*/, isHlsAsync(src)];
+                case 2:
+                    if (_a.sent())
+                        return [2 /*return*/, HLSPlayer];
+                    else
+                        return [2 /*return*/, PPSPlayer];
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
+    }); };
+    var loadMedia = function (src) { return __awaiter(_this, void 0, void 0, function () {
+        var oldPlayer, oldSrc, oldTime, PlayerClass, pl_1, e_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 6, , 7]);
+                    oldPlayer = player();
+                    oldSrc = oldPlayer === null || oldPlayer === void 0 ? void 0 : oldPlayer.src;
+                    oldTime = oldPlayer === null || oldPlayer === void 0 ? void 0 : oldPlayer.currentTimeMs();
+                    if (oldPlayer) {
+                        player(null);
+                        oldPlayer.destroy();
+                    }
+                    return [4 /*yield*/, PPS.selectPlayerTypeAsync(src)];
+                case 1:
+                    PlayerClass = _a.sent();
+                    pl_1 = new PlayerClass(document.getElementsByTagName("main")[0], document.getElementById("video-parent"), src);
+                    // Bind the player controls
+                    player(pl_1);
+                    if (!(pl_1.src === oldSrc)) return [3 /*break*/, 5];
+                    // Request autoplay in this situation
+                    pl_1.play();
+                    _a.label = 2;
+                case 2:
+                    if (!!pl_1.playing()) return [3 /*break*/, 4];
+                    return [4 /*yield*/, new Promise(function (r) { return pl_1.playing.subscribe(function () { return r(); }); })];
+                case 3:
+                    _a.sent();
+                    return [3 /*break*/, 2];
+                case 4:
+                    // Seek to the same timestamp that the player was at previously
+                    pl_1.currentTimeMs(oldTime);
+                    _a.label = 5;
+                case 5: return [3 /*break*/, 7];
+                case 6:
+                    e_2 = _a.sent();
+                    console.error(e_2);
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
+            }
+        });
+    }); };
     // These media links were placed on the page, and currently are just
     // normal links to the media URLs.
-    // Loop through these links, see if we can fetch their URLs, and then
-    // attach click handlers so the links open the video on the page
-    // itself, instead.
+    // Loop through these links, and then attach click handlers so the links
+    // open the video on the page itself, instead.
     var mediaLinks = document.querySelectorAll("a.media");
-    for (var i = 0; i < mediaLinks.length; i++) {
+    var _loop_1 = function (i) {
         var mediaLink = mediaLinks[i];
-        if (!(mediaLink instanceof HTMLAnchorElement))
-            continue;
-        attachHandlerAsync(mediaLink, i == 0);
+        mediaLink.addEventListener("click", function (e) {
+            e.preventDefault();
+            // Close the menu
+            document.getElementById("menu").removeAttribute("open");
+            // Load the media
+            loadMedia(mediaLinks[i].getAttribute("href"));
+        });
+    };
+    for (var i = 0; i < mediaLinks.length; i++) {
+        _loop_1(i);
+    }
+    if (mediaLinks.length > 0) {
+        loadMedia(mediaLinks[0].getAttribute("href"));
     }
 })(PPS || (PPS = {}));

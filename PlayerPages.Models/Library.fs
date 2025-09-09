@@ -41,6 +41,14 @@ module PageProperties =
                 title = "ForBiggerFun.mp4"
                 src = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"
             }
+            {
+                title = "Footbridge Live Stream"
+                src = "https://58e7f1650ff36.streamlock.net/bridge/smil:bridge.smil/playlist.m3u8"
+            }
+            {
+                title = "Sample call"
+                src = "https://github.com/ringcentral/ringcentral-api-docs/raw/main/resources/sample-calls.mp3"
+            }
         ]
         top = [
             {
