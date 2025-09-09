@@ -158,7 +158,7 @@ var CastjsPlayer = /** @class */ (function () {
     };
     CastjsPlayer.prototype.activateAirPlay = function () { };
     CastjsPlayer.prototype.toggleFullscreen = function () { };
-    CastjsPlayer.prototype.enterNativeFullscreen = function () { };
+    CastjsPlayer.prototype.enableNativeControls = function () { };
     CastjsPlayer.prototype.destroy = function () { };
     return CastjsPlayer;
 }());
