@@ -35,13 +35,18 @@
         </header>
     }
     @* The top menu bar. *@
+    <div class="adv">
+        <p>
+            Select media to play from the menu below:
+        </p>
+    </div>
     <details id="menu" role="navigation">
         <summary>Menu</summary>
         @foreach (var media in Model.PageProperties.media)
         {
             <div class="row">
-                @* By default, this link will open the media URL in a new tab *@
-                @* Usually, the JavaScript will attach an event handler to open the media in the JS player instead *@
+                @* Without JavaScript, this link will open the media URL in a new tab *@
+                @* If the JavaScript runs, it will attach an event handler to open the media in the JS player instead *@
                 <a class="media" target="_blank" href="@media.src">
                     @media.title
                 </a>
@@ -57,11 +62,11 @@
     </details>
     <div class="adv">
         <p>
-            Having problems with the player on an older mobile or TV-connected device?
-            Try using the links below, which will take you to another page to play the media.
+            Having problems with the player on an older device?
+            Try accessing the media directly using the links below:
         </p>
         <details>
-            <summary>Alternate Links</summary>
+            <summary>Alternate Links (HTTP)</summary>
             @foreach (var media in Model.PageProperties.media)
             {
                 <div class="row">
@@ -75,6 +80,10 @@
     <!--[if IE]>
     @* Include an ActiveX control (for Internet Explorer) *@
     @* <embed> tag could be used to support Netscape + VLC, but causes issues with TenFourFox *@
+    <hr />
+    <p>
+        Or, on Internet Explorer, play the video using the VLC ActiveX plugin (VLC must be installed on your computer):
+    </p>
     @foreach (var media in Model.PageProperties.media)
     {
         <h2>@media.title</h2>
@@ -83,6 +92,7 @@
             <param name="autoplay" value="false" />
         </object>
     }
+    <hr />
     <![endif]-->
     <div id="center-row">
         <main data-bind="css: { idle: idle }">
@@ -95,9 +105,6 @@
                 <div></div>
                 <div id="video-parent">
                     @* The contents of this element are controlled by JavaScript, which will insert a media player and a play button. *@
-                    <p>
-                        Use the menu above to select media to play.
-                    </p>
                 </div>
             </div>
             <!-- ko with: player -->
