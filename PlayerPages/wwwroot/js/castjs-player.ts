@@ -202,7 +202,7 @@ class CastjsPlayer {
 
     toggleFullscreen() { }
 
-    enterNativeFullscreen() { }
+    enableNativeControls() { }
 
     destroy() { }
 }
