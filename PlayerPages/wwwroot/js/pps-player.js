@@ -235,9 +235,8 @@ var PPSPlayer = /** @class */ (function () {
             this.fullscreenElement.requestFullscreen();
         }
     };
-    PPSPlayer.prototype.enterNativeFullscreen = function () {
+    PPSPlayer.prototype.enableNativeControls = function () {
         this.mediaElement.controls = true;
-        this.mediaElement.requestFullscreen();
     };
     PPSPlayer.prototype.destroy = function () {
         this.onDestroy();

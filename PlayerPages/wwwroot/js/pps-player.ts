@@ -241,9 +241,8 @@ class PPSPlayer {
         }
     }
 
-    enterNativeFullscreen() {
+    enableNativeControls() {
         this.mediaElement.controls = true;
-        this.mediaElement.requestFullscreen();
     }
 
     destroy() {
